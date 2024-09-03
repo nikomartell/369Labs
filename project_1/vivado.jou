@@ -24,3 +24,4 @@
 start_gui
 open_project C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_1/project_1.xpr
 upgrade_project -migrate_output_products
+save_project_as project_1.1 C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_1.1 -force
