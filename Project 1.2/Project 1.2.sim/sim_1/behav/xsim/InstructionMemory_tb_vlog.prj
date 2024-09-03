@@ -1,7 +1,7 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
-"../../../../../../../1-InstructionFetchUnit/ProgramCounter.v" \
-"../../../../../../../1-InstructionFetchUnit/ProgramCounter_tb.v" \
+"../../../../../../../1-InstructionFetchUnit/InstructionMemory.v" \
+"../../../../../../../1-InstructionFetchUnit/InstructionMemory_tb.v" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"
