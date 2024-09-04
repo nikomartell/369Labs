@@ -1,0 +1,8 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"InstructionMemory_tb_func_synth.v" \
+"../../../../../Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory.v" \
+"../../../../../Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory_tb.v" \
+
+# Do not sort compile order
+nosort
