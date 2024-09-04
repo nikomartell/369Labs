@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1725484039" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/InstructionMemory_tb.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1725486921" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/InstructionMemory_tb.dcp">
   <File Type="PA-TCL" Name="InstructionFetchUnit.tcl"/>
   <File Type="RDS-PROPCONSTRS" Name="InstructionFetchUnit_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="InstructionFetchUnit_reports.tcl"/>
@@ -49,7 +49,7 @@
     </File>
     <File Path="$PSRCDIR/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory_tb.v">
       <FileInfo>
-        <Attr Name="UserDisabled" Val="1"/>
+        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../1-InstructionFetchUnit/InstructionMemory_tb.v"/>
         <Attr Name="ImportTime" Val="1725385385"/>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -59,7 +59,7 @@
     </File>
     <File Path="$PSRCDIR/sources_1/imports/Documents/1-InstructionFetchUnit/ProgramCounter_tb.v">
       <FileInfo>
-        <Attr Name="UserDisabled" Val="1"/>
+        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../1-InstructionFetchUnit/ProgramCounter_tb.v"/>
         <Attr Name="ImportTime" Val="1725383163"/>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -69,7 +69,7 @@
     </File>
     <File Path="$PSRCDIR/sources_1/imports/Documents/1-InstructionFetchUnit/PCAdder_tb.v">
       <FileInfo>
-        <Attr Name="UserDisabled" Val="1"/>
+        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../1-InstructionFetchUnit/PCAdder_tb.v"/>
         <Attr Name="ImportTime" Val="1725382565"/>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -102,6 +102,14 @@
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../5-Two4DigitDisplay/Two4DigitDisplay.v"/>
         <Attr Name="ImportTime" Val="1725382266"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/Top.v">
+      <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>

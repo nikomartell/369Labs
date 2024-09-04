@@ -58,6 +58,8 @@ if {$::dispatch::connected} {
 OPTRACE "synth_1" START { ROLLUP_AUTO }
 set_param chipscope.maxJobs 2
 set_param checkpoint.writeSynthRtdsInDcp 1
+set_param synth.incrementalSynthesisCache C:/Users/ual-laptop/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-12868-UAL-MJ0F9HYN/incrSyn
+set_param xicom.use_bs_reader 1
 set_msg_config -id {Synth 8-256} -limit 10000
 set_msg_config -id {Synth 8-638} -limit 10000
 OPTRACE "Creating in-memory project" START { }
@@ -75,10 +77,10 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionMemory.v
-  C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/PCAdder.v
-  C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/ProgramCounter.v
-  C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionFetchUnit.v
+  {C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory.v}
+  {C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/PCAdder.v}
+  {C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/ProgramCounter.v}
+  {C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionFetchUnit.v}
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

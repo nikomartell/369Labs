@@ -1,8 +1,4 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionMemory.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module InstructionMemory
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/PCAdder.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module PCAdder
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/ProgramCounter.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module ProgramCounter
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionFetchUnit.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module InstructionFetchUnit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.srcs/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module InstructionMemory_tb
