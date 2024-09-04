@@ -1,0 +1,12 @@
+0.7
+2020.2
+May 22 2024
+19:03:11
+,,,,,,InstructionFetchUnit,,,,,,,,
+C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionMemory.v,1725385483,verilog,,C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/PCAdder.v,,InstructionMemory,,,,,,,,
+C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionMemory_tb.v,1725385385,verilog,,,,InstructionMemory_tb,,,,,,,,
+C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/PCAdder.v,1725383756,verilog,,C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/ProgramCounter.v,,PCAdder,,,,,,,,
+C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/PCAdder_tb.v,1725382565,verilog,,,,PCAdder_tb,,,,,,,,
+C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/ProgramCounter.v,1725383019,verilog,,C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/InstructionFetchUnit.v,,ProgramCounter,,,,,,,,
+C:/Users/ual-laptop/Documents/1-InstructionFetchUnit/ProgramCounter_tb.v,1725383163,verilog,,,,ProgramCounter_tb,,,,,,,,
+C:/Users/ual-laptop/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.sim/sim_1/behav/xsim/glbl.v,1708598507,verilog,,,,glbl,,,,,,,,
