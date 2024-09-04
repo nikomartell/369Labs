@@ -20,19 +20,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Top(
+module Top();
     
-    );
+    reg Reset;
+    reg Clk;
     
-    reg Reset
-    reg Clk,
-    wire [31:0] Instruction, 
-    wire [31:0] PCResult
+    wire [31:0] ClckOut;
+    wire [31:0] Instruction;
+    wire [31:0] PCResult;
     
-    InstructionFetchUnit instruction_fetch(
-    )
+    InstructionFetchUnit instruction_fetch(Instruction, PCResult, Reset);
+    ClkDiv clock(Clk,0,ClckOut);
+    Two4DigitDisplay display(Clk, NumberA, NumberB, out7, en_out7);
     
-    
-    
+
     
 endmodule

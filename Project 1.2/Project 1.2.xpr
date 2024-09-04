@@ -90,6 +90,24 @@
   <FileSets Version="1" Minor="32">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PSRCDIR/sources_1/imports/Documents/4-ClockDivider/ClkDiv.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../4-ClockDivider/ClkDiv.v"/>
+          <Attr Name="ImportTime" Val="1725382266"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionFetchUnit.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../1-InstructionFetchUnit/InstructionFetchUnit.v"/>
+          <Attr Name="ImportTime" Val="1725388163"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionMemory.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../../../1-InstructionFetchUnit/InstructionMemory.v"/>
@@ -117,10 +135,26 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/Documents/1-InstructionFetchUnit/InstructionFetchUnit.v">
+      <File Path="$PSRCDIR/sources_1/imports/Documents/5-Two4DigitDisplay/SevenSegment.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../1-InstructionFetchUnit/InstructionFetchUnit.v"/>
-          <Attr Name="ImportTime" Val="1725388163"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../5-Two4DigitDisplay/SevenSegment.v"/>
+          <Attr Name="ImportTime" Val="1725382266"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Documents/5-Two4DigitDisplay/Two4DigitDisplay.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../5-Two4DigitDisplay/Two4DigitDisplay.v"/>
+          <Attr Name="ImportTime" Val="1725382266"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/Top.v">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -156,48 +190,9 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/Documents/5-Two4DigitDisplay/SevenSegment.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../5-Two4DigitDisplay/SevenSegment.v"/>
-          <Attr Name="ImportTime" Val="1725382266"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/Documents/4-ClockDivider/ClkDiv.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../4-ClockDivider/ClkDiv.v"/>
-          <Attr Name="ImportTime" Val="1725382266"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/Documents/5-Two4DigitDisplay/Two4DigitDisplay.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../5-Two4DigitDisplay/Two4DigitDisplay.v"/>
-          <Attr Name="ImportTime" Val="1725382266"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/Top.v">
-        <FileInfo>
-          <Attr Name="UserDisabled" Val="1"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="InstructionFetchUnit"/>
+        <Option Name="TopModule" Val="Top"/>
       </Config>
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
