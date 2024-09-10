@@ -3,8 +3,8 @@
 # SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
 # IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
 # SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
-# Start of session at: Wed Sep  4 16:47:21 2024
-# Process ID: 13212
+# Start of session at: Tue Sep 10 11:27:50 2024
+# Process ID: 26884
 # Current directory: C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.runs/synth_1
 # Command line: vivado.exe -log Top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Top.tcl
 # Log file: C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Project 1.2/Project 1.2.runs/synth_1/Top.vds
@@ -19,6 +19,6 @@
 # Host memory       :8502 MB
 # Swap memory       :12348 MB
 # Total Virtual     :20850 MB
-# Available Virtual :6424 MB
+# Available Virtual :5049 MB
 #-----------------------------------------------------------
 source Top.tcl -notrace

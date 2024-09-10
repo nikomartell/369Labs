@@ -30,7 +30,7 @@ module Top(Reset, Clk, out7, en_out);
     wire [31:0] Instruction;
     wire [31:0] PCResult;
     
-    InstructionFetchUnit instruction_fetch(Reset, Clckout, Instruction, PCResult);
+    InstructionFetchUnit instruction_fetch(Reset, ClckOut, Instruction, PCResult);
     ClkDiv clock(Clk,0,ClckOut);
     Two4DigitDisplay display(Clk, Instruction[15:0], PCResult[15:0], out7, en_out);
     

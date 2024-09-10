@@ -50,7 +50,8 @@ module InstructionMemory(Address, Instruction);
             memory[i] = i * 3;
         end
     
-    Instruction <= memory[Address<<2];
+    Instruction <= memory[Address[8:2]];
+    
     
     end 
 

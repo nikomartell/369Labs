@@ -56,7 +56,7 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param chipscope.maxJobs 2
+set_param xicom.use_bs_reader 1
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a100tcsg324-1
 
@@ -90,8 +90,8 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc C:/Users/mares/OneDrive/Documents/Nexys4DDR_Master.xdc
-set_property used_in_implementation false [get_files C:/Users/mares/OneDrive/Documents/Nexys4DDR_Master.xdc]
+read_xdc {{C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Project 1.2/Two4DigitDisplay.xdc}}
+set_property used_in_implementation false [get_files {{C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Project 1.2/Two4DigitDisplay.xdc}}]
 
 set_param ips.enableIPCacheLiteLoad 1
 
