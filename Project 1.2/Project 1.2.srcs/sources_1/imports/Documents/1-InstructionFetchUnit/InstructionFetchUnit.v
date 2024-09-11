@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Team Members:
-// Overall percent effort of each team meber: 
+// Overall percent effort of each team meber:  33%
 // 
 // ECE369A - Computer Architecture
 // Laboratory 3 (PostLab)
