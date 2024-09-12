@@ -2,7 +2,7 @@
 # Max Score: 12 points
 #
 # Students: 
-#
+# Sebastian Mares, Abril Torres, Niko Martell
 # minimum.s 
 # Finds the index of the smallest element in an integer array
 # V[], which contains n items.  
@@ -20,6 +20,19 @@
 #		  min_idx=i;
 #		}
 #     return min_idx;
+#    }
+#
+#   int maximum(int V[], int n)
+#   {
+#     int max, max_idx, i;
+#     max=V[0];
+#	  max_idx=0;
+#     for(i=1;i<n;i++)
+#       if (V[i] > max){
+#         max=V[i];
+#		  max_idx=i;
+#		}
+#     return max_idx;
 #    }
 #
 # In the MIPS implementation given below, registers 
@@ -103,9 +116,24 @@ done:
 
 MaxIndex:   
     # Please fill in your implementation for 'MaxIndex' below this line !##########################
-    # Your code begins
+    lw      $t0, 0($a0)     # max=V[0]
+    addi    $t1,$0, 1       # i=1
+    add     $t3,$0, 0       # $t3=0
 
-    # Your code ends
+loop:
+    bge     $t1,$a1,done    # i>=n ?
+    mul     $t2, $t1, 4     # $t2 = $t1 * 4
+    add     $t2,$t2,$a0
+    lw      $t2, 0($t2)     # $t2 = V[i]
+    ble     $t2,$t0,next    # V[i] >= max ?
+    add     $t0,$t2,$0      # max=V[i]
+    add     $t3,$t1,$0      # max_index=i
+next:
+    addi    $t1,$t1,1       # i++
+    j       loop            # Loop back
+done: 
+    add     $v0,$t3,$0      # return max index
+    jr      $ra
 
     
 #################### Sort function that sorts and prints the sorted array ##########################
