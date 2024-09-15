@@ -54,7 +54,7 @@ main:	addi	$sp, $sp, -4	# Make space on stack
 	jal	test		
 # What is the value of $v0 at this point?	(v0) = 34       #
 # What does this code compute? Your answer HERE: This code computes the sum of elements in the list that are less than a2(5) for both lists #
-								    
+#For list2 it starts addition from first element until element 8 (-7) and for list1 it starts addition from first element until element 13 which means it jumps to list2 to complete function
 return:	
 li	$v0, 0		# Return value
 	lw	$ra, 0($sp)		# Restore return address
