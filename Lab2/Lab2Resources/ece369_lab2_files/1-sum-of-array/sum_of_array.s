@@ -5,6 +5,11 @@
 # Students: 
 # Sebastian Mares, Abril Torres, Niko Martell
 #
+# Percent Effort:
+# Sebastian Mares: 33.33%
+# Abril Torres: 33.33%
+# Niko Martell: 33.33%
+#
 # Insert your answers below each question:-
 # 1(a) What is the address location of the first element of the array, X.
 # 	10010004
