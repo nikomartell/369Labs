@@ -87,28 +87,28 @@ newline:    .asciiz     "\n"
 space:      .asciiz     " "
 
 ################# minimum routine that prints the index of the min element in an array ############
-.text
-.globl minimum
-
-minimum:
-    lw      $t0, 0($a0)     # min=V[0]
-    addi    $t1,$0, 1       # i=1
-    add     $t3,$0, 0       # $t3=0
-
-loop:
-    bge     $t1,$a1,done    # i>=n ?
-    mul     $t2, $t1, 4     # $t2 = $t1 * 4
-    add     $t2,$t2,$a0
-    lw      $t2, 0($t2)     # $t2 = V[i]
-    bge     $t2,$t0,next    # V[i] >= min ?
-    add     $t0,$t2,$0      # min=V[i]
-    add     $t3,$t1,$0      # max_index=max
-next:
-    addi    $t1,$t1,1       # i++
-    j       loop            # Loop back
-done: 
-    add     $v0,$t3,$0      # return min
-    jr      $ra
+#.text
+#.globl minimum
+#
+#minimum:
+#    lw      $t0, 0($a0)     # min=V[0]
+#    addi    $t1,$0, 1       # i=1
+#    add     $t3,$0, 0       # $t3=0
+#
+#loop:
+#    bge     $t1,$a1,done    # i>=n ?
+#    mul     $t2, $t1, 4     # $t2 = $t1 * 4
+#    add     $t2,$t2,$a0
+#    lw      $t2, 0($t2)     # $t2 = V[i]
+#    bge     $t2,$t0,next    # V[i] >= min ?
+#    add     $t0,$t2,$0      # min=V[i]
+#    add     $t3,$t1,$0      # max_index=max
+#next:
+#    addi    $t1,$t1,1       # i++
+#    j       loop            # Loop back
+#done: 
+#    add     $v0,$t3,$0      # return min
+#    jr      $ra
 
 #################### MaxIndex routine that prints the index of the max element in an array ########
 .text
@@ -125,7 +125,7 @@ loop:
     mul     $t2, $t1, 4     # $t2 = $t1 * 4
     add     $t2,$t2,$a0
     lw      $t2, 0($t2)     # $t2 = V[i]
-    ble     $t2,$t0,next    # V[i] >= max ?
+    ble     $t2,$t0,next    # V[i] <= max ?
     add     $t0,$t2,$0      # max=V[i]
     add     $t3,$t1,$0      # max_index=i
 next:
@@ -175,7 +175,7 @@ sloop:
     addi    $t1, $s0, -1        # [$t1=$s0-1] The index (n - 1) that will be swapped with MaxIndex
     sll     $t1, $t1, 2         # [$t1=4*$t1] Calculate offset for index n - 1
     add     $t1, $t1, $a0       # [$t1=$t1+$a0] Calculate the address for V[n - 1]
-    lw      $t3, 0($t1)          # [$t3=V[$t1]] Load the value of memory address $t1 to $t3, $t3 = V[n - 1]
+    lw      $t3, 0($t1)         # [$t3=V[$t1]] Load the value of memory address $t1 to $t3, $t3 = V[n - 1]
     sw      $t2, 0($t1)         # [V[$t1]=$t2] Store V[n-1] to be V[MaxIndex]
     sw      $t3, 0($t0)         # [V[$t0]=$t3] Store V[MaxIndex] to be the original V[n - 1]
     addi    $s0, $s0, -1        # [$s0=$s0-1] Len = Len - 1    
