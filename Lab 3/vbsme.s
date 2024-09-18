@@ -776,7 +776,7 @@ print_result:
 
 # Begin subroutine
 vbsme:  
-    li      $v0, 0              # reset $v0 and $V1
+    li      $v0, 0              # reset $v0 (x coord) and $v1 (y coord)
     li      $v1, 0
 
     # insert your code here
