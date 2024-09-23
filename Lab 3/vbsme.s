@@ -776,8 +776,80 @@ print_result:
 
 # Begin subroutine
 vbsme:  
-    li      $v0, 0              # reset $v0 (x coord) and $v1 (y coord)
-    li      $v1, 0
+    # Load dimensions
+    lw      $t0, 0($a0)      # i (frame height)
+    lw      $t1, 4($a0)      # j (frame width)
+    lw      $t2, 8($a0)      # k (window height)
+    lw      $t3, 12($a0)     # l (window width)
+
+    # Initialize minimum SAD to a large value
+    li      $t4, 0x7FFFFFFF  # min_sad
+
+    # Initialize coordinates
+    li      $t5, 0           # min_x
+    li      $t6, 0           # min_y
+
+    # Loop over frame
+    move    $t7, $zero       # x = 0
+outer_loop:
+    bge     $t7, $t0, end_outer_loop  # if x >= i, end outer loop
+    move    $t8, $zero       # y = 0
+inner_loop:
+    bge     $t8, $t1, end_inner_loop  # if y >= j, end inner loop
+
+    # Calculate SAD for current position
+    move    $t9, $zero       # sad = 0
+    move    $s0, $zero       # u = 0
+window_loop_x:
+    bge     $s0, $t2, end_window_loop_x  # if u >= k, end window loop x
+    move    $s1, $zero       # v = 0
+window_loop_y:
+    bge     $s1, $t3, end_window_loop_y  # if v >= l, end window loop y
+
+    # Calculate absolute difference
+    mul     $s2, $s0, $t1    # u * frame width
+    add     $s2, $s2, $t7    # u * frame width + x
+    add     $s2, $s2, $t8    # u * frame width + x + y
+    lw      $s3, 0($a1)      # frame[u * frame width + x + y]
+    add     $s3, $s3, $s2
+
+    mul     $s4, $s0, $t3    # u * window width
+    add     $s4, $s4, $s1    # u * window width + v
+    lw      $s5, 0($a2)      # window[u * window width + v]
+    add     $s5, $s5, $s4
+
+    sub     $s6, $s3, $s5    # frame - window
+    abs     $s6, $s6         # abs(frame - window)
+    add     $t9, $t9, $s6    # sad += abs(frame - window)
+
+    addi    $s1, $s1, 1      # v++
+    j       window_loop_y
+end_window_loop_y:
+    addi    $s0, $s0, 1      # u++
+    j       window_loop_x
+end_window_loop_x:
+
+    # Update minimum SAD and coordinates if necessary
+    blt     $t9, $t4, update_min
+    j       skip_update
+update_min:
+    move    $t4, $t9         # min_sad = sad
+    move    $t5, $t7         # min_x = x
+    move    $t6, $t8         # min_y = y
+skip_update:
+
+    addi    $t8, $t8, 1      # y++
+    j       inner_loop
+end_inner_loop:
+    addi    $t7, $t7, 1      # x++
+    j       outer_loop
+end_outer_loop:
+
+    # Store result in $v0 and $v1
+    move    $v0, $t5         # $v0 = min_x
+    move    $v1, $t6         # $v1 = min_y
+
+    jr      $ra              # Return from subroutine
 
     
    
