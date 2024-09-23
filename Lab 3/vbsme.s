@@ -776,6 +776,12 @@ print_result:
 
 # Begin subroutine
 vbsme:  
+    li      $v0, 0              # reset $v0 and $V1
+    li      $v1, 0
+
+    addi $sp, $sp, -12 #make space on stack
+    sw $ra, 0($sp) #save return address
+
     # Load dimensions
     lw      $t0, 0($a0)      # i (frame height)
     lw      $t1, 4($a0)      # j (frame width)
