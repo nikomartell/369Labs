@@ -50,11 +50,14 @@ while (radius <= 0) {
         }
     }
 
+    direction = direction + 1; // change the direction
+
     if (direction == 4) { 
         radius--;       // if we have completed a circle, decrease the radius
+        direction = 0;  // reset the direction
     }
 
-    direction = (direction + 1) % 4;
+    
     
 }
 }
