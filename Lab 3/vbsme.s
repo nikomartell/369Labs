@@ -792,31 +792,66 @@ vbsme:
     li      $t4, 0x7FFFFFFF  # min_sad
 
     # Initialize coordinates
-    li      $t5, 0           # min_x
-    li      $t6, 0           # min_y
+    li      $v0, 0           # min_y
+    li      $v1, 0           # min_x
+
+    srl     $s7, $t0, 1     # i / 2 (Creates radius)
+    move    $t5, $s7        # set centerX/Y
+    move    $t6, $zero      # set direction
 
     # Loop over frame
-    move    $t7, $zero       # x = 0
+    move    $t7, $zero       # y = 0
 outer_loop:
-    bge     $t7, $t0, end_outer_loop  # if x >= i, end outer loop
-    move    $t8, $zero       # y = 0
-inner_loop:
-    bge     $t8, $t1, end_inner_loop  # if y >= j, end inner loop
+    ble     $s7, $zero, end_outer_loop  # if radius <= 0, end search
+    beq     $t6, 0, right    # if direction == 0, go right
+    beq     $t6, 1, down     # if direction == 1, go down
+    beq     $t6, 2, left     # if direction == 2, go left
+    beq     $t6, 3, up       # if direction == 3, go up
+    bge     $t6, 4, reset_direction  # if direction >= 4, reset direction
+
+right:
+    bge     $t8, $t1, end_right  # if x >= j, end inner loop
 
     # Calculate SAD for current position
     move    $t9, $zero       # sad = 0
-    move    $s0, $zero       # u = 0
-window_loop_x:
-    bge     $s0, $t2, end_window_loop_x  # if u >= k, end window loop x
-    move    $s1, $zero       # v = 0
+    move    $s0, $zero       # u(window_y) = 0
+    j      window_loop_x
+down:
+    bge     $t7, $t0, end_down  # if y >= i, end outer loop
+
+    move    $t9, $zero       # sad = 0
+    move    $s0, $zero       # u(window_y) = 0
+    j       window_loop_x
+left:
+    blt     $t8, $zero, end_outer_loop  # if x < 0, end inner loop
+
+    # Calculate SAD for current position
+    move    $t9, $zero       # sad = 0
+    move    $s0, $zero       # u(window_y) = 0
+    j       window_loop_x
+up:
+    blt     $t7, $zero, end_outer_loop  # if y < 0, end outer loop
+
+    # Calculate SAD for current position
+    move    $t9, $zero       # sad = 0
+    move    $s0, $zero       # u(window_y) = 0
+    j       window_loop_x
+reset_direction:
+    move    $t6, $zero       # direction = 0
+    sub     $s7, $s7, 1      # radius--
+    j       outer_loop
+
 window_loop_y:
-    bge     $s1, $t3, end_window_loop_y  # if v >= l, end window loop y
+    bge     $s0, $t2, end_window_loop_y  # if u >= k, end window loop y
+    move    $s1, $zero       # v(window_x) = 0
+window_loop_x:
+    bge     $s1, $t3, end_window_loop_x  # if v >= l, end window loop x
 
     # Calculate absolute difference
     mul     $s2, $s0, $t1    # u * frame width
-    add     $s2, $s2, $t7    # u * frame width + x
-    add     $s2, $s2, $t8    # u * frame width + x + y
-    lw      $s3, 0($a1)      # frame[u * frame width + x + y]
+    add     $s2, $s2, $t7    # u * frame width + y
+    add     $s2, $s2, $t8    # u * frame width + y + x
+    lw      $s3, 0($a1)      # frame[u * frame width + y + x]
     add     $s3, $s3, $s2
 
     mul     $s4, $s0, $t3    # u * window width
@@ -829,33 +864,62 @@ window_loop_y:
     add     $t9, $t9, $s6    # sad += abs(frame - window)
 
     addi    $s1, $s1, 1      # v++
-    j       window_loop_y
-end_window_loop_y:
-    addi    $s0, $s0, 1      # u++
     j       window_loop_x
 end_window_loop_x:
+    addi    $s0, $s0, 1      # u++
+    j       window_loop_y
+end_window_loop_y:
 
     # Update minimum SAD and coordinates if necessary
     blt     $t9, $t4, update_min
-    j       skip_update
+    j       increment
 update_min:
     move    $t4, $t9         # min_sad = sad
-    move    $t5, $t7         # min_x = x
-    move    $t6, $t8         # min_y = y
-skip_update:
+    move    $v0, $t7         # min_y = y
+    move    $v1, $t8         # min_x = x
+increment:
+    move    $t9, $zero       # sad = 0
+    move    $s0, $zero       # u(window_y) = 0
 
-    addi    $t8, $t8, 1      # y++
-    j       inner_loop
-end_inner_loop:
-    addi    $t7, $t7, 1      # x++
+    beq     $t6, 0, increment_right    # if direction == 0, go add right
+    beq     $t6, 1, increment_down     # if direction == 1, go add down
+    beq     $t6, 2, increment_left     # if direction == 2, go add left
+    beq     $t6, 3, increment_up       # if direction == 3, go add up
+    
+increment_right:
+    addi    $t8, $t8, 1      # x++
+    j       right
+increment_down:
+    addi    $t7, $t7, 1      # y++
+    j       down
+increment_left:
+    subi    $t8, $t8, 1      # x--
+    j       left
+increment_up:
+    subi    $t7, $t7, 1      # y--
+    j       up
+
+end_right:
+    addi    $t6, $t6, 1      # direction++
+    sub     $t8, $t8, 1      # x-- (puts x back into bounds)
+    j       outer_loo
+end_down:
+    addi    $t6, $t6, 1      # direction++
+    sub     $t7, $t7, 1      # y-- (puts y back into bounds)
     j       outer_loop
+end_left:
+    addi    $t6, $t6, 1      # direction++
+    add     $t8, $t8, 1      # x++ (puts x back into bounds)
+    j       outer_loop
+end_up:
+    addi    $t6, $t6, 1      # direction++
+    add     $t7, $t7, 1      # y++ (puts y back into bounds)
+    j       outer_loop
+
 end_outer_loop:
-
-    # Store result in $v0 and $v1
-    move    $v0, $t5         # $v0 = min_x
-    move    $v1, $t6         # $v1 = min_y
-
-    jr      $ra              # Return from subroutine
+    lw      $ra, 0($sp)     #restore return address
+    addi    $sp, $sp, 4     #restore stack pointer
+    jr      $ra             #return
 
     
    
