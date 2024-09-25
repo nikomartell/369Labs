@@ -893,16 +893,16 @@ increment_down:
     addi    $t7, $t7, 1      # y++
     j       down
 increment_left:
-    subi    $t8, $t8, 1      # x--
+    addi    $t8, $t8, -1      # x--
     j       left
 increment_up:
-    subi    $t7, $t7, 1      # y--
+    addi    $t7, $t7, -1      # y--
     j       up
 
 end_right:
     addi    $t6, $t6, 1      # direction++
     sub     $t8, $t8, 1      # x-- (puts x back into bounds)
-    j       outer_loo
+    j       outer_loop
 end_down:
     addi    $t6, $t6, 1      # direction++
     sub     $t7, $t7, 1      # y-- (puts y back into bounds)
