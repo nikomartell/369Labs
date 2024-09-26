@@ -495,9 +495,9 @@ main:
          
     # Start test 1 
     ############################################################
-    la      $a0, asize1     # 1st parameter: address of asize1[0]
-    la      $a1, frame1     # 2nd parameter: address of frame1[0]
-    la      $a2, window1    # 3rd parameter: address of window1[0] 
+    la      $a0, asize0     # 1st parameter: address of asize1[0]
+    la      $a1, frame0     # 2nd parameter: address of frame1[0]
+    la      $a2, window0    # 3rd parameter: address of window1[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
@@ -712,7 +712,7 @@ print_result:
 # - move "window" over the "frame" one cell at a time starting with location (0,0)
 # - moves are based circular pattern 
 # - for each move, function calculates  the sum of absolute difference (SAD) 
-#   between the window and the overlapping block on the frame.
+#   between the window and the overlat9ing block on the frame.
 # - if the calculated sum of difference is LESS THAN the current sum of difference
 #   then the current sum of difference is updated and the coordinate of the top left corner 
 #   for that matching block in the frame is recorded. 
@@ -783,10 +783,12 @@ vbsme:
     sw $ra, 0($sp) #save return address
 
     # Load dimensions
-    lw      $t0, 0($a0)      # i (frame height)
-    lw      $t1, 4($a0)      # j (frame width)
-    lw      $t2, 8($a0)      # k (window height)
-    lw      $t3, 12($a0)     # l (window width)
+    lw      $t0, 0($a0)      # i (frame height/width)
+    lw      $t1, 8($a0)      # k (window height)
+    lw      $t2, 12($a0)     # l (window width)
+
+    # Initialize Radius to control spiral collapse
+    move    $t3, $zero     # i / 2 (Creates radius)
 
     # Initialize minimum SAD to a large value
     li      $t4, 0x7FFFFFFF  # min_sad
@@ -795,14 +797,16 @@ vbsme:
     li      $v0, 0           # min_y
     li      $v1, 0           # min_x
 
-    srl     $s7, $t0, 1     # i / 2 (Creates radius)
-    move    $t5, $s7        # set centerX/Y
+    
+    srl    $t5, $t0, 1        # set centerX/Y
     move    $t6, $zero      # set direction
 
     # Loop over frame
-    move    $t7, $zero       # y = 0
+    move    $t7, $zero      # y = 0
+    move    $t8, $zero      # x = 0
+
 outer_loop:
-    ble     $s7, $zero, end_outer_loop  # if radius <= 0, end search
+    ble     $t3, $t5, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
     beq     $t6, 0, right    # if direction == 0, go right
     beq     $t6, 1, down     # if direction == 1, go down
     beq     $t6, 2, left     # if direction == 2, go left
@@ -810,51 +814,54 @@ outer_loop:
     bge     $t6, 4, reset_direction  # if direction >= 4, reset direction
 
 right:
-    bge     $t8, $t1, end_right  # if x >= j, end inner loop
+    sub     $t9, $t0, $t2   # frame x - window x (set x limit)
+    sub     $t9, $t9, $t3   # limit x - radius
+    bge     $t8, $t9, end_right  # if x >= limit x, end inner loop
 
     # Calculate SAD for current position
     move    $t9, $zero       # sad = 0
-    move    $s0, $zero       # u(window_y) = 0
     j      window_loop_x
 down:
-    bge     $t7, $t0, end_down  # if y >= i, end outer loop
+    sub     $t9, $t0, $t1   # frame y - window y (set y limit)
+    sub     $t9, $t9, $t3   # limit y - radius
+    bge     $t7, $t9, end_down  # if y >= limit y, end outer loop
 
     move    $t9, $zero       # sad = 0
-    move    $s0, $zero       # u(window_y) = 0
     j       window_loop_x
 left:
-    blt     $t8, $zero, end_outer_loop  # if x < 0, end inner loop
+    blt     $t8, $t3, end_outer_loop  # if x < radius, end inner loop
 
     # Calculate SAD for current position
     move    $t9, $zero       # sad = 0
-    move    $s0, $zero       # u(window_y) = 0
     j       window_loop_x
 up:
-    blt     $t7, $zero, end_outer_loop  # if y < 0, end outer loop
+    move    $t9, $t3       # Radius
+    addi    $t9, $t9, 1    # Radius + 1
+    # ^ this is because when it goes up, the y limit is not 0. It is always one less than the radius
+    blt     $t7, $t9, end_outer_loop  # if y < radius + 1, end outer loop
 
     # Calculate SAD for current position
     move    $t9, $zero       # sad = 0
-    move    $s0, $zero       # u(window_y) = 0
     j       window_loop_x
 reset_direction:
     move    $t6, $zero       # direction = 0
-    sub     $s7, $s7, 1      # radius--
+    addi    $t3, $t3, 1      # radius++
     j       outer_loop
 
 window_loop_y:
-    bge     $s0, $t2, end_window_loop_y  # if u >= k, end window loop y
+    bge     $s0, $t1, end_window_loop_y  # if y >= k, end window loop y
     move    $s1, $zero       # v(window_x) = 0
 window_loop_x:
-    bge     $s1, $t3, end_window_loop_x  # if v >= l, end window loop x
+    bge     $s1, $t2, end_window_loop_x  # if x >= l, end window loop x
 
     # Calculate absolute difference
-    mul     $s2, $s0, $t1    # u * frame width
-    add     $s2, $s2, $t7    # u * frame width + y
-    add     $s2, $s2, $t8    # u * frame width + y + x
+    add     $s2, $s0, $t7    # y(window_y) + y
+    mul     $s2, $s2, $t0    # (y + y(window_y)) * frame width
+    add     $s2, $s2, $t8    # y * frame width + y + x
     lw      $s3, 0($a1)      # frame[u * frame width + y + x]
     add     $s3, $s3, $s2
 
-    mul     $s4, $s0, $t3    # u * window width
+    mul     $s4, $s0, $t2    # u * window width
     add     $s4, $s4, $s1    # u * window width + v
     lw      $s5, 0($a2)      # window[u * window width + v]
     add     $s5, $s5, $s4
@@ -878,7 +885,6 @@ update_min:
     move    $v0, $t7         # min_y = y
     move    $v1, $t8         # min_x = x
 increment:
-    move    $t9, $zero       # sad = 0
     move    $s0, $zero       # u(window_y) = 0
 
     beq     $t6, 0, increment_right    # if direction == 0, go add right
