@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/mares/Downloads/DatapathComponents/DatapathComponents/RegisterFile/RegisterFile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module RegisterFile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/mares/Downloads/DatapathComponents/DatapathComponents/RegisterFile/RegisterFile_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module RegisterFile_tb
