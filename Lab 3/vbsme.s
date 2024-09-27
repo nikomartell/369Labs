@@ -19,7 +19,7 @@
 # $v0 is for row / $v1 is for column
 
 # test 0 For the 4x4 frame size and 2X2 window size
-# small size for validation and debugging purpose
+# small size for validation and debugging purt8se
 # The result should be 0, 2
 asize0:  .word    4,  4,  2, 2    #i, j, k, l
 frame0:  .word    0,  0,  1,  2, 
@@ -662,7 +662,7 @@ main:
     # End of test 14     
    
     lw      $ra, 0($sp)         # Restore return address
-    addi    $sp, $sp, 4         # Restore stack pointer
+    addi    $sp, $sp, 4         # Restore stack t8inter
     jr      $ra                 # Return
 
 ################### Print Result ####################################
@@ -725,7 +725,7 @@ print_result:
 # 0 0 0 0       0 0 0 0 
 # 1 0 0 5       1 0 0 4
 
-# program keeps track of the window position that results 
+# program keeps track of the window t8sition that results 
 # with the minimum sum of absolute difference. 
 # after scannig the whole frame
 # program returns the coordinates of the block with the minimum SAD
@@ -769,7 +769,7 @@ print_result:
 #   1st parameter (a0) address of the first element of the dimension info (address of asize[0])
 #   2nd parameter (a1) address of the first element of the frame array (address of frame[0][0])
 #   3rd parameter (a2) address of the first element of the window array (address of window[0][0])
-# Postconditions:	
+# t8stconditions:	
 #   result (v0) x coordinate of the block in the frame with the minimum SAD
 #          (v1) y coordinate of the block in the frame with the minimum SAD
 
@@ -784,147 +784,146 @@ vbsme:
 
     # Load dimensions
     lw      $t0, 0($a0)      # i (frame height/width)
-    lw      $t1, 8($a0)      # k (window height)
-    lw      $t2, 12($a0)     # l (window width)
+    lw      $t1, 4($a0)      # j (frame width)
+    lw      $t2, 8($a0)      # k (window height)
+    lw      $t3, 12($a0)     # l (window width)
 
-    # Initialize Radius to control spiral collapse
-    move    $t3, $zero     # i / 2 (Creates radius)
-
-    # Initialize minimum SAD to a large value
-    li      $t4, 0x7FFFFFFF  # min_sad
+    move    $t4, $zero      # y = 0
+    move    $t5, $zero      # x = 0
 
     # Initialize coordinates
     li      $v0, 0           # min_y
     li      $v1, 0           # min_x
+    # Initialize Radius to control spiral collapse
+    move    $s7, $zero      # Creates radius
 
+    # Initialize minimum SAD to a large value
+    li      $t6, 0x7FFFFFFF  # min_sad
     
-    srl    $t5, $t0, 1        # set centerX/Y
-    move    $t6, $zero      # set direction
-
-    # Loop over frame
-    move    $t7, $zero      # y = 0
-    move    $t8, $zero      # x = 0
+    srl    $t7, $t0, 1       # set centerX/Y
+    move   $t8, $zero        # set direction
 
 outer_loop:
-    ble     $t3, $t5, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
-    beq     $t6, 0, right    # if direction == 0, go right
-    beq     $t6, 1, down     # if direction == 1, go down
-    beq     $t6, 2, left     # if direction == 2, go left
-    beq     $t6, 3, up       # if direction == 3, go up
-    bge     $t6, 4, reset_direction  # if direction >= 4, reset direction
+    bge     $s7, $t7, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
+    beq     $t8, 0, right    # if direction == 0, go right
+    beq     $t8, 1, down     # if direction == 1, go down
+    beq     $t8, 2, left     # if direction == 2, go left
+    beq     $t8, 3, up       # if direction == 3, go up
+    bge     $t8, 4, reset_direction  # if direction >= 4, reset direction
 
 right:
-    sub     $t9, $t0, $t2   # frame x - window x (set x limit)
-    sub     $t9, $t9, $t3   # limit x - radius
-    bge     $t8, $t9, end_right  # if x >= limit x, end inner loop
+    sub     $t9, $t0, $t3   # frame x - window x (set x limit)
+    sub     $t9, $t9, $s7   # limit x - radius
+    bgt     $t5, $t9, end_right  # if x >= limit x, end inner loop
 
-    # Calculate SAD for current position
+    # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
     j      window_loop_x
 down:
-    sub     $t9, $t0, $t1   # frame y - window y (set y limit)
-    sub     $t9, $t9, $t3   # limit y - radius
-    bge     $t7, $t9, end_down  # if y >= limit y, end outer loop
+    sub     $t9, $t0, $t2   # frame y - window y (set y limit)
+    sub     $t9, $t9, $s7   # limit y - radius
+    bgt     $t4, $t9, end_down  # if y >= limit y, end outer loop
 
     move    $t9, $zero       # sad = 0
     j       window_loop_x
 left:
-    blt     $t8, $t3, end_outer_loop  # if x < radius, end inner loop
+    blt     $t5, $s7, end_outer_loop  # if x < radius, end inner loop
 
-    # Calculate SAD for current position
+    # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
     j       window_loop_x
 up:
-    move    $t9, $t3       # Radius
+    move    $t9, $s7       # Radius
     addi    $t9, $t9, 1    # Radius + 1
     # ^ this is because when it goes up, the y limit is not 0. It is always one less than the radius
-    blt     $t7, $t9, end_outer_loop  # if y < radius + 1, end outer loop
+    blt     $t4, $t9, end_outer_loop  # if y < radius + 1, end outer loop
 
-    # Calculate SAD for current position
+    # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
     j       window_loop_x
 reset_direction:
-    move    $t6, $zero       # direction = 0
-    addi    $t3, $t3, 1      # radius++
+    move    $t8, $zero       # direction = 0
+    addi    $s7, $s7, 1      # radius++
     j       outer_loop
 
 window_loop_y:
-    bge     $s0, $t1, end_window_loop_y  # if y >= k, end window loop y
+    bge     $s0, $t2, end_window_loop_y  # if y >= k, end window loop y
     move    $s1, $zero       # v(window_x) = 0
 window_loop_x:
-    bge     $s1, $t2, end_window_loop_x  # if x >= l, end window loop x
+    bge     $s1, $t3, end_window_loop_x  # if x >= l, end window loop x
 
     # Calculate absolute difference
-    add     $s2, $s0, $t7    # y(window_y) + y
-    mul     $s2, $s2, $t0    # (y + y(window_y)) * frame width
-    add     $s2, $s2, $t8    # y * frame width + y + x
-    lw      $s3, 0($a1)      # frame[u * frame width + y + x]
-    add     $s3, $s3, $s2
+    add     $s2, $s0, $t4    # window_y + y
+    mul     $s2, $s2, $t1    # (window_y + y) * frame width
+    add     $s2, $s2, $t5    # (window_y + y) * frame width + x
+    lw      $s3, 0($a1)      # frame[] address
+    add     $s3, $s3, $s2    # frame[(window_y + y) * frame width + x]   < -- Loads the incorrect value (should be 0, loads 4 instead)
 
-    mul     $s4, $s0, $t2    # u * window width
-    add     $s4, $s4, $s1    # u * window width + v
-    lw      $s5, 0($a2)      # window[u * window width + v]
-    add     $s5, $s5, $s4
+    mul     $s4, $s0, $t3    # window_y * window width
+    add     $s4, $s4, $s1    # window_y * window width + window_x
+    lw      $s5, 0($a2)      # window[] address
+    add     $s5, $s5, $s4    # window[window_y * window width + window_x]
 
     sub     $s6, $s3, $s5    # frame - window
     abs     $s6, $s6         # abs(frame - window)
     add     $t9, $t9, $s6    # sad += abs(frame - window)
 
-    addi    $s1, $s1, 1      # v++
+    addi    $s1, $s1, 1      # window_x++
     j       window_loop_x
 end_window_loop_x:
-    addi    $s0, $s0, 1      # u++
+    addi    $s0, $s0, 1      # window_y++
     j       window_loop_y
 end_window_loop_y:
 
     # Update minimum SAD and coordinates if necessary
-    blt     $t9, $t4, update_min
+    blt     $t9, $t6, update_min    # if sad < min_sad  <-- SAD IS BROKEN
     j       increment
+
 update_min:
-    move    $t4, $t9         # min_sad = sad
-    move    $v0, $t7         # min_y = y
-    move    $v1, $t8         # min_x = x
+    move    $t6, $t9         # min_sad = sad
+    move    $v0, $t4         # min_y = y
+    move    $v1, $t5         # min_x = x
 increment:
     move    $s0, $zero       # u(window_y) = 0
 
-    beq     $t6, 0, increment_right    # if direction == 0, go add right
-    beq     $t6, 1, increment_down     # if direction == 1, go add down
-    beq     $t6, 2, increment_left     # if direction == 2, go add left
-    beq     $t6, 3, increment_up       # if direction == 3, go add up
+    beq     $t8, 0, increment_right    # if direction == 0, go add right
+    beq     $t8, 1, increment_down     # if direction == 1, go add down
+    beq     $t8, 2, increment_left     # if direction == 2, go add left
+    beq     $t8, 3, increment_up       # if direction == 3, go add up
     
 increment_right:
-    addi    $t8, $t8, 1      # x++
+    addi    $t5, $t5, 1      # x++
     j       right
 increment_down:
-    addi    $t7, $t7, 1      # y++
+    addi    $t4, $t4, 1      # y++
     j       down
 increment_left:
-    addi    $t8, $t8, -1      # x--
+    addi    $t5, $t5, -1      # x--
     j       left
 increment_up:
-    addi    $t7, $t7, -1      # y--
+    addi    $t4, $t4, -1      # y--
     j       up
 
 end_right:
-    addi    $t6, $t6, 1      # direction++
-    sub     $t8, $t8, 1      # x-- (puts x back into bounds)
+    addi    $t8, $t8, 1      # direction++
+    sub     $t5, $t5, 1      # x-- (puts x back into bounds)
     j       outer_loop
 end_down:
-    addi    $t6, $t6, 1      # direction++
-    sub     $t7, $t7, 1      # y-- (puts y back into bounds)
+    addi    $t8, $t8, 1      # direction++
+    sub     $t4, $t4, 1      # y-- (puts y back into bounds)
     j       outer_loop
 end_left:
-    addi    $t6, $t6, 1      # direction++
-    add     $t8, $t8, 1      # x++ (puts x back into bounds)
+    addi    $t8, $t8, 1      # direction++
+    add     $t5, $t5, 1      # x++ (puts x back into bounds)
     j       outer_loop
 end_up:
-    addi    $t6, $t6, 1      # direction++
-    add     $t7, $t7, 1      # y++ (puts y back into bounds)
+    addi    $t8, $t8, 1      # direction++
+    add     $t4, $t4, 1      # y++ (puts y back into bounds)
     j       outer_loop
 
 end_outer_loop:
     lw      $ra, 0($sp)     #restore return address
-    addi    $sp, $sp, 4     #restore stack pointer
+    addi    $sp, $sp, 4     #restore stack t8inter
     jr      $ra             #return
 
     
