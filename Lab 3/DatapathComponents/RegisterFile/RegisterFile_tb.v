@@ -42,7 +42,11 @@ module RegisterFile_tb();
 
 	initial begin
 	
-    /* Please fill in the implementation here... */
+        #5 
+        RegWrite <= 1; WriteData <= 12345; WriteRegister <= 7; ReadRegister1 <= 0; ReadRegister2 <= 0;
+        #10 
+        RegWrite <= 0; WriteData <= 23423; WriteRegister <= 9; ReadRegister1 <= 7; ReadRegister2 <= 9;
+        
 	
 	end
 

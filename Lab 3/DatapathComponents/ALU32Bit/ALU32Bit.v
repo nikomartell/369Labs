@@ -32,10 +32,47 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                                 // you need to adjust the bitwidth as needed
 	input [31:0] A, B;	    // inputs
 
-	output [31:0] ALUResult;	// answer
-	output Zero;	    // Zero=1 if ALUResult == 0
+	output reg [31:0] ALUResult;	// answer
+	output reg Zero;	    // Zero=1 if ALUResult == 0
 
-    /* Please fill in the implementation here... */
+    always @(ALUControl, A, B) begin
+        case (ALUControl)
+            0: begin 
+                ALUResult <= A + B;
+            end
+            1: begin 
+                ALUResult <= A - B;
+            end
+            2: begin 
+                ALUResult <= A & B;
+            end
+            3: begin
+                ALUResult <= A | B;
+            end
+            4: begin 
+                ALUResult <= ~(A | B);
+            end
+            5: begin 
+                ALUResult <= A ^ B;
+            end 
+            6: begin 
+                ALUResult <= A << B;
+            end
+            7: begin 
+                ALUResult <= A >> B;
+            end
+        endcase
+    end
+    
+    
+    always @(ALUResult) begin 
+        if (ALUResult == 0) begin 
+            Zero <= 1;
+        end
+        else begin 
+            Zero <= 0;
+        end
+    end
 
 endmodule
 
