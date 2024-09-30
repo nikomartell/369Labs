@@ -30,7 +30,7 @@ module ALU32Bit_tb();
 		B = 32'h00000001;
 	ALUControl = 4'b0000;
 	#10;
-		$display("Add: %h + %h = %h, Zero = %b, A, B, ALUResult, Zero);
+		$display("Add: %h + %h = %h, Zero = %b", A, B, ALUResult, Zero);
    //sub test 
 	 A = 32'h00000003; // 3
         B = 32'h00000001; // 1
