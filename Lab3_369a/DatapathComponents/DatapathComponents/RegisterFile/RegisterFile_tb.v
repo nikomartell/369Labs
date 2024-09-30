@@ -46,7 +46,14 @@ module RegisterFile_tb();
         RegWrite <= 1; WriteData <= 12345; WriteRegister <= 7; ReadRegister1 <= 0; ReadRegister2 <= 0;
         #10 
         RegWrite <= 0; WriteData <= 23423; WriteRegister <= 9; ReadRegister1 <= 7; ReadRegister2 <= 9;
-        
+        #10 
+        RegWrite <= 1; WriteData <= 55432; WriteRegister <= 2; ReadRegister1 <= 7; ReadRegister2 <= 2;
+        #10 
+        RegWrite <= 0; WriteData <= 11111; WriteRegister <= 3; ReadRegister1 <= 2; ReadRegister2 <= 1;
+        #10 
+        RegWrite <= 1; WriteData <= 13213; WriteRegister <= 1; ReadRegister1 <= 1; ReadRegister2 <= 32;
+        #10 
+        RegWrite <= 0; WriteData <= 77777; WriteRegister <= 8; ReadRegister1 <= 7; ReadRegister2 <= 2;
 	
 	end
 

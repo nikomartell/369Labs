@@ -1,7 +1,7 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
-"../../../../../../../../../Downloads/DatapathComponents/DatapathComponents/RegisterFile/RegisterFile.v" \
-"../../../../../../../../../Downloads/DatapathComponents/DatapathComponents/RegisterFile/RegisterFile_tb.v" \
+"../../../../DatapathComponents/DatapathComponents/RegisterFile/RegisterFile.v" \
+"../../../../DatapathComponents/DatapathComponents/RegisterFile/RegisterFile_tb.v" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"

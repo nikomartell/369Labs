@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Mon Sep 30 14:34:54 2024
+# Process ID: 18956
+# Current directory: C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Lab3_369a/Lab3_369a.runs/synth_1
+# Command line: vivado.exe -log RegisterFile.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source RegisterFile.tcl
+# Log file: C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Lab3_369a/Lab3_369a.runs/synth_1/RegisterFile.vds
+# Journal file: C:/Users/mares/OneDrive/Documents/GitHub/369Lab1/Lab3_369a/Lab3_369a.runs/synth_1\vivado.jou
+# Running On        :DESKTOP-UHPRA57
+# Platform          :Windows Server 2016 or Windows 10
+# Operating System  :22631
+# Processor Detail  :Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz
+# CPU Frequency     :1896 MHz
+# CPU Physical cores:4
+# CPU Logical cores :8
+# Host memory       :8502 MB
+# Swap memory       :11274 MB
+# Total Virtual     :19777 MB
+# Available Virtual :3916 MB
+#-----------------------------------------------------------
+source RegisterFile.tcl -notrace

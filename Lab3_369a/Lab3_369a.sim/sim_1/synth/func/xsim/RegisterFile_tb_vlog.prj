@@ -1,0 +1,7 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"RegisterFile_tb_func_synth.v" \
+"../../../../../DatapathComponents/DatapathComponents/RegisterFile/RegisterFile_tb.v" \
+
+# Do not sort compile order
+nosort
