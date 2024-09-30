@@ -495,9 +495,9 @@ main:
          
     # Start test 1 
     ############################################################
-    la      $a0, asize0     # 1st parameter: address of asize1[0]
-    la      $a1, frame0     # 2nd parameter: address of frame1[0]
-    la      $a2, window0    # 3rd parameter: address of window1[0] 
+    la      $a0, asize3     # 1st parameter: address of asize1[0]
+    la      $a1, frame3     # 2nd parameter: address of frame1[0]
+    la      $a2, window3    # 3rd parameter: address of window1[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
@@ -827,7 +827,7 @@ down:
     move    $t9, $zero       # sad = 0
     j       window_loop_y
 left:
-    blt     $t5, $s7, end_outer_loop  # if x < radius, end inner loop
+    blt     $t5, $s7, end_left  # if x < radius, end inner loop
 
     # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
@@ -836,7 +836,7 @@ up:
     move    $t9, $s7       # Radius
     addi    $t9, $t9, 1    # Radius + 1
     # ^ this is because when it goes up, the y limit is not 0. It is always one less than the radius
-    blt     $t4, $t9, end_outer_loop  # if y < radius + 1, end outer loop
+    blt     $t4, $t9, end_up  # if y < radius + 1, end outer loop
 
     # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
