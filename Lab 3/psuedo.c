@@ -23,7 +23,7 @@ int centerY = fy / 2;
 int radius = fx / 2;    // maximum radius is half of the frame size
 int direction = 0;      // 0: right, 1: down, 2: left, 3: up
 
-while (radius <= 0) {
+while (radius >= 0) {
     int x = centerX - radius;   // start from the top left corner of the square
     int y = centerY - radius;   // subtract the radius to get the top left corner of the square
 
