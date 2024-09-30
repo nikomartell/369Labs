@@ -23,8 +23,8 @@
 # The result should be 0, 2
 asize0:  .word    4,  4,  2, 2    #i, j, k, l
 frame0:  .word    0,  0,  1,  2, 
-         .word    0,  0,  3,  4
-         .word    0,  0,  0,  0
+         .word    0,  0,  3,  4,
+         .word    0,  0,  0,  0,
          .word    0,  0,  0,  0, 
 window0: .word    1,  2, 
          .word    3,  4, 
@@ -818,20 +818,20 @@ right:
 
     # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
-    j      window_loop_x
+    j      window_loop_y
 down:
     sub     $t9, $t0, $t2   # frame y - window y (set y limit)
     sub     $t9, $t9, $s7   # limit y - radius
     bgt     $t4, $t9, end_down  # if y >= limit y, end outer loop
 
     move    $t9, $zero       # sad = 0
-    j       window_loop_x
+    j       window_loop_y
 left:
     blt     $t5, $s7, end_outer_loop  # if x < radius, end inner loop
 
     # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
-    j       window_loop_x
+    j       window_loop_y
 up:
     move    $t9, $s7       # Radius
     addi    $t9, $t9, 1    # Radius + 1
@@ -840,7 +840,7 @@ up:
 
     # Calculate SAD for current t8sition
     move    $t9, $zero       # sad = 0
-    j       window_loop_x
+    j       window_loop_y
 reset_direction:
     move    $t8, $zero       # direction = 0
     addi    $s7, $s7, 1      # radius++
@@ -856,13 +856,16 @@ window_loop_x:
     add     $s2, $s0, $t4    # window_y + y
     mul     $s2, $s2, $t1    # (window_y + y) * frame width
     add     $s2, $s2, $t5    # (window_y + y) * frame width + x
-    lw      $s3, 0($a1)      # frame[] address
-    add     $s3, $s3, $s2    # frame[(window_y + y) * frame width + x]   < -- Loads the incorrect value (should be 0, loads 4 instead)
+    add     $s2, $s2, $s1    # (window_y + y) * frame width + x + window_x
+    sll     $s2, $s2, 2      # (window_y + y) * frame width + x + window_x * 4
+    add     $s2, $s2, $a1    # (window_y + y) * frame width + x + frame[] address
+    lw      $s3, 0($s2)      # frame[(window_y + y) * frame width + x]
 
     mul     $s4, $s0, $t3    # window_y * window width
     add     $s4, $s4, $s1    # window_y * window width + window_x
-    lw      $s5, 0($a2)      # window[] address
-    add     $s5, $s5, $s4    # window[window_y * window width + window_x]
+    sll     $s4, $s4, 2      # (window_y * window width + window_x) * 4
+    add     $s4, $s4, $a2    # window_y * window width + window_x + window[] address
+    lw      $s5, 0($s4)      # window[window_y * window width + window_x] address
 
     sub     $s6, $s3, $s5    # frame - window
     abs     $s6, $s6         # abs(frame - window)
@@ -907,18 +910,22 @@ increment_up:
 end_right:
     addi    $t8, $t8, 1      # direction++
     sub     $t5, $t5, 1      # x-- (puts x back into bounds)
+    addi    $t4, $t4, 1      # y++ (increments y to not repeat the same check)
     j       outer_loop
 end_down:
     addi    $t8, $t8, 1      # direction++
     sub     $t4, $t4, 1      # y-- (puts y back into bounds)
+    addi    $t5, $t5, 1      # x-- (increments x to not repeat the same check)
     j       outer_loop
 end_left:
     addi    $t8, $t8, 1      # direction++
     add     $t5, $t5, 1      # x++ (puts x back into bounds)
+    sub     $t4, $t4, 1      # y-- (puts y back into bounds)
     j       outer_loop
 end_up:
     addi    $t8, $t8, 1      # direction++
     add     $t4, $t4, 1      # y++ (puts y back into bounds)
+    addi    $t5, $t5, 1      # x++ (increments x to not repeat the same check)
     j       outer_loop
 
 end_outer_loop:
