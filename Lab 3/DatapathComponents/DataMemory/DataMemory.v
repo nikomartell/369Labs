@@ -45,6 +45,23 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
 
     output reg[31:0] ReadData; // Contents of memory location at Address
 
-    /* Please fill in the implementation here */
+    // Declare the memory array
+    reg [31:0] memory [0:1023];
+
+    always @(posedge Clk) begin
+        // Write operation
+        if (MemWrite) begin
+            memory[Address[11:2]] <= WriteData;
+        end
+    end
+
+    always @(*) begin
+        // Read operation
+        if (MemRead) begin
+            ReadData = memory[Address[11:2]];
+        end else begin
+            ReadData = 32'b0;
+        end
+    end
 
 endmodule

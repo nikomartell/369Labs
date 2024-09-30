@@ -1,6 +1,6 @@
 #  Fall 2024
 #  Team Members:    
-#  % Effort    :   
+#  % Effort    :   Niko Martell 33%, Abril Torres 33%, Sebatian Mares 33%
 #
 # ECE369A,  
 # 
