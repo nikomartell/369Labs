@@ -495,9 +495,9 @@ main:
          
     # Start test 1 
     ############################################################
-    la      $a0, asize3     # 1st parameter: address of asize1[0]
-    la      $a1, frame3     # 2nd parameter: address of frame1[0]
-    la      $a2, window3    # 3rd parameter: address of window1[0] 
+    la      $a0, asize1     # 1st parameter: address of asize1[0]
+    la      $a1, frame1    # 2nd parameter: address of frame1[0]
+    la      $a2, window1    # 3rd parameter: address of window1[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
