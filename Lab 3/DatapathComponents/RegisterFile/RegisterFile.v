@@ -59,7 +59,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
     reg [31:0] RegFile [0:31];
     
     always @(posedge Clk) begin
-        if (RegWrite) begin
+        if (RegWrite && (WriteRegister != 0)) begin
             RegFile[WriteRegister] <= WriteData;
         end
     end
