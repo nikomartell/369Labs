@@ -50,7 +50,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                 ALUResult <= A | B; //or 
             end
             4: begin 
-		    ALUResult <= ~(A | B); //nor 
+		        ALUResult <= ~(A | B); //nor 
             end
             5: begin 
                 ALUResult <= A ^ B; // xor 
@@ -61,18 +61,17 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
             7: begin 
                 ALUResult <= A >> B; //srl
             end
-	    8: begin 
-		ALUResult <= A * B; //multiply 
-	    end 
+	        8: begin 
+		        ALUResult <= A * B; //multiply 
+	        end 
             9: begin
-		ALUResult <= (A < B) ? 1 : 0; //set on less than 
-	    end 
-	/* Just in case
-	    10: begin 
-		    ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
-	    end 
+		        ALUResult <= (A < B) ? 1 : 0; //set on less than 
+	        end 
+	        10: begin 
+		        ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
+	        end 
 	    11: begin 
-			ALUResult <= (A - B =! 0) ? 0 : 1;  //branch if not equal 
+			ALUResult <= (A - B != 0) ? 0 : 1;  //branch if not equal 
    		end 
      		12: begin 
        			ALUResult <= (A > 0) ? 0 : 1; //branch greater than zero 
@@ -83,7 +82,6 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
  		14: begin 
    			ALUResult <= (A < 0) ? 0 : 1; // branch on less than zero 
       end 
-		   */  
 		
         endcase
     end
