@@ -38,33 +38,57 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
     always @(ALUControl, A, B) begin
         case (ALUControl)
             0: begin 
-                ALUResult <= A + B;
+                ALUResult <= A + B; //add
             end
             1: begin 
-                ALUResult <= A - B;
+                ALUResult <= A - B; //sub
             end
             2: begin 
-                ALUResult <= A & B;
+                ALUResult <= A & B; //and
             end
             3: begin
-                ALUResult <= A | B;
+                ALUResult <= A | B; //or 
             end
             4: begin 
-                ALUResult <= ~(A | B);
+		    ALUResult <= ~(A | B); //nor 
             end
             5: begin 
-                ALUResult <= A ^ B;
+                ALUResult <= A ^ B; // xor 
             end 
             6: begin 
-                ALUResult <= A << B;
+                ALUResult <= A << B; //sll
             end
             7: begin 
-                ALUResult <= A >> B;
+                ALUResult <= A >> B; //srl
             end
+	    8: begin 
+		ALUResult <= A * B; //multiply 
+	    end 
+            9: begin
+		ALUResult <= (A < B) ? 1 : 0; //set on less than 
+	    end 
+	/* Just in case
+	    10: begin 
+		    ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
+	    end 
+	    11: begin 
+			ALUResult <= (A - B =! 0) ? 0 : 1;  //branch if not equal 
+   		end 
+     		12: begin 
+       			ALUResult <= (A > 0) ? 0 : 1; //branch greater than zero 
+	  end 
+   		13: begin 
+     			ALUResult <= (A <= 0) ? 0 : 1; //branch less than or equal to zero 
+	end
+ 		14: begin 
+   			ALUResult <= (A < 0) ? 0 : 1; // branch on less than zero 
+      end 
+		   */  
+		
         endcase
     end
     
-    
+    // zero flag for branch signal 
     always @(ALUResult) begin 
         if (ALUResult == 0) begin 
             Zero <= 1;
