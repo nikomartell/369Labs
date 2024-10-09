@@ -709,9 +709,9 @@ print_result:
 # and size of "window" and "frame" arrays are stored under "asize"
 
 # - initially current sum of difference is set to a very large value
-# - move "window" over the "frame" one cell at a time starting with location (0,0)
+# - add "window" over the "frame" one cell at a time starting with location (0,0)
 # - moves are based circular pattern 
-# - for each move, function calculates  the sum of absolute difference (SAD) 
+# - for each add, function calculates  the sum of absolute difference (SAD) 
 #   between the window and the overlat9ing block on the frame.
 # - if the calculated sum of difference is LESS THAN the current sum of difference
 #   then the current sum of difference is updated and the coordinate of the top left corner 
@@ -788,20 +788,20 @@ vbsme:
     lw      $t2, 8($a0)      # k (window height)
     lw      $t3, 12($a0)     # l (window width)
 
-    move    $t4, $zero      # y = 0
-    move    $t5, $zero      # x = 0
+    add    $t4, $zero, $zero      # y = 0
+    add    $t5, $zero, $zero      # x = 0
 
     # Initialize coordinates
     li      $v0, 0           # min_y
     li      $v1, 0           # min_x
     # Initialize Radius to control spiral collapse
-    move    $s7, $zero      # Creates radius
+    add    $s7, $zero, $zero      # Creates radius
 
     # Initialize minimum SAD to a large value
     li      $t6, 0x7FFFFFFF  # min_sad
     
     srl    $t7, $t0, 1       # set centerX/Y
-    move   $t8, $zero        # set direction
+    add   $t8, $zero, $zero        # set direction
 
 outer_loop:
     bge     $s7, $t7, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
@@ -817,38 +817,38 @@ right:
     bgt     $t5, $t9, end_right  # if x >= limit x, end inner loop
 
     # Calculate SAD for current t8sition
-    move    $t9, $zero       # sad = 0
+    add    $t9, $zero, $zero       # sad = 0
     j      window_loop_y
 down:
     sub     $t9, $t0, $t2   # frame y - window y (set y limit)
     sub     $t9, $t9, $s7   # limit y - radius
     bgt     $t4, $t9, end_down  # if y >= limit y, end outer loop
 
-    move    $t9, $zero       # sad = 0
+    add    $t9, $zero, $zero       # sad = 0
     j       window_loop_y
 left:
     blt     $t5, $s7, end_left  # if x < radius, end inner loop
 
     # Calculate SAD for current t8sition
-    move    $t9, $zero       # sad = 0
+    add    $t9, $zero, $zero       # sad = 0
     j       window_loop_y
 up:
-    move    $t9, $s7       # Radius
+    add    $t9, $s7, $zero       # Radius
     addi    $t9, $t9, 1    # Radius + 1
     # ^ this is because when it goes up, the y limit is not 0. It is always one less than the radius
     blt     $t4, $t9, end_up  # if y < radius + 1, end outer loop
 
     # Calculate SAD for current t8sition
-    move    $t9, $zero       # sad = 0
+    add    $t9, $zero, $zero       # sad = 0
     j       window_loop_y
 reset_direction:
-    move    $t8, $zero       # direction = 0
+    add    $t8, $zero, $zero       # direction = 0
     addi    $s7, $s7, 1      # radius++
     j       outer_loop
 
 window_loop_y:
     bge     $s0, $t2, end_window_loop_y  # if y >= k, end window loop y
-    move    $s1, $zero       # v(window_x) = 0
+    add     $s1, $zero, $zero       # v(window_x) = 0
 window_loop_x:
     bge     $s1, $t3, end_window_loop_x  # if x >= l, end window loop x
 
@@ -868,11 +868,20 @@ window_loop_x:
     lw      $s5, 0($s4)      # window[window_y * window width + window_x] address
 
     sub     $s6, $s3, $s5    # frame - window
-    abs     $s6, $s6         # abs(frame - window)
+    blt     $s6, 0, abs     # if frame - window < 0, go to abs
+
     add     $t9, $t9, $s6    # sad += abs(frame - window)
 
     addi    $s1, $s1, 1      # window_x++
     j       window_loop_x
+
+abs:
+    sub     $s6, $zero, $s6  # set to positive
+    add     $t9, $t9, $s6    # sad += abs(frame - window)
+
+    addi    $s1, $s1, 1      # window_x++
+    j       window_loop_x
+
 end_window_loop_x:
     addi    $s0, $s0, 1      # window_y++
     j       window_loop_y
@@ -883,11 +892,11 @@ end_window_loop_y:
     j       increment
 
 update_min:
-    move    $t6, $t9         # min_sad = sad
-    move    $v0, $t4         # min_y = y
-    move    $v1, $t5         # min_x = x
+    add    $t6, $t9, $zero         # min_sad = sad
+    add    $v0, $t4, $zero         # min_y = y
+    add    $v1, $t5, $zero         # min_x = x
 increment:
-    move    $s0, $zero       # u(window_y) = 0
+    add    $s0, $zero, $zero       # u(window_y) = 0
 
     beq     $t8, 0, increment_right    # if direction == 0, go add right
     beq     $t8, 1, increment_down     # if direction == 1, go add down
