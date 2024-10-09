@@ -38,8 +38,7 @@ module ALUController(OpCode, Function,  ALUControl);
                     38: ALUControl <= 5; //xor
                     0: ALUControl <= 6; //sll
                     2: ALUControl <= 7; //srl
-                    
-                
+                    42: ALUControl <= 9; //slt
                 endcase
             end
             8: ALUControl <= 0; //addi
@@ -49,20 +48,17 @@ module ALUController(OpCode, Function,  ALUControl);
             33: ALUControl <= 0; //lh
             32: ALUControl <= 0; //lb
             41: ALUControl <= 0; //sh
+            9: ALUControl <= 10; //bgez
             4: ALUControl <= 1; //beq
-            5: ALUControl <= 1; //bne
-            7: ALUControl <= 1; //bgtz
-            6: ALUControl <= 1; //blez
+            5: ALUControl <= 11; //bne
+            7: ALUControl <= 12; //bgtz
+            6: ALUControl <= 13; //blez
+            11: ALUControl <= 14; //bltz
             12: ALUControl <= 2; //andi
             13: ALUControl <= 3; //ori
             14: ALUControl <= 5; //xori
-            
-            
-            
-    
-    
+            10: ALUControl <= 9; //slti
         endcase
     end
-
 
 endmodule
