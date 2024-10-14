@@ -56,10 +56,10 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                 ALUResult <= A ^ B; // xor 
             end 
             6: begin 
-                ALUResult <= A << B << shamt; //sll
+                ALUResult <= A << B; //sll B is SHAMT
             end
             7: begin 
-                ALUResult <= A >> B >> shamt; //srl
+                ALUResult <= A >> B; //srl B is SHAMT
             end
 	        8: begin 
 		        ALUResult <= A * B; //multiply 
@@ -67,6 +67,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
             9: begin
 		        ALUResult <= (A < B) ? 1 : 0; //set on less than 
 	        end 
+	        /*
 	        10: begin 
 		        ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
 	        end 
@@ -81,11 +82,10 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	end
  		14: begin 
    			ALUResult <= (A < 0) ? 0 : 1; // branch on less than zero 
-      end 
+      end */
 		
         endcase
     end
-    
     // zero flag for branch signal 
     always @(ALUResult) begin 
         if (ALUResult == 0) begin 
@@ -95,6 +95,5 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
             Zero <= 0;
         end
     end
-
 endmodule
 
