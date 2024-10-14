@@ -30,11 +30,11 @@ always @(posedge clk or posedge reset) begin
         alu_result_out <= 32'b0;
         read_data2_out <= 32'b0;
         instruction_mux_out <= 5'b0;
-        ex_PCSrc <= 1'b0;
-        ex_memRead <= 1'b0;
-        ex_memWrite <= 1'b0;
-        ex_MemtoReg <= 1'b0;
-        ex_RegWrite <= 1'b0;
+        PCSrc_out <= 1'b0;
+        memRead_out <= 1'b0;
+        memWrite_out <= 1'b0;
+        MemtoReg_out <= 1'b0;
+        RegWrite_out <= 1'b0;
     end else begin
         add_result_out <= add_result;
         alu_zero_out <= alu_zero;
