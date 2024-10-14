@@ -56,10 +56,10 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                 ALUResult <= A ^ B; // xor 
             end 
             6: begin 
-                ALUResult <= A << B << shamt; //sll
+                ALUResult <= A << B; //sll B is SHAMT
             end
             7: begin 
-                ALUResult <= A >> B >> shamt; //srl
+                ALUResult <= A >> B; //srl B is SHAMT
             end
 	        8: begin 
 		        ALUResult <= A * B; //multiply 
