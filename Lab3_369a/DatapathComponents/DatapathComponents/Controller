@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Abril Torres
 // 
 // Create Date: 10/10/2024 05:14:47 PM
 // Design Name: 
@@ -15,7 +15,7 @@
 // 
 // Revision:
 // Revision 0.01 - File Created
-// Additional Comments: working on branches and some other missing instructions 
+// Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -155,17 +155,71 @@ module Controller(
                 Jump <= 0;
              end 
              //BGEZ
-             
+             6'b000001: begin 
+             RegWrite <= 0; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 1;
+                Jump <= 0;
+             end 
              //BEQ
-             
+             6'b000100: begin
+                RegWrite <= 0; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 1;
+                Jump <= 0;
+             end
              //BNE 
-             
+             6'b000101: begin
+             RegWrite <= 0; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 1;
+                Jump <= 0;
+             end 
              //BGTZ
-             
+             6'b000001: begin
+             RegWrite <= 0; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 1;
+                Jump <= 0;
+             end 
              //BLEZ
-             
-             //BLTZ
-             
+             6'b000110: begin
+             RegWrite <= 0; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 1;
+                Jump <= 0;
+             end 
+             //BLTZ - same Op code as bgez - need to solve issue 
+             6'b000001: begin
+             RegWrite <= 0; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 1;
+                Jump <= 0;
+             end 
              //J 
              6'b000010: begin
                 RegWrite <= 0; 
@@ -233,21 +287,75 @@ module Controller(
                 Jump <= 0;
              end 
              
+             //This is wrong - haven't decided what to make them :p
+             
              //ORI
-             
+             6'b001101: begin 
+                RegWrite <= 1; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 1;
+                Branch <= 0;
+                Jump <= 0;
+                end
              //XORI 
-             
+             6'b001110: begin
+                RegWrite <= 1; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 1;
+                Branch <= 0;
+                Jump <= 0;
+                end
              //SLL
-             
+             6'b000000: begin 
+                RegWrite <= 1; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 1;
+                Branch <= 0;
+                Jump <= 0;
+                end
              //SRL
-             
+             6'b000010: begin 
+                RegWrite <= 1; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 1;
+                Branch <= 0;
+                Jump <= 0;
+                end
              //SLT
-             
+             6'b101010: begin 
+                RegWrite <= 1; 
+                RegDst <= 0;
+                ALUSrc <= 0;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 0;
+                Jump <= 0;
+                end
              //SLTI
-          
-        
-        
-        
+             6'b001010: begin 
+                RegWrite <= 1; 
+                RegDst <= 0;
+                ALUSrc <= 1;
+                MemWrite <= 0; 
+                MemRead <= 0;
+                MemToReg <= 0;
+                Branch <= 0;
+                Jump <= 0;
+                end
+                
         endcase     
       end   
 endmodule
