@@ -75,8 +75,15 @@ module ALU32Bit_tb();
         ALUControl = 4'b0111; // ALU Right Shift
         #10;
         $display("Right Shift: %h >> %d = %h, Zero = %b", A, B, ALUResult, Zero);
-			 
-$finish;
+        
+// Mult test
+        A = 32'h00000002; // 2
+        B = 32'h00000003; // 3
+        ALUControl = 4'b1000; // ALU Multiply
+        #10;
+        $display("Mult: %h * %h = %h, Zero = %b", A, B, ALUResult, Zero);
+
+        $finish;
 	
 	end
 
