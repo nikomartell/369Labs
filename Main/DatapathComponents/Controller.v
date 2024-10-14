@@ -293,7 +293,7 @@ module Controller(
              6'b001101: begin 
                 RegWrite <= 1; 
                 RegDst <= 0;
-                ALUSrc <= 0;
+                ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
@@ -304,7 +304,7 @@ module Controller(
              6'b001110: begin
                 RegWrite <= 1; 
                 RegDst <= 0;
-                ALUSrc <= 0;
+                ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
@@ -314,7 +314,7 @@ module Controller(
              //SLL
              6'b000000: begin 
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -325,7 +325,7 @@ module Controller(
              //SRL
              6'b000010: begin 
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -336,11 +336,11 @@ module Controller(
              //SLT
              6'b101010: begin 
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 0;
-                MemToReg <= 0;
+                MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
                 end
@@ -351,7 +351,7 @@ module Controller(
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
-                MemToReg <= 0;
+                MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
                 end
