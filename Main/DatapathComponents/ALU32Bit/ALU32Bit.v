@@ -67,7 +67,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
             9: begin
 		        ALUResult <= (A < B) ? 1 : 0; //set on less than 
 	        end 
-	        10: begin 
+	        /* 10: begin 
 		        ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
 	        end 
 	    11: begin 
@@ -81,7 +81,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	end
  		14: begin 
    			ALUResult <= (A < 0) ? 0 : 1; // branch on less than zero 
-      end 
+      end */
 		
         endcase
     end
