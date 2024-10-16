@@ -60,7 +60,6 @@ module Top();
     
     
     Mux32Bit3To1 PCSrcMux(PCip, PCPlus4, PCBranch, if_idIMop[25:0], PCSrc);
-    //Mux32Bit2To1 PCSrcMux(PCip, PCBranch, PCPlus4, PCSrc);
     ProgramCounter PC(PCip, PCop, Rst, Clk);
     Adder PCplus4(4, PCop, PCPlus4);
     InstructionMemory IM(IMip, IMop);

@@ -7,7 +7,7 @@ module id_ex (
     input [4:0] rd,
     input [4:0] rt,
     input ALUsrc,
-    input [1:0] ALUop,
+    input [5:0] ALUop,
     input RegDst,
     input PCSrc,
     input memRead,
@@ -37,7 +37,7 @@ always @(posedge clk or posedge reset) begin
         rd_out <= 5'b0;
         rt_out <= 5'b0;
         ALUsrc_out <= 1'b0;
-        ALUop_out <= 2'b0;
+        ALUop_out <= 6'b0;
         RegDst_out <= 1'b0;
         PCSrc_out <= 1'b0;
         memRead_out <= 1'b0;
