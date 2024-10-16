@@ -22,12 +22,15 @@
 
 module Controller(
     input [31:0] Instruction,
+    input beq, 
+    input blt, 
+    input bgt,
     output reg RegWrite,
     output reg ALUSrc,
     output reg RegDst,
     output reg MemWrite,
     output reg MemRead,
-    output reg Branch,
+    //output reg Branch,
     output reg MemToReg,
     output reg Jump
     ); 
@@ -40,7 +43,7 @@ module Controller(
     MemWrite <= 0;
     MemRead <= 0;
     MemToReg <= 0;
-    Branch <= 0;
+    //Branch <= 0;
     Jump <= 0;
     
     case (Instruction[31:26])
@@ -63,7 +66,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
             end
             //ANDI
@@ -74,7 +77,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
             end
             // ADDI
@@ -85,7 +88,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
             end
             //LW 
@@ -96,7 +99,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 1;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
             end
             //SW 
@@ -107,7 +110,7 @@ module Controller(
                 MemWrite <= 1; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
             end
             //SB
@@ -118,7 +121,7 @@ module Controller(
                 MemWrite <= 1; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
             end
             //LH 
@@ -129,7 +132,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 1;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
              end 
              //LB 
@@ -140,7 +143,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 1;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
              end 
              //SH 
@@ -151,7 +154,7 @@ module Controller(
                 MemWrite <= 1; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
              end 
              //BGEZ
@@ -162,7 +165,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                //Branch <= 1;
                 Jump <= 0;
              end 
              //BEQ
@@ -173,7 +176,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                //Branch <= 1;
                 Jump <= 0;
              end
              //BNE 
@@ -184,7 +187,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                //Branch <= 1;
                 Jump <= 0;
              end 
              //BGTZ
@@ -195,7 +198,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                //Branch <= 1;
                 Jump <= 0;
              end 
              //BLEZ
@@ -206,7 +209,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                //Branch <= 1;
                 Jump <= 0;
              end 
              //BLTZ - same Op code as bgez - need to solve issue 
@@ -217,7 +220,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                //Branch <= 1;
                 Jump <= 0;
              end 
              //J 
@@ -228,7 +231,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 1;
              end 
              //JR 
@@ -239,7 +242,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 1;
              end 
              //JAL 
@@ -250,7 +253,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 1;
              end 
              //OR 
@@ -261,7 +264,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
              end 
              //NOR 
@@ -272,7 +275,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
              end 
              //XOR 
@@ -283,7 +286,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
              end 
              
@@ -297,7 +300,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
                 end
              //XORI 
@@ -308,7 +311,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
                 end
              //SLL
@@ -319,7 +322,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
                 end
              //SRL
@@ -330,7 +333,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
                 end
              //SLT
@@ -341,7 +344,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
                 end
              //SLTI
@@ -352,7 +355,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 1;
-                Branch <= 0;
+                //Branch <= 0;
                 Jump <= 0;
                 end
                 
