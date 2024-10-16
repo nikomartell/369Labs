@@ -49,17 +49,24 @@ module Top();
     wire [5:0] id_exALUOP; //this line does not exist from the idex register nor is it in the controller
     wire [31:0] ALUSrcOp;
     wire [31:0] ALUResult;
+    wire [31:0] ex_memALUResult;
+    wire [31:0] ex_memReadData2;
     wire zero;
+    wire ex_memPCSrc, ex_memMemRead, ex_memMemWrite, ex_memMemToReg, ex_memRegWrite;
+    wire [31:0] DataMemOp;
+    wire [31:0] mem_wbALUResult;
+    wire [31:0] mem_wbDataMemop;
+    wire mem_wbMemToReg, mem_wbRegWrite;
     
     
     
     Mux32Bit2To1 PCSrcMux(PCip, PCBranch, PCPlus4, PCSrc);
-    ProgramCountrer PC(PCip, PCop, Rst, Clk);
+    ProgramCounter PC(PCip, PCop, Rst, Clk);
     Adder PCplus4(4, PCop, PCPlus4);
     InstructionMemory IM(IMip, IMop);
     if_id ifid(Clk, Rst, PCPlus4, IMop, if_idPCPlus4, if_idIMop);
     
-    RegisterFile RegFile(if_idIMop[25:21], if_idIMop[20:16], mem_wbRegDstop, WriteDataip, Clk, ReadData1, ReadData2);
+    RegisterFile RegFile(if_idIMop[25:21], if_idIMop[20:16], mem_wbRegDstop, WriteDataip, mem_wbRegWrite, Clk, ReadData1, ReadData2);
     SignExtension SgnExt(if_idIMop[15:0], SgnExtop);
     Adder PCBrnch(if_idPCPlus4, SgnExtop << 2);
     Comparator Comp(ReadData1, ReadData2, beq, blt, bgt);
@@ -75,8 +82,13 @@ module Top();
     ALUController ALUCntlr(id_exALUOP, id_exSgnExtop[5:0], ALUControl);
     Mux32Bit2To1 ALUSrcMux(ALUSrcOp, id_exSgnExtop, id_exReadData2, id_exALUSrc);
     ALU32Bit ALU(ALUControl, id_exReadData1, ALUSrcOp, ALUResult, zero);
-    
-    
+    ex_mem exmem(Clk, Rst, ALUResult, id_exReadData2, RegDstOp, id_exPCSrc, id_exMemRead, id_exMemWrite, id_exMemToReg, id_exRegWrite,
+                    ex_memALUResult, ex_memReadData2, ex_memRegDstop, ex_memPCSrc, ex_memMemRead, ex_memMemWrite, ex_memMemToReg, ex_memRegWrite);
+                    
+    DataMemory DataMem(ex_memALUResult, ex_memReadData2, Clk, ex_memMemWrite, ex_memMemRead, DataMemOp);
+    mem_wb memwb(Clk, Rst, ex_memALUResult, DataMemOp, ex_memRegDstop, ex_memMemToReg, ex_memRegWrite, 
+                    mem_wbALUResult, mem_wbDataMemop, mem_wbRegDstop, mem_wbMemToReg, mem_wbRegWrite);
+    Mux32Bit2To1 MemToRegMux(WriteDataip, mem_wbALUResult, mem_wbDataMemop, mem_wbMemToReg);
     
     
 endmodule

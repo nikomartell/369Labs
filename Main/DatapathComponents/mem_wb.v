@@ -7,7 +7,7 @@ module mem_wb (
     input wire MemtoReg,
     input wire RegWrite,
     output reg [31:0] alu_out_wb,
-    output reg [31:0] mem_read_out,
+    output reg [31:0] mem_read_out, 
     output reg [4:0] RegDst_out,
     output reg MemtoReg_out,
     output reg RegWrite_out

@@ -1,18 +1,18 @@
 module ex_mem (
     input clk,
     input reset,
-    input [31:0] add_result,
-    input alu_zero,
+    //input [31:0] add_result,  not needed as branch moved to decode phase
+    //input alu_zero,    zero not needed as branch moved to decode phase
     input [31:0] alu_result,
     input [31:0] read_data2,
-    input [4:0] instruction_mux,
+    input [4:0] instruction_mux, 
     input PCSrc,
     input memRead,
     input memWrite,
     input MemtoReg,
     input RegWrite,
-    output reg [31:0] add_result_out,
-    output reg alu_zero_out,
+    //output reg [31:0] add_result_out,
+    //output reg alu_zero_out,
     output reg [31:0] alu_result_out,
     output reg [31:0] read_data2_out,
     output reg [4:0] instruction_mux_out,
@@ -25,8 +25,8 @@ module ex_mem (
 
 always @(posedge clk or posedge reset) begin
     if (reset) begin
-        add_result_out <= 32'b0;
-        alu_zero_out <= 1'b0;
+        //add_result_out <= 32'b0;
+        //alu_zero_out <= 1'b0;
         alu_result_out <= 32'b0;
         read_data2_out <= 32'b0;
         instruction_mux_out <= 5'b0;
@@ -36,8 +36,8 @@ always @(posedge clk or posedge reset) begin
         MemtoReg_out <= 1'b0;
         RegWrite_out <= 1'b0;
     end else begin
-        add_result_out <= add_result;
-        alu_zero_out <= alu_zero;
+        //add_result_out <= add_result;
+        //alu_zero_out <= alu_zero;
         alu_result_out <= alu_result;
         read_data2_out <= read_data2;
         instruction_mux_out <= instruction_mux;
