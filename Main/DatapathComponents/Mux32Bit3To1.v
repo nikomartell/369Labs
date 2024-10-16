@@ -14,5 +14,6 @@ module Mux32Bit3To1(out, inA, inB, inC, sel);
         2'b10: out = inC;  // Select inC
         default: out = 32'b0; // Default case
     endcase
+    end
 
 endmodule
