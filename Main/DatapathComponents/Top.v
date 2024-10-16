@@ -21,6 +21,18 @@
 
 
 module Top();
+    reg Clk, Rst;
+    wire [31:0] PCPlus4;
+    wire [31:0] PCBranch;
+    wire [31:0] PCip;
+    wire [31:0] IMip;
+    wire PCSrc;
+    
+    
+    
+    Mux32Bit2To1 PCSrcMux(PCip, PCBranch, PCPlus4, PCSrc);
+    ProgramCountrer PC(PCip, IMip, Rst, Clk);
+    
     
     
 endmodule
