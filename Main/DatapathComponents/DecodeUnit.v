@@ -22,5 +22,3 @@ always @(*) begin
 end
 
 endmodule
-
-endmodule
