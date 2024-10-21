@@ -31,6 +31,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	input [3:0] ALUControl; // control bits for ALU operation
                                 // you need to adjust the bitwidth as needed
 	input [31:0] A, B;	    // inputs
+	input [4:0] Shamt;
 
 	output reg [31:0] ALUResult;	// answer
 	output reg Zero;	    // Zero=1 if ALUResult == 0
@@ -56,10 +57,10 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                 ALUResult <= A ^ B; // xor 
             end 
             6: begin 
-                ALUResult <= A << B; //sll B is SHAMT
+		    ALUResult <= B << (Shamt); //sll B is SHAMT
             end
             7: begin 
-                ALUResult <= A >> B; //srl B is SHAMT
+		    ALUResult <= B >> (Shamt); //srl B is SHAMT
             end
 	        8: begin 
 		        ALUResult <= A * B; //multiply 
