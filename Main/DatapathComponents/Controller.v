@@ -22,7 +22,7 @@
 
 module Controller(
     input [5:0] OPCode,
-    input [5:0] Func, 
+    input [5:0] Function, 
     input beq, 
     input blt, 
     input bgt,
@@ -62,7 +62,7 @@ module Controller(
     case (OPCode)
             //R-type, JR, SLL, SRL 
             6'b000000: begin 
-            case(Func)
+                case(Function)
             //JR 
              6'b001000: begin
                 ALUOp <= 2;
