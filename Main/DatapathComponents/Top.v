@@ -57,6 +57,7 @@ module Top();
     wire [31:0] mem_wbALUResult;
     wire [31:0] mem_wbDataMemop;
     wire mem_wbMemToReg, mem_wbRegWrite;
+    wire [4:0] Shamt;
     
     
     Mux32Bit3To1 PCSrcMux(PCip, PCPlus4, PCBranch, if_idIMop[25:0], PCSrc);
@@ -71,14 +72,14 @@ module Top();
     Adder PCBrnch(if_idPCPlus4, SgnExtop << 2);
     Comparator Comp(ReadData1, ReadData2, beq, blt, bgt);
     Controller Cntlr(if_idIMop, beq, blt, bgt, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump);
-    id_ex idex(Clk, Rst, ReadData1, ReadData2, SgnExtop, if_idIMop[15:11], if_idIMop[20:16], ALUSrc, if_idIMop[31:26], RegDst, PCSrc, MemRead, MemWrite, MemToReg, RegWrite, 
-                id_exReadData1, id_exReadData2, id_exSgnExtop, id_exRd, id_exRt, id_exALUSrc, id_exALUop, id_exRegDst, id_exPCSrc, id_exMemRead, id_exMemWrite, id_exMemToReg, id_exRegWrite);
+    id_ex idex(Clk, Rst, ReadData1, ReadData2, SgnExtop, if_idIMop[15:11], if_idIMop[20:16], ALUSrc, if_idIMop[31:26], RegDst, PCSrc, MemRead, MemWrite, MemToReg, RegWrite, if_idIMop[10:6],
+                id_exReadData1, id_exReadData2, id_exSgnExtop, id_exRd, id_exRt, id_exALUSrc, id_exALUop, id_exRegDst, id_exPCSrc, id_exMemRead, id_exMemWrite, id_exMemToReg, id_exRegWrite, Shamt);
     
     
     Mux32Bit2To1 RegDstMux(RegDstop, id_exRd, id_exRt, id_exRegDst); 
     ALUController ALUCntlr(id_exALUOP, id_exSgnExtop[5:0], ALUControl);
     Mux32Bit2To1 ALUSrcMux(ALUSrcOp, id_exSgnExtop, id_exReadData2, id_exALUSrc);
-    ALU32Bit ALU(ALUControl, id_exReadData1, ALUSrcOp, ALUResult, zero);
+    ALU32Bit ALU(ALUControl, id_exReadData1, ALUSrcOp, Shamt, ALUResult, zero);
     ex_mem exmem(Clk, Rst, ALUResult, id_exReadData2, RegDstOp, id_exPCSrc, id_exMemRead, id_exMemWrite, id_exMemToReg, id_exRegWrite,
                     ex_memALUResult, ex_memReadData2, ex_memRegDstop, ex_memPCSrc, ex_memMemRead, ex_memMemWrite, ex_memMemToReg, ex_memRegWrite);
                     

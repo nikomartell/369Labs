@@ -14,6 +14,7 @@ module id_ex (
     input memWrite,
     input MemtoReg,
     input RegWrite,
+    input Shamt,
     output reg [31:0] reg_data1_out,
     output reg [31:0] reg_data2_out,
     output reg [31:0] sign_ext_offset_out,
@@ -26,7 +27,8 @@ module id_ex (
     output reg memRead_out,
     output reg memWrite_out,
     output reg MemtoReg_out,
-    output reg RegWrite_out
+    output reg RegWrite_out,
+    output reg Shamt_out
 );
 
 always @(posedge clk or posedge reset) begin
@@ -44,6 +46,7 @@ always @(posedge clk or posedge reset) begin
         memWrite_out <= 1'b0;
         MemtoReg_out <= 1'b0;
         RegWrite_out <= 1'b0;
+        Shamt_out <= 1'b0;
     end else begin
         reg_data1_out <= reg_data1;
         reg_data2_out <= reg_data2;
@@ -58,6 +61,7 @@ always @(posedge clk or posedge reset) begin
         memWrite_out <= memWrite;
         MemtoReg_out <= MemtoReg;
         RegWrite_out <= RegWrite;
+        Shamt_out <= Shamt;
     end
 end
 
