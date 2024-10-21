@@ -35,9 +35,9 @@ module ALUController(OpCode, Function,  ALUControl);
                     6'b100101: ALUControl <= 3; //or
                     6'b100111: ALUControl <= 4; //nor
                     6'b100110: ALUControl <= 5; //xor
-                    32: ALUControl <= 0; //add
-                    34: ALUControl <= 1; //sub
-                    36: ALUControl <= 2; //and
+                    6'b100000: ALUControl <= 0; //add
+                    6'b100010: ALUControl <= 1; //sub
+                    6'b100100: ALUControl <= 2; //and
                 endcase
             end
             6'b011100: ALUControl <= 8; //mul
