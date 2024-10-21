@@ -49,7 +49,7 @@ module Controller(
     //Jump <= 0;
     
     case (Instruction[31:26])
-            //R/type instructions: ADD, SUB, AND 
+            //R/type instructions: ADD, SUB, AND, SRL, SLL, SLT, OR, NOR, XOR
             6'b000000: begin 
                 RegWrite <= 1; 
                 RegDst <= 1;
@@ -336,6 +336,7 @@ module Controller(
                 //Branch <= 0;
                 //Jump <= 0;
                 end
+             //Needs to check the function line as these are R type functions
              //SLL
              6'b000000: begin 
                 RegWrite <= 1; 

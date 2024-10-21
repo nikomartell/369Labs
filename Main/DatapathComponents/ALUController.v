@@ -27,37 +27,37 @@ module ALUController(OpCode, Function,  ALUControl);
     
     always @(OpCode, Function) begin
         case (OpCode)
-            0: begin
+            6'b000000: begin
                 case (Function)
+                    6'b000000: ALUControl <= 6; //sll
+                    6'b000010: ALUControl <= 7; //srl
+                    6'b101010: ALUControl <= 9; //slt
+                    6'b100101: ALUControl <= 3; //or
+                    6'b100111: ALUControl <= 4; //nor
+                    6'b100110: ALUControl <= 5; //xor
                     32: ALUControl <= 0; //add
                     34: ALUControl <= 1; //sub
-                    24: ALUControl <= 8; //mul
                     36: ALUControl <= 2; //and
-                    37: ALUControl <= 3; //or
-                    39: ALUControl <= 4; //nor
-                    38: ALUControl <= 5; //xor
-                    0: ALUControl <= 6; //sll
-                    2: ALUControl <= 7; //srl
-                    42: ALUControl <= 9; //slt
                 endcase
             end
-            8: ALUControl <= 0; //addi
-            35: ALUControl <= 0; //lw
-            43: ALUControl <= 0; //sw
-            40: ALUControl <= 0; //sb
-            33: ALUControl <= 0; //lh
-            32: ALUControl <= 0; //lb
-            41: ALUControl <= 0; //sh
-            9: ALUControl <= 10; //bgez
-            4: ALUControl <= 1; //beq
-            5: ALUControl <= 11; //bne
-            7: ALUControl <= 12; //bgtz
-            6: ALUControl <= 13; //blez
-            11: ALUControl <= 14; //bltz
-            12: ALUControl <= 2; //andi
-            13: ALUControl <= 3; //ori
-            14: ALUControl <= 5; //xori
-            10: ALUControl <= 9; //slti
+            6'b011100: ALUControl <= 8; //mul
+            6'b001100: ALUControl <= 2; //andi
+            6'b001000: ALUControl <= 0; //addi
+            6'b100011: ALUControl <= 0; //lw
+            6'b101011: ALUControl <= 0; //sw
+            6'b101000: ALUControl <= 0; //sb
+            6'b100001: ALUControl <= 0; //lh
+            6'b100000: ALUControl <= 0; //lb
+            6'b101001: ALUControl <= 0; //sh
+            6'b001101: ALUControl <= 3; //ori
+            6'b001110: ALUControl <= 5; //xori
+            6'b001010: ALUControl <= 9; //slti
+            //9: ALUControl <= 10; //bgez
+            //4: ALUControl <= 1; //beq
+            //5: ALUControl <= 11; //bne
+            //7: ALUControl <= 12; //bgtz
+            //6: ALUControl <= 13; //blez
+            //11: ALUControl <= 14; //bltz
         endcase
     end
 
