@@ -33,7 +33,7 @@ module Controller(
     output reg MemWrite,
     output reg MemRead,
     output reg Branch,
-    output reg MemToReg, //this is a 2x1 mux
+    output reg [1:0] MemToReg, //this is a 2x1 mux
     output reg Jump,
     output reg [1:0] StoreType, //this is a 3x1 mux
     output reg [1:0] LoadType,  //this is a 3x1 mux
