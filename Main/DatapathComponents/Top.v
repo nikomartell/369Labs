@@ -58,6 +58,8 @@ module Top();
     wire [31:0] mem_wbDataMemop;
     wire mem_wbMemToReg, mem_wbRegWrite;
     wire [4:0] Shamt;
+    wire [5:0] ex_memOpCode;
+    wire [31:0] Decode_out;
     
     
     Mux32Bit3To1 PCSrcMux(PCip, PCPlus4, PCBranch, if_idIMop[25:0], PCSrc);
@@ -80,12 +82,14 @@ module Top();
     ALUController ALUCntlr(id_exALUOP, id_exSgnExtop[5:0], ALUControl);
     Mux32Bit2To1 ALUSrcMux(ALUSrcOp, id_exSgnExtop, id_exReadData2, id_exALUSrc);
     ALU32Bit ALU(ALUControl, id_exReadData1, ALUSrcOp, Shamt, ALUResult, zero);
-    ex_mem exmem(Clk, Rst, ALUResult, id_exReadData2, RegDstOp, id_exPCSrc, id_exMemRead, id_exMemWrite, id_exMemToReg, id_exRegWrite,
-                    ex_memALUResult, ex_memReadData2, ex_memRegDstop, ex_memPCSrc, ex_memMemRead, ex_memMemWrite, ex_memMemToReg, ex_memRegWrite);
+    ex_mem exmem(Clk, Rst, ALUResult, id_exReadData2, RegDstOp, id_exPCSrc, id_exMemRead, id_exMemWrite, id_exMemToReg, id_exRegWrite, id_exALUOP,
+                    ex_memALUResult, ex_memReadData2, ex_memRegDstop, ex_memPCSrc, ex_memMemRead, ex_memMemWrite, ex_memMemToReg, ex_memRegWrite, ex_memOpCode);
                     
-    DataMemory DataMem(ex_memALUResult, ex_memReadData2, Clk, ex_memMemWrite, ex_memMemRead, DataMemOp);
+    DataMemory DataMem(ex_memALUResult, Decode_out, Clk, ex_memMemWrite, ex_memMemRead, DataMemOp);
+    DecodeUnit Decode(DataMemOp, ex_memReadData2, ex_memOpCode, ex_memALUResult[1:0], Decode_out);
     mem_wb memwb(Clk, Rst, ex_memALUResult, DataMemOp, ex_memRegDstop, ex_memMemToReg, ex_memRegWrite, 
                     mem_wbALUResult, mem_wbDataMemop, mem_wbRegDstop, mem_wbMemToReg, mem_wbRegWrite);
+                    
     Mux32Bit2To1 MemToRegMux(WriteDataip, mem_wbALUResult, mem_wbDataMemop, mem_wbMemToReg);
     
     

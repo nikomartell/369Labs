@@ -11,6 +11,7 @@ module ex_mem (
     input memWrite,
     input MemtoReg,
     input RegWrite,
+    input [5:0] ALUop,
     //output reg [31:0] add_result_out,
     //output reg alu_zero_out,
     output reg [31:0] alu_result_out,
@@ -20,7 +21,8 @@ module ex_mem (
     output reg memRead_out,
     output reg memWrite_out,
     output reg MemtoReg_out,
-    output reg RegWrite_out
+    output reg RegWrite_out,
+    output reg [5:0] ALUop_out
 );
 
 always @(posedge clk or posedge reset) begin
@@ -35,6 +37,7 @@ always @(posedge clk or posedge reset) begin
         memWrite_out <= 1'b0;
         MemtoReg_out <= 1'b0;
         RegWrite_out <= 1'b0;
+        ALUop_out <= 1'b0;
     end else begin
         //add_result_out <= add_result;
         //alu_zero_out <= alu_zero;
@@ -46,6 +49,7 @@ always @(posedge clk or posedge reset) begin
         memWrite_out <= memWrite;
         MemtoReg_out <= MemtoReg;
         RegWrite_out <= RegWrite;
+        ALUop <= ALUop_out;
     end
 end
 endmodule
