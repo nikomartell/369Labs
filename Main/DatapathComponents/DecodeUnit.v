@@ -6,19 +6,12 @@ module DecodeUnit (
 
 always @(*) begin
 
-    // Extract fields from ReadData
-    opcode = ReadData[6:0];
-    base = ReadData[25:21];
-    rt = ReadData[20:16];
-    offset = ReadData[15:0];
+    // Still need the seperate values for opcode and base
 
-    // Sign-extend the offset to 32 bits
-    imm = {{16{offset[15]}}, offset};
-
-    // Set the decode result based on the opcode and immediate value
+    // Set the decode result based on the opcode and base
     case (opcode)
         7'b1100011: // Branch instructions
-            decode_result = imm;
+            decode_result = base;
         default:
             decode_result = 32'b0; // Default case
     endcase
