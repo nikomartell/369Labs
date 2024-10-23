@@ -1,0 +1,142 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/14/2024 02:16:30 PM
+// Design Name: 
+// Module Name: MemoryAccessStage
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module MemoryAccessStage(
+    // Inputs
+    // Clk
+    input Clk,
+    
+    // Control Signals
+    input Branch,
+    input MemWrite,
+    input MemRead,
+    input [1:0] MemtoReg_in,
+    input RegWrite_in,
+    input [1:0] LoadType,
+    input [1:0] StoreType,
+    
+    input [31:0] ReadData2,
+    input [31:0] BranchTarget_in,
+    input [31:0] ALUResult_in,
+    input [4:0] RegisterDestination_in,
+    input ZeroSignal,
+    input [31:0] PCAdder4_in,
+    
+    // Outputs
+    // Control Signals
+    output [1:0] MemtoReg_out,
+    output RegWrite_out,
+    output PCSrc,
+    
+    output [4:0] RegisterDestination_out,
+    output [31:0] ReadDataMemory,
+    output [31:0] ALUResult_out,
+    output [31:0] BranchTarget_out,
+    output [31:0] PCAdder4_out
+);
+
+    assign PCSrc = (Branch & ZeroSignal);
+    assign BranchTarget_out = BranchTarget_in;
+    assign ALUResult_out = ALUResult_in;
+    assign RegWrite_out = RegWrite_in;
+    assign MemtoReg_out = MemtoReg_in;
+    assign RegisterDestination_out = RegisterDestination_in;
+    assign PCAdder4_out = PCAdder4_in;
+    
+    wire [31:0] ReadDataMemory_Word;
+    wire [15:0] ReadDataMemory_Half = (ALUResult_in[1] == 0) ? ReadDataMemory_Word[15:0] : ReadDataMemory_Word[31:16] ;
+    wire [15:0] ReadDataMemory_Byte =
+        (ALUResult_in[1:0] == 0) ? ReadDataMemory_Word[7:0] : (
+        (ALUResult_in[1:0] == 1) ? ReadDataMemory_Word[15:8] : (
+        (ALUResult_in[1:0] == 2) ? ReadDataMemory_Word[23:16] : ReadDataMemory_Word[31:24]));
+
+    wire [31:0] ReadDataMemory_Half_SignExtended;
+    wire [31:0] ReadDataMemory_Byte_SignExtended;
+    
+    wire [31:0] StoreHalf;
+    wire [31:0] StoreByte;
+    
+    wire [31:0] WriteDataMemory = (StoreType == 0) ? ReadData2 : ((StoreType == 1) ? StoreHalf : StoreByte);
+    
+    DataMemory Data_Memory(
+        // Inputs
+        // Clk
+        .Clk(Clk),
+        
+        // Control Signals
+        .MemWrite(MemWrite),
+        .MemRead(MemRead),
+        
+        .Address(ALUResult_in),
+        .WriteData(WriteDataMemory),
+        
+        // Outputs
+        .ReadData(ReadDataMemory_Word)
+    ); 
+       
+    SignExtension LoadHalf_SignExtend (
+        // Inputs
+        .in(ReadDataMemory_Half),  
+        
+        // Outputs
+        .out(ReadDataMemory_Half_SignExtended)
+    );
+    
+    SignExtension LoadByte_SignExtend (
+        // Inputs
+        .in(ReadDataMemory_Byte),
+        
+        // Outputs 
+        .out(ReadDataMemory_Byte_SignExtended)
+    );
+       
+    Mux32Bit3To1 LoadType_Signal (
+        // Inputs
+        .inA(ReadDataMemory_Word),
+        .inB(ReadDataMemory_Half_SignExtended),
+        .inC(ReadDataMemory_Byte_SignExtended),
+        .sel(LoadType),
+        
+        // Outputs
+        .out(ReadDataMemory)
+    );
+    
+    StoreDataUnit Store_Data_Type (
+        // Inputs
+        // Clk
+        .Clk(Clk),
+    
+        // 2 LSB of ALUResult
+        .ALUResult(ALUResult_in[1:0]),
+    
+        // 32 Bit Data Read from Memory
+        .ReadDataMemory_Word(ReadDataMemory_Word),
+    
+        // Read Data for Target Register
+        .ReadData2(ReadData2),
+    
+        // Outputs
+        .StoreHalf(StoreHalf),
+        .StoreByte(StoreByte)    
+    );
+    
+endmodule
