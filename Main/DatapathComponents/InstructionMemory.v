@@ -44,6 +44,16 @@ module InstructionMemory(Address, Instruction);
     
     reg [31:0] memory [127:0]; //Memory to hold instructions 128 words of 32-bits memory sort of like matrix  
     integer i;
+   
+   initial begin 
+        memory[0] <= 32'b00000000000000000000000000000000; // main: nop
+        memory[1] <= 32'b00100000000010000000000000000000; // loop: addi $t0, $zero, 0
+        memory[2] <= 32'b00000000000000000000000000000000; // nop
+        memory[3] <= 32'b00000000000000000000000000000000; // nop
+        memory[4] <= 32'b00000000000000000000000000000000; // nop
+        memory[5] <= 32'b00000000000000000000000000000000; // nop
+        memory[6] <= 32'b00000000000000000000000000000000; // nop
+    end
     
     always @(Address) begin //Replace with text file later , for now trash values to itirate through memory
     for (i = 0; i < 128; i = i + 1) begin

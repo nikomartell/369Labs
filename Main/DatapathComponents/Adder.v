@@ -19,15 +19,16 @@
 // 4 (i.e., PCAddResult = PCResult + 4).
 ////////////////////////////////////////////////////////////////////////////////
 
-module PCAdder(PCResult, PCAddResult);
+module PCAdder(A, B, Result);
 
-    input [31:0] PCResult;
+    input [31:0] A;
+    input [31:0] B;
 
-    output reg [31:0] PCAddResult;
+    output reg [31:0] Result;
 
-	always @(PCResult) begin
+	always @(A || B) begin
 	
-	PCAddResult <= PCResult + 4; //Adding constant value 4 to PC value 
+	Result <= A + B;
 	
 	end
 endmodule
