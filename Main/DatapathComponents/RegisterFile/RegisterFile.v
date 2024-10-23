@@ -53,16 +53,30 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
     input [4:0] ReadRegister2;
     input [4:0] WriteRegister;
     input [31:0] WriteData;
-    input RegWrite, Clk;
+    input RegWrite, Clk, Reset;
     output reg [31:0] ReadData1;
     output reg [31:0] ReadData2;
-    reg [31:0] RegFile [0:31];
+    reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
+    
+    //iterator 
+    integer i;
+    
+    //set each register to 0 
+    initial begin
+        for (i = 0; i < 32; i = i + 1) begin
+            RegFile[i] <= i; // Set each register to 0
+        end
+    end
     
     //synchronous write 
     always @(posedge Clk) begin
-        if (RegWrite && (WriteRegister != 0)) begin
+     if (Reset) begin
+     //set each register to 0
+            for (i = 0; i < 32; i = i + 1) begin
+                RegFile[i] <= i; 
+            end        
+        end else if (RegWrite && (WriteRegister != 0)) 
             RegFile[WriteRegister] <= WriteData;
-        end
     end
     
     //asynchronous read
