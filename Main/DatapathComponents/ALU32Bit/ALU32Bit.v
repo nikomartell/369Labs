@@ -30,14 +30,14 @@ module ALU32Bit(ALUControl, A, B, Shamt, ALUResult, Zero);
 
 	input [3:0] ALUControl; // control bits for ALU operation
                                 // you need to adjust the bitwidth as needed
-	input [31:0] A, B;	    // inputs
+	input signed [31:0] A, B;	    // inputs
 	input [4:0] Shamt;
 
 	output reg [31:0] ALUResult;	// answer
 	output reg Zero;	    // Zero=1 if ALUResult == 0
 
     always @(ALUControl, A, B) begin
-        case (ALUControl)
+        case (ALUControl) //ALU Opcode
             0: begin 
                 ALUResult <= A + B; //add
             end
@@ -68,7 +68,7 @@ module ALU32Bit(ALUControl, A, B, Shamt, ALUResult, Zero);
             9: begin
 		        ALUResult <= (A < B) ? 1 : 0; //set on less than 
 	        end 
-	        /* 10: begin 
+	         10: begin 
 		        ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
 	        end 
 	    11: begin 
@@ -82,7 +82,7 @@ module ALU32Bit(ALUControl, A, B, Shamt, ALUResult, Zero);
 	end
  		14: begin 
    			ALUResult <= (A < 0) ? 0 : 1; // branch on less than zero 
-      end */
+      end 
 		
         endcase
     end
