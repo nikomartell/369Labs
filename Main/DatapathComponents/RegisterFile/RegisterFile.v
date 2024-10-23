@@ -58,12 +58,14 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
     output reg [31:0] ReadData2;
     reg [31:0] RegFile [0:31];
     
+    //synchronous write 
     always @(posedge Clk) begin
         if (RegWrite && (WriteRegister != 0)) begin
             RegFile[WriteRegister] <= WriteData;
         end
     end
     
+    //asynchronous read
     always @(*) begin
         ReadData1 <= RegFile[ReadRegister1];
         ReadData2 <= RegFile[ReadRegister2];
