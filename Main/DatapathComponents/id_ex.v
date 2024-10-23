@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module id_ex (
     input clk,
     input reset,
@@ -15,34 +16,34 @@ module id_ex (
     output reg [31:0] reg_data1_out, //read data1 out
     output reg [31:0] reg_data2_out, //read data2 out
     output reg [31:0] sign_ext_offset_out, //sign extended out
-    output reg [4:0] rd_out, 
-    output reg [4:0] rt_out,
+    output reg [4:0] rd_out, //destination reg out
+    output reg [4:0] rt_out, //target reg out
     output reg [5:0] ALUop_out, //func out
-    output reg Shamt_out
+    output reg Shamt_out, //shamt out
 
 //input control signals 
-    input ALUSrc_in,
-    input [2:0] RegDst_in,
-    input Branch_in,
-    input RegWrite_in,
-    input [3:0] ALUOp_in,
-    input MemWrite_in,
-    input MemRead_in,
-    input [1:0] MemtoReg_in,
-    input [1:0] LoadType_in,
-    input [1:0] StoreType_in,
+    input alusrc_in,
+    input [2:0] regdst_in,
+    input regwrite_in,
+    input [3:0] aluop_in,
+    input memwrite_in,
+    input memread_in,
+    input [1:0] memtoreg_in,
+    //input Branch_in,
+    //input [1:0] LoadType_in,
+    //input [1:0] StoreType_in,
 
 //output control signals 
-    output reg ALUSrc_out,
-    output reg [2:0] RegDst_out,
-    output reg Branch_out,
-    output reg RegWrite_out,
-    output reg [3:0] ALUOp_out,
-    output reg MemWrite_out,
-    output reg MemRead_out,
-    output reg [1:0] MemtoReg_out,
-    output reg [1:0] LoadType_out,
-    output reg [1:0] StoreType_out
+    output reg alusrc_out,
+    output reg [2:0] regdst_out,
+    //output reg Branch_out,
+    output reg regwrite_out,
+    output reg [3:0] aluop_out,
+    output reg memwrite_out,
+    output reg memread_out,
+    output reg [1:0] memtoreg_out
+    //output reg [1:0] LoadType_out,
+    //output reg [1:0] StoreType_out
 );
 
 always @(posedge clk or posedge reset) begin
@@ -57,16 +58,16 @@ always @(posedge clk or posedge reset) begin
         Shamt_out <= 5'b0;
         
         //control signals reset 
-            ALUSrc_out <= 1'b0;
-            RegDst_out <= 1'b0;
-            Branch_out <= 1'b0;
-            RegWrite_out <= 1'b0;
-            ALUOp_out <= 4'b0000;
-            MemWrite_out <= 1'b0;
-            MemRead_out <= 1'b0;
-            MemtoReg_out <= 1'b0;
-            LoadType_out <= 2'b0;
-            StoreType_out <= 2'b0;
+        alusrc_out <= 1'b0;
+        regdst_out <= 1'b0;
+        //branch_out <= 1'b0;
+        regwrite_out <= 1'b0;
+        aluop_out <= 4'b0000;
+        memwrite_out <= 1'b0;
+        memread_out <= 1'b0;
+        memtoreg_out <= 1'b0;
+        //loadtype_out <= 2'b0;
+        //storetype_out <= 2'b0;
             
     end else begin
         pc_out <= pc_in;
@@ -79,16 +80,16 @@ always @(posedge clk or posedge reset) begin
         Shamt_out <= Shamt;
         
         //control signals pass through 
-            ALUSrc_out <= ALUSrc_in;
-            RegDst_out <= RegDst_in;
-            Branch_out <= Branch_in;
-            RegWrite_out <= RegWrite_in;
-            ALUOp_out <= ALUOp_in;
-            MemWrite_out <= MemWrite_in;
-            MemRead_out <= MemRead_in;
-            MemtoReg_out <= MemtoReg_in;
-            LoadType_out <= LoadType_in;
-            StoreType_out <= StoreType_in;
+        alusrc_out <= alusrc_in;
+        regdst_out <= regdst_in;
+       // branch_out <= branch_in;
+        regwrite_out <= regwrite_in;
+        aluop_out <= aluop_in;
+        memwrite_out <= memwrite_in;
+        memread_out <= memread_in;
+        memtoreg_out <= memtoreg_in;
+       // loadtype_out <= loadtype_in;
+       // storetype_out <= storetype_in;
         
     end
 end
