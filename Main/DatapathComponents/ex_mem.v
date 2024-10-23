@@ -49,7 +49,7 @@ always @(posedge clk or posedge reset) begin
         memWrite_out <= memWrite;
         MemtoReg_out <= MemtoReg;
         RegWrite_out <= RegWrite;
-        ALUop <= ALUop_out;
+        ALUop_out <= ALUop;
     end
 end
 endmodule
