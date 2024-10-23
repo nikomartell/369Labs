@@ -17,7 +17,7 @@ module id_ex (
     output reg [31:0] sign_ext_offset_out, //sign extended out
     output reg [4:0] rd_out, 
     output reg [4:0] rt_out,
-    output reg [1:0] ALUop_out, //func out
+    output reg [5:0] ALUop_out, //func out
     output reg Shamt_out
 
 //input control signals 
