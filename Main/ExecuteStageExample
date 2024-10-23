@@ -1,0 +1,119 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/09/2024 11:39:47 AM
+// Design Name: 
+// Module Name: ExecuteStage
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module ExecuteStage(
+    // Inputs
+    input [31:0] PCAdder4_in,
+    input [31:0] ReadData1,
+    input [31:0] ReadData2_in,
+    input [31:0] SignExtended,
+    input [4:0] TargetRegister,
+    input [4:0] DestinationRegister,
+    input [5:0] Funct,
+    input [4:0] Shamt,
+    
+    // Control Signals
+    input ALUSrc,
+    input [2:0] RegDst,
+    input Branch_in,
+    input RegWrite_in,
+    input [3:0] ALUOp,
+    input MemWrite_in,
+    input MemRead_in,
+    input [1:0] MemtoReg_in,
+    input [1:0] LoadType_in,
+    input [1:0] StoreType_in,
+    
+    // Outputs 
+    output [31:0] BranchTarget,
+    output [31:0] JumpRegisterTarget,
+    output [31:0] ALUResult,
+    output ZeroSignal,
+    output [4:0] RegisterDestination,
+    output [31:0] ReadData2_out,
+    output [31:0] PCAdder4_out,
+    
+    // Control Signals
+    output Branch_out,
+    output RegWrite_out,
+    output MemWrite_out,
+    output MemRead_out,
+    output [1:0] MemtoReg_out,
+    output [1:0] LoadType_out,
+    output [1:0] StoreType_out   
+);
+
+    assign BranchTarget = PCAdder4_in + (SignExtended << 2);
+    assign JumpRegisterTarget = ReadData1;
+    assign Branch_out = Branch_in;
+    assign RegWrite_out = RegWrite_in;
+    assign MemWrite_out = MemWrite_in;
+    assign MemRead_out = MemRead_in;
+    assign MemtoReg_out = MemtoReg_in;
+    assign ReadData2_out = ReadData2_in;
+    assign PCAdder4_out = PCAdder4_in;
+    assign LoadType_out = LoadType_in;
+    assign StoreType_out = StoreType_in;
+    
+    wire [3:0] ALUControl;
+    wire [31:0] ALUBSrc;
+    wire [31:0] ReadData2_SignExtended_out;
+    
+    Mux32Bit2To1 ALUSrc_Signal (
+        // Inputs
+        .inA(ReadData2_in),
+        .inB(SignExtended),
+        .sel(ALUSrc),
+    
+        // Outputs
+        .out(ReadData2_SignExtended_out)    
+    );
+    
+    ALU32Bit ALU (
+        // Inputs
+        .ALUControl(ALUControl), // control bits for ALU operation (may need to adjust as needed)
+        .A(ReadData1),
+        .B(ReadData2_SignExtended_out),
+        .Shamt(Shamt),
+        
+        // Outputs
+        .ALUResult(ALUResult), // answer
+        .Zero(ZeroSignal) // Zero = 1 if ALUResult == 0        
+    );
+    
+    ALUControl ALU_Control (
+        // Inputs
+        .ALUOp(ALUOp),
+        .Funct(Funct),
+    
+        // Outputs
+        .ALUControl(ALUControl)        
+    );
+    
+    Mux5Bit3To1 RegDst_Signal (
+        .inA(TargetRegister),
+        .inB(DestinationRegister),
+        .sel(RegDst),
+        .out(RegisterDestination)  
+    );
+    
+endmodule
