@@ -32,7 +32,7 @@ module InstructionDecodePhase(
     
     //from reg file
     input [31:0] WriteData, //write data out 
-    input WriteRegister, //write register out 
+    input [4:0] WriteRegister, //write register out 
     
     //control signals
     input RegWrite_in, 
@@ -76,11 +76,11 @@ module InstructionDecodePhase(
         .ALUSrc(ALUSrc),
         .Branch(Branch),
         .Jump(Jump),
-        .JumpRegister(JumpRegister), 
+        .JumpReg(JumpRegister), 
         .MemRead(MemRead),
         .MemWrite(MemWrite),
         .RegWrite(RegWrite_out),
-        .MemtoReg(MemtoReg),
+        .MemToReg(MemtoReg),
         .LoadType(LoadType),
         .StoreType(StoreType)
     );
