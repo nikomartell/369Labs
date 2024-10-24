@@ -36,8 +36,8 @@ module ExecutePhase(
     input [3:0] aluop_in,
     
     //inputs to MEM/WB
-    output reg [31:0] ALU_result,
-    output reg [4:0] regdst
+    output [31:0] ALU_result,
+    output [4:0] regdst
     
     );
     wire [3:0] ALU_control;

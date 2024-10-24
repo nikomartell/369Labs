@@ -33,7 +33,7 @@ module MemoryPhase(
     input memread,
     
     //output to MEM/WB
-    output reg [31:0] read_data_out
+    output [31:0] read_data_out
     );
     
     wire [31:0] datamem_out;

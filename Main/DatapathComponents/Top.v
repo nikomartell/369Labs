@@ -63,11 +63,11 @@ module Top(
     wire [31:0] read_mem_data_out;
     
     
-    id_ex IDEX();
+    //id_ex IDEX();
     ExecutePhase(reg_data1_out_idex, reg_data2_out_idex, sign_ext_offset_out_idex, rd_out_idex, rt_out_idex, Shamt_out_idex, alusrc_out_idex, regdst_out_idex, aluop_out_idex,
         ALU_result, regdst
     );
-    ex_mem EXMEM();
+    //ex_mem EXMEM();
     MemoryPhase(clk, alu_result_out_exmem, read_data2_out_exmem, opcode_out_exmem, decodeop_out_exmem, memwrite_out_exmem, memread_out_exmem,
         read_mem_data_out
     );
