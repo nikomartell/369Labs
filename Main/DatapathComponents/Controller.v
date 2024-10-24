@@ -37,7 +37,7 @@ module Controller(
     output reg MemRead,
     output reg Branch,
     output reg [1:0] MemToReg, //this is a 2x1 mux
-    output reg [1:0] PCSrc, //this leads to a 3x1 mux that selects 
+   // output reg [1:0] PCSrc, //this leads to a 3x1 mux that selects 
     output reg Jump,
     output reg [1:0] StoreType, //this is a 3x1 mux
     output reg [1:0] LoadType,  //this is a 3x1 mux
