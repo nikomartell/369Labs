@@ -109,7 +109,7 @@ module Top(
     wire [1:0] memtoreg_out_memwb;
     wire RegWrite_out_memwb;
     
-    InstructionFetchStage Fetch(clk, rst, PCSrc_out, Jump_out, JumpRegister_out, BranchTarget_out, JumpTarget_out, JumpRegisterTarget_out,
+    InstructionFetchPhase Fetch(clk, rst, PCSrc_out, Jump_out, JumpRegister_out, BranchTarget_out, JumpTarget_out, JumpRegisterTarget_out,
         PCADDResult_out, Instruction_out
     );
     if_id IFID(clk, rst, PCADDResult_out, Instruction_out,
