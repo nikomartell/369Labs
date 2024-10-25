@@ -29,21 +29,23 @@ module id_ex (
     input memwrite_in,
     input memread_in,
     input [1:0] memtoreg_in,
-    input Branch_in,
-    input [1:0] LoadType_in,
-    input [1:0] StoreType_in,
+    //input Branch_in,
+    //input [1:0] LoadType_in,
+    //input [1:0] StoreType_in,
+    input [1:0] decodeop,
 
 //output control signals 
     output reg alusrc_out,
     output reg [2:0] regdst_out,
-    output reg Branch_out,
+    //output reg Branch_out,
     output reg regwrite_out,
     output reg [3:0] aluop_out,
     output reg memwrite_out,
     output reg memread_out,
-    output reg [1:0] memtoreg_out
-    output reg [1:0] LoadType_out,
-    output reg [1:0] StoreType_out
+    output reg [1:0] memtoreg_out,
+    //output reg [1:0] LoadType_out,
+    //output reg [1:0] StoreType_out
+    output reg [1:0] decodeop_out
 );
 
 always @(posedge clk or posedge reset) begin
@@ -60,14 +62,15 @@ always @(posedge clk or posedge reset) begin
         //control signals reset 
         alusrc_out <= 1'b0;
         regdst_out <= 1'b0;
-        branch_out <= 1'b0;
+        //branch_out <= 1'b0;
         regwrite_out <= 1'b0;
         aluop_out <= 4'b0000;
         memwrite_out <= 1'b0;
         memread_out <= 1'b0;
         memtoreg_out <= 1'b0;
-        loadtype_out <= 2'b0;
-        storetype_out <= 2'b0;
+        //loadtype_out <= 2'b0;
+        //storetype_out <= 2'b0;
+        decodeop_out <= 2'b0;
             
     end else begin
         pc_out <= pc_in;
@@ -82,14 +85,15 @@ always @(posedge clk or posedge reset) begin
         //control signals pass through 
         alusrc_out <= alusrc_in;
         regdst_out <= regdst_in;
-        branch_out <= branch_in;
+        //branch_out <= branch_in;
         regwrite_out <= regwrite_in;
         aluop_out <= aluop_in;
         memwrite_out <= memwrite_in;
         memread_out <= memread_in;
         memtoreg_out <= memtoreg_in;
-        loadtype_out <= loadtype_in;
-        storetype_out <= storetype_in;
+        //loadtype_out <= loadtype_in;
+        //storetype_out <= storetype_in;
+        decodeop_out <= decodeop;
         
     end
 end

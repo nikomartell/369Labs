@@ -27,7 +27,7 @@ module ExecutePhase(
     input [31:0] sign_ext_offset_in, //sign extended out
     input [4:0] rd_in, //destination reg out
     input [4:0] rt_in, //target reg out
-    input [5:0] ALUop_in, //func out
+    input [5:0] ALUop, //func out
     input Shamt_in, //shamt out
     
     //control signals from ID/EX Register
@@ -44,7 +44,7 @@ module ExecutePhase(
     wire [31:0] ALU_src_out;
     wire zero;
     
-    ALUController ALUCntrlr(ALUop_in, sign_ext_offset_in[5:0], ALU_control);
+    ALUController ALUCntrlr(ALUop, sign_ext_offset_in[5:0], ALU_control);
     Mux32Bit2To1 ALUsrc(ALU_src_out, sing_ext_offset_in, reg_data2_in, alusrc_in);
     ALU32Bit ALU(ALU_control, reg_data1_in1, ALU_src_out, Shamt_in, ALU_result, zero);
     

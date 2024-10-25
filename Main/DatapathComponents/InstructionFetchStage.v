@@ -115,5 +115,8 @@ module InstructionFetchPhase(
         //outputs: next instruction 
         .Instruction(instr_out) 
         );
+<<<<<<< Updated upstream
         
+=======
+>>>>>>> Stashed changes
 endmodule
