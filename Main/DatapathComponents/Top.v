@@ -19,6 +19,12 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+// Currently I see a few problems we need to resolve
+// 1) Decode phase does not have comparator so if a branch instruction is read it will always branch
+// 2) Controller does not consider beq, blt, bgt which has the same problem as 1)
+// 3) Controller does not create a decode signal which I am going to use for the memory phase
+// I have not updated these things as we have different methods of coding
+// Please do not delete any code as it takes a while to find what was deleted and fix it
 
 module Top(
     input clk,
@@ -109,13 +115,16 @@ module Top(
     wire [1:0] memtoreg_out_memwb;
     wire RegWrite_out_memwb;
     
+    //WB phase
+    wire [31:0] memtoreg_out_wb;
+    
     InstructionFetchPhase Fetch(clk, rst, PCSrc_out, Jump_out, JumpRegister_out, BranchTarget_out, JumpTarget_out, JumpRegisterTarget_out,
         PCADDResult_out, Instruction_out
     );
     if_id IFID(clk, rst, PCADDResult_out, Instruction_out,
         pc_out_ifid, instruction_out_ifid
     );
-    InstructionDecodePhase Decode(clk, rst, pc_out_ifid, instruction_out_ifid, WriteData_out_memwb, WriteRegister_out_memwb, RegWrite_out_memwb,
+    InstructionDecodePhase Decode(clk, rst, pc_out_ifid, instruction_out_ifid, memtoreg_out_wb, WriteRegister_out_memwb, RegWrite_out_memwb,
         RegDst_out, Jump_out_decode, Branch_out, MemRead_out, MemtoReg_out, ALUOp, MemWrite_out, ALUSrc_out, JumpRegister_out,
         RegWrite_out, LoadType_out, StoreType_out, JumpTarget_out, reg_data1_out, reg_data2_out, pc_out, sign_ext_offset_out, 
         rd_out, rt_out, Shamt_out, ALUop_out
@@ -139,8 +148,8 @@ module Top(
     mem_wb MEMWB(clk, rst, alu_result_out_exmem, read_mem_data_out, instruction_mux_out_exmem, pc_out_exmem, 
         alu_result_out_memwb, WriteData_out_memwb, WriteRegister_out_memwb, pc_out_memwb, 
         memtoreg_out_exmem, regwrite_out_exmem, memtoreg_out_memwb, RegWrite_out_memwb
-        
     );
+    Mux32Bit2To1 MemToReg(memtoreg_out_wb, alu_result_out_memwb, WriteData_out_memwb, memtoreg_out_memwb);
     
     
 endmodule
