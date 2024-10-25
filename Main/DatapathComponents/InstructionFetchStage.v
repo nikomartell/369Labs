@@ -20,13 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module InstructionFetchStage(
+module InstructionFetchPhase(
     //inputs 
         input Clk, 
         input Reset, 
         
         //control signals for fetch stage 
-        input PCSrc,
+        input pc_in, //pc adder 4 in 
         input Jump, 
         input JumpRegister, 
         
@@ -36,8 +36,8 @@ module InstructionFetchStage(
         input [31:0] JumpRegisterTarget,
         
         //outputs the current and the next instruction 
-        output [31:0] PCAddResult, 
-        output [31:0] Instruction
+        output [31:0] pc_out, 
+        output [31:0] instr_out
     );
         
         
@@ -52,17 +52,17 @@ module InstructionFetchStage(
         .PCResult(PCResult),
         
         //outputs - the next instruction 
-        .PCAddResult(PCAddResult)
+        .PCAddResult(pc_out)
         );
         
         //mux 
-        Mux32Bit2To1 PCSrc_Signal (
+        Mux32Bit2To1 pc_out_signal (
         //inputs: next instruction and branching target address
-        .inA(PCAddResult),
+        .inA(pc_out),
         .inB(BranchTarget),
         
         //control signal for mux
-        .sel(PCSrc),
+        .sel(pc_in),
         
         //outputs: next instruction or branching target address
         .out(PCAddResult_BranchTarget_out)
@@ -113,6 +113,7 @@ module InstructionFetchStage(
         .Address(PCResult),
         
         //outputs: next instruction 
-        .Instruction(Instruction) 
+        .Instruction(instr_out) 
         );
         
+endmodule
