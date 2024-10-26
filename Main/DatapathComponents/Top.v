@@ -23,8 +23,10 @@
 // 1) Decode phase does not have comparator so if a branch instruction is read it will always branch
 // 2) Controller does not consider beq, blt, bgt which has the same problem as 1)
 // 3) Controller does not create a decode signal which I am going to use for the memory phase
+// 4) The decoder for store and load - at
 // I have not updated these things as we have different methods of coding
 // Please do not delete any code as it takes a while to find what was deleted and fix it
+
 
 module Top(
     input clk,
@@ -134,7 +136,7 @@ module Top(
         Shamt_out_idex, ALUSrc_out, RegDst_out, RegWrite_out, ALUOp, MemWrite_out, MemRead_out, MemtoReg_out, decodeop_out, 
         alusrc_out_idex, regdst_out_idex, regwrite_out_idex, memwrite_out_idex, memread_out_idex, memtoreg_out_idex, decodeop_out_idex
     );
-    ExecutePhase EX(reg_data1_out_idex, reg_data2_out_idex, sign_ext_offset_out_idex, rd_out_idex, rt_out_idex, ALUop_idex, Shamt_out_idex, alusrc_out_idex, regdst_out_idex, aluop_out_idex,
+    ExecutePhase Execute(reg_data1_out_idex, reg_data2_out_idex, sign_ext_offset_out_idex, rd_out_idex, rt_out_idex, ALUop_idex, Shamt_out_idex, alusrc_out_idex, regdst_out_idex, aluop_out_idex,
         ALU_result, regdst
     );
     ex_mem EXMEM(clk, rst, pc_out_idex, ALU_result, reg_data2_out_idex, regdst, ALUop_idex, decodeop_out_idex, 
@@ -142,7 +144,7 @@ module Top(
         regwrite_out_idex, memwrite_out_idex, memread_out_idex, memtoreg_out_idex,
         regwrite_out_exmem, memwrite_out_exmem, memread_out_exmem, memtoreg_out_exmem
     );
-    MemoryPhase MEM(clk, alu_result_out_exmem, read_data2_out_exmem, opcode_out_exmem, decodeop_out_exmem, memwrite_out_exmem, memread_out_exmem,
+    MemoryPhase MemoryAcess(clk, alu_result_out_exmem, read_data2_out_exmem, opcode_out_exmem, decodeop_out_exmem, memwrite_out_exmem, memread_out_exmem,
         read_mem_data_out
     );
     mem_wb MEMWB(clk, rst, alu_result_out_exmem, read_mem_data_out, instruction_mux_out_exmem, pc_out_exmem, 
