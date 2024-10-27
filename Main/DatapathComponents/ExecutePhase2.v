@@ -28,7 +28,7 @@ module ExecutePhase(
     input [31:0] sign_ext_offset_in, //sign extended out
     input [4:0] rd_in, //destination reg out
     input [4:0] rt_in, //target reg out
-    input [5:0] ALUop, //func out
+    input [5:0] Func, //func out
     input [4:0] Shamt_in, //shamt out
     input [31:0] pc_in, 
     
@@ -41,6 +41,7 @@ module ExecutePhase(
     input memread_in,
     input [1:0] memtoreg_in,
     input [1:0] decodeop,
+    input branch_in,
     
     //outputs of execute - inputs to MEM/WB
     output [31:0] ALU_result,
@@ -52,7 +53,7 @@ module ExecutePhase(
     output Zero, 
     
     //output control signals 
-    //output alusrc_out,
+    output branch_out,
     output regwrite_out,
     output [3:0] aluop_out,
     output memwrite_out,
@@ -71,6 +72,7 @@ module ExecutePhase(
     assign reg_data2_out = reg_data2_in;
     assign pc_out = pc_in;
     assign decodeop_out = decodeop;
+    assign branch_out = branch_in;
     
     wire [3:0] ALU_control;
     //wire [31:0] ALU_src_out;
@@ -80,6 +82,6 @@ module ExecutePhase(
     Mux32Bit2To1 ALUsrc(reg_data2_in, sign_ext_offset_in, alusrc_in, reg_data2_sign_ext_out); // Corrected typo
     ALU32Bit ALU(ALU_control, reg_data1_in, reg_data2_sign_ext_out, Shamt_in, ALU_result, Zero); // Corrected variable name
     
-    Mux32Bit2To1 RegDst(regdst, rd_in, rt_in, regdst_in);
+    Mux32Bit3To1 RegDst(rt_in, rd_in, regdst_in, regdst); // I think this is wrong
     
 endmodule
