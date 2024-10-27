@@ -39,8 +39,8 @@ module Controller(
     output reg Branch,
     output reg [1:0] MemToReg, //this is a 2x1 mux
     output reg Jump,
-    output reg [1:0] StoreType, //this is a 3x1 mux
-    output reg [1:0] LoadType,  //this is a 3x1 mux
+    //output reg [1:0] StoreType, //this is a 3x1 mux
+    //output reg [1:0] LoadType,  //this is a 3x1 mux
     output reg JumpReg
     ); 
     
@@ -54,8 +54,8 @@ module Controller(
     MemToReg <= 0;
     Branch <= 0;
     Jump <= 0;
-    LoadType <= 0;
-    StoreType <= 0;
+    //LoadType <= 0;
+    //StoreType <= 0;
     ALUOp <= 0;
     JumpReg <= 0; 
     end 
@@ -70,8 +70,8 @@ module Controller(
     MemToReg <= 0;
     Branch <= 0;
     Jump <= 0;
-    LoadType <= 0;
-    StoreType <= 0;
+    //LoadType <= 0;
+    //StoreType <= 0;
     ALUOp <= 0;
     JumpReg <= 0;
     
@@ -90,8 +90,8 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0; 
+                //LoadType <= 0;
+                //StoreType <= 0; 
                 JumpReg <= 1;
              end 
             //R-type: and, add, sub, or, nor, xor, sll, slt, srl 
@@ -106,8 +106,8 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0; 
+                //LoadType <= 0;
+                //StoreType <= 0; 
                 JumpReg <= 0;
             end 
             endcase 
@@ -124,8 +124,8 @@ module Controller(
                 MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0; 
+                //LoadType <= 0;
+                //StoreType <= 0; 
                 JumpReg <= 0;
             end
             
@@ -141,8 +141,8 @@ module Controller(
                 MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0; 
+                //LoadType <= 0;
+                //StoreType <= 0; 
                 JumpReg <= 0;
             end
             // ADDI
@@ -156,8 +156,8 @@ module Controller(
                 MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
+                //LoadType <= 0;
+                //StoreType <= 0;
                 JumpReg <= 0;
 
             end
@@ -172,8 +172,8 @@ module Controller(
                 MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
+                //LoadType <= 0;
+                //StoreType <= 0;
                 JumpReg <= 0;
                 end
              //XORI 
@@ -187,8 +187,8 @@ module Controller(
                 MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
+                //LoadType <= 0;
+                //StoreType <= 0;
                 JumpReg <= 0;
                 end
               //SLTI
@@ -202,8 +202,8 @@ module Controller(
                 MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
+                //LoadType <= 0;
+                //StoreType <= 0;
                 JumpReg <= 0;
                 end 
                 
@@ -219,8 +219,8 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
+                //LoadType <= 0;
+                //StoreType <= 0;
             end
             //SW 
             6'b101011: begin
@@ -233,8 +233,8 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
+                //LoadType <= 0;
+                //StoreType <= 0;
             end
             //SB
             6'b101000: begin
@@ -247,8 +247,8 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 2; //2 for byte, 1 for half, 0 for whole
+                //LoadType <= 0;
+                //StoreType <= 2; //2 for byte, 1 for half, 0 for whole
             end
             //LH 
             6'b100001: begin
@@ -261,8 +261,8 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 1;
-                StoreType <= 0;
+                //LoadType <= 1;
+                //StoreType <= 0;
              end 
              //LB 
              6'b100000: begin
@@ -275,8 +275,7 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 2;
-                StoreType <= 0;
+                //LoadType <= 2;
              end 
              //SH 
              6'b101001: begin
@@ -289,8 +288,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 1;
              end 
              
              //branches 
@@ -308,8 +305,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 1;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
              //BLTZ 
              5'b00000: begin
@@ -322,8 +317,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 1;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
              endcase
              end
@@ -339,8 +332,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 1;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0; 
              end
              //BNE 
              6'b000101: begin
@@ -353,8 +344,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 1;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
              //BGTZ
              6'b000001: begin
@@ -367,8 +356,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 1;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
              //BLEZ
              6'b000110: begin
@@ -381,8 +368,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 1;
                 Jump <= 0;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
              
              //jumps 
@@ -397,8 +382,6 @@ module Controller(
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 1;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
              
              //JAL 
@@ -412,8 +395,6 @@ module Controller(
                 MemToReg <= 2;
                 Branch <= 0;
                 Jump <= 1;
-                LoadType <= 0;
-                StoreType <= 0;
              end 
           
             

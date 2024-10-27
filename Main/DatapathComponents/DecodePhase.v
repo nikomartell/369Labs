@@ -54,15 +54,19 @@ module InstructionDecodePhase(
     
     //instructions decoded 
     output [31:0] JumpTarget, //needed in the execute phase too
-    output [31:0] reg_data1_in, //read data1 out
-    output [31:0] reg_data2_in, //read data2 out 
+    output wire [31:0] reg_data1_in, //read data1 out
+    output wire [31:0] reg_data2_in, //read data2 out 
     output [31:0] pc_out, //needed in the execute phase too , pc+4 out 
-    output [31:0] sign_ext_offset_in, //sign extended out 
+    output wire [31:0] sign_ext_offset_in, //sign extended out 
     output [4:0] rd_in, //destination reg out 
     output [4:0] rt_in, //target reg out 
     output [4:0] Shamt_in, //shamt out 
-    output [5:0] Func // func out  
+    output [5:0] Func, // func out  
+    output [31:0] BranchTarget //BranchTarget
 );
+
+    //output wires from comparator to controller for branches
+    wire beq, bgt, blt, zero;
 
     Controller Controller_main ( 
     //inputs: parsed instructions 
@@ -70,17 +74,23 @@ module InstructionDecodePhase(
     .Function(instr_in[5:0]),
     .TargetReg(instr_in[20:16]),
     
+    //inputs: from comparator
+    .beq(beq),
+    .blt(blt),
+    .bgt(bgt),
+    .zero(zero),
+    
     //outputs: control signals 
-        .RegDst(RegDst),
+        .RegWrite(RegWrite_out),
         .ALUOp(ALUOp),
         .ALUSrc(ALUSrc),
-        .Branch(Branch),
-        .Jump(Jump),
-        .JumpReg(JumpRegister), 
+        .RegDst(RegDst),
         .MemRead(MemRead),
         .MemWrite(MemWrite),
-        .RegWrite(RegWrite_out),
-        .MemToReg(MemtoReg)
+        .Branch(Branch),
+        .MemToReg(MemtoReg),
+        .Jump(Jump),
+        .JumpReg(JumpRegister)
         //.LoadType(LoadType),
         //.StoreType(StoreType)
     );
@@ -104,6 +114,17 @@ module InstructionDecodePhase(
         .ReadData2(reg_data2_in)
     );
     
+    Comparator Comp(
+    //inputs
+        .Reg1(reg_data1_in),
+        .Reg2(reg_data2_in),
+    //outputs
+        .beq(beq),
+        .blt(blt),
+        .bgt(bgt),
+        .zero(zero)
+    );
+    
     SignExtension Sign_Extension (
     //inputs 
     .in(instr_in[15:0]), 
@@ -112,6 +133,9 @@ module InstructionDecodePhase(
     .out(sign_ext_offset_in)
     );
     
+    //branch target address calculated with pc plus the shifted offset value * 4
+    assign BranchTarget = pc_in + (sign_ext_offset_in << 2);
+    
     //jump target address concatenating upper bits of current PC
     //with sl jump instruction
     assign JumpTarget = { pc_in[31:28], (instr_in[25:0] << 2) };
@@ -119,7 +143,7 @@ module InstructionDecodePhase(
     assign pc_out = pc_in;
     assign rt_in = instr_in[20:16];
     assign rd_in = instr_in[15:11]; 
-    assign Shamnt_in = instr_in[10:6];
+    assign Shamt_in = instr_in[10:6];
     assign Func = instr_in[5:0];
     
 endmodule
