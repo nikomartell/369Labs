@@ -49,8 +49,8 @@ module InstructionDecodePhase(
     output ALUSrc,
     output JumpRegister,
     output RegWrite_out,
-    output [1:0] LoadType,
-    output [1:0] StoreType,    
+    //output [1:0] LoadType,
+    //output [1:0] StoreType,    
     
     //instructions decoded 
     output [31:0] JumpTarget, //needed in the execute phase too
@@ -61,7 +61,7 @@ module InstructionDecodePhase(
     output [4:0] rd_in, //destination reg out 
     output [4:0] rt_in, //target reg out 
     output [4:0] Shamt_in, //shamt out 
-    output [5:0] ALUop_in // func out  
+    output [5:0] Func // func out  
 );
 
     Controller Controller_main ( 
@@ -80,9 +80,9 @@ module InstructionDecodePhase(
         .MemRead(MemRead),
         .MemWrite(MemWrite),
         .RegWrite(RegWrite_out),
-        .MemToReg(MemtoReg),
-        .LoadType(LoadType),
-        .StoreType(StoreType)
+        .MemToReg(MemtoReg)
+        //.LoadType(LoadType),
+        //.StoreType(StoreType)
     );
     
     RegisterFile Register_File (
@@ -90,9 +90,9 @@ module InstructionDecodePhase(
         .RegWrite(RegWrite_in),
         
     //read and write the registers
-        .ReadRegister1(instr_in[25:21]),
-        .ReadRegister2(instr_in[20:16]),
-        .WriteRegister(WriteRegister),
+        .ReadRegister1(instr_in[25:21]), //rs
+        .ReadRegister2(instr_in[20:16]), //rt
+        .WriteRegister(WriteRegister), //rd
         .WriteData(WriteData),
         
         // clk and reset
@@ -112,7 +112,7 @@ module InstructionDecodePhase(
     .out(sign_ext_offset_in)
     );
     
-    //generate jump target address concatenating upper bits of current PC
+    //jump target address concatenating upper bits of current PC
     //with sl jump instruction
     assign JumpTarget = { pc_in[31:28], (instr_in[25:0] << 2) };
     
@@ -120,6 +120,6 @@ module InstructionDecodePhase(
     assign rt_in = instr_in[20:16];
     assign rd_in = instr_in[15:11]; 
     assign Shamnt_in = instr_in[10:6];
-    assign ALUop_in = instr_in[5:0];
+    assign Func = instr_in[5:0];
     
 endmodule
