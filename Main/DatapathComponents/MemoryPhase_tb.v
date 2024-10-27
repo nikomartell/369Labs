@@ -7,7 +7,7 @@ module MemoryPhase_tb;
     reg [31:0] alu_result;
     reg [31:0] read_data2;
     reg [5:0] opcode;
-    reg [1:0] decodeop;
+    //reg [1:0] decodeop;
     reg memwrite;
     reg memread;
 
@@ -19,7 +19,7 @@ module MemoryPhase_tb;
         .alu_result(alu_result),
         .read_data2(read_data2),
         .opcode(opcode),
-        .decodeop(decodeop),
+        //.decodeop(decodeop),
         .memwrite(memwrite),
         .memread(memread),
         .read_data_out(read_data_out)
@@ -37,7 +37,7 @@ module MemoryPhase_tb;
         alu_result = 32'h00000000; // Example ALU result
         read_data2 = 32'h00000000; // Example data to write/read
         opcode = 6'b000000; // Example opcode
-        decodeop = 2'b00; // Example decode operation
+        //decodeop = 2'b00; // Example decode operation
         memwrite = 0; // Initially no memory write
         memread = 0; // Initially no memory read
         
@@ -49,7 +49,7 @@ module MemoryPhase_tb;
         alu_result = 32'h00000004; // Address to write to
         read_data2 = 32'h000000AB; // Data to write
         opcode = 6'b101011; // Opcode for store word (SW)
-        decodeop = 2'b00; // Standard operation
+        //decodeop = 2'b00; // Standard operation
         memwrite = 1; // Enable memory write
         memread = 0; // Disable memory read
 
