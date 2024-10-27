@@ -21,7 +21,7 @@
 
 
 module ALUController(OpCode, Function,  ALUControl);
-    input [5:0] OpCode;
+    input [3:0] OpCode;
     input [5:0] Function;
     output reg [3:0] ALUControl;
     
