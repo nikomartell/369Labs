@@ -26,7 +26,7 @@ module InstructionFetchPhase(
         input Reset, 
         
         //control signals for fetch stage 
-        input PCSrc, //pc adder 4 in control
+        input pc_in, //pc adder 4 in 
         input Jump, 
         input JumpRegister, 
         
@@ -39,7 +39,6 @@ module InstructionFetchPhase(
         output [31:0] pc_out, 
         output [31:0] instr_out
     );
-        
         
         wire [31:0] PCAddResult_BranchTarget_out;
         wire [31:0] PCAddResult_BranchTarget_JumpTarget_out;
@@ -62,7 +61,7 @@ module InstructionFetchPhase(
         .inB(BranchTarget),
         
         //control signal for mux
-            .sel(PCSrc),
+        .sel(pc_in),
         
         //outputs: next instruction or branching target address
         .out(PCAddResult_BranchTarget_out)
@@ -115,4 +114,5 @@ module InstructionFetchPhase(
         //outputs: next instruction 
         .Instruction(instr_out) 
         );
+        
 endmodule
