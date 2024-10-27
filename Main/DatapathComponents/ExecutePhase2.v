@@ -78,7 +78,7 @@ module ExecutePhase(
     //wire [31:0] ALU_src_out;
     wire reg_data2_sign_ext_out;
     
-    ALUController ALUCntrlr(aluop_in, ALUop, ALU_control);
+    ALUController ALUCntrlr(aluop_in, Func, ALU_control);
     Mux32Bit2To1 ALUsrc(reg_data2_in, sign_ext_offset_in, alusrc_in, reg_data2_sign_ext_out); // Corrected typo
     ALU32Bit ALU(ALU_control, reg_data1_in, reg_data2_sign_ext_out, Shamt_in, ALU_result, Zero); // Corrected variable name
     
