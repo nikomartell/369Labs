@@ -10,7 +10,7 @@ module id_ex (
     input [4:0] rd, //destination reg in
     input [4:0] rt, //target reg in 
     input [5:0] Func, //func in
-    input Shamt, //shamt in
+    input [4:0] Shamt, //shamt in
     
     output reg [31:0] pc_out, // address out
     output reg [31:0] reg_data1_out, //read data1 out
@@ -19,7 +19,7 @@ module id_ex (
     output reg [4:0] rd_out, //destination reg out
     output reg [4:0] rt_out, //target reg out
     output reg [5:0] Func_out, //func out
-    output reg Shamt_out, //shamt out
+    output reg [4:0] Shamt_out, //shamt out
 
 //input control signals 
     input alusrc_in,

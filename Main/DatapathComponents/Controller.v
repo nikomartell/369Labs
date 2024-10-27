@@ -303,7 +303,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                if(bgt || zero) Branch <= 1;
                 Jump <= 0;
              end 
              //BLTZ 
@@ -315,7 +315,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                if(blt || zero) Branch <= 1;
                 Jump <= 0;
              end 
              endcase
@@ -330,7 +330,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                if(beq) Branch <= 1;
                 Jump <= 0;
              end
              //BNE 
@@ -342,7 +342,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                if(!beq) Branch <= 1;
                 Jump <= 0;
              end 
              //BGTZ
@@ -354,7 +354,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                if (bgt) Branch <= 1;
                 Jump <= 0;
              end 
              //BLEZ
@@ -366,7 +366,7 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                Branch <= 1;
+                if(blt || zero) Branch <= 1;
                 Jump <= 0;
              end 
              

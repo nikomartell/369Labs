@@ -19,13 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-// Currently I see a few problems we need to resolve
-// 1) Decode phase does not have comparator so if a branch instruction is read it will always branch
-// 2) Controller does not consider beq, blt, bgt which has the same problem as 1)
-// 3) Controller does not create a decode signal which I am going to use for the memory phase
-// 4) The decoder for store and load - at
-// I have not updated these things as we have different methods of coding
-// Please do not delete any code as it takes a while to find what was deleted and fix it
+
 
 
 module Top(
@@ -76,7 +70,7 @@ module Top(
     wire [4:0] rd_out_idex; //destination reg out
     wire [4:0] rt_out_idex; //target reg out
     wire [5:0] ALUop_idex; //func out
-    wire Shamt_out_idex; //shamt out
+    wire [4:0]Shamt_out_idex; //shamt out
     wire alusrc_out_idex;
     wire [2:0] regdst_out_idex;
     wire regwrite_out_idex;
