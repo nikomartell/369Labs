@@ -4,7 +4,7 @@
 // ECE369 - Computer Architecture
 // 
 // Module - Mux5Bit3To1.v
-// Description - Performs signal multiplexing between 3 32-Bit words.
+// Description - Performs signal multiplexing between 3-5 Bit signals.
 ////////////////////////////////////////////////////////////////////////////////
 
 module Mux5Bit3To1(
