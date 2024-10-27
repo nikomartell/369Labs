@@ -27,6 +27,7 @@ module Controller(
     input beq, 
     input blt,
     input bgt,
+    input zero,
     
     //Control signals 
     output reg RegWrite,
