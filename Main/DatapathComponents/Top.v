@@ -41,7 +41,7 @@ module Top(
     wire [31:0] instruction_out_ifid;
 
     //wires out of Decode stage to Fetch stage
-    wire PCSrc_out;
+    wire PCsel_out;
     wire Jump_out;
     wire JumpRegister_out;
     wire [31:0] BranchTarget_out;
@@ -50,7 +50,6 @@ module Top(
     
     //wires out of decode phase
     wire [2:0] RegDst_out;
-    wire Jump_out_decode;
     wire Branch_out;
     wire MemRead_out;
     wire [1:0] MemtoReg_out;
@@ -58,8 +57,6 @@ module Top(
     wire MemWrite_out;
     wire ALUSrc_out;
     wire RegWrite_out;
-    wire [1:0] LoadType_out;
-    wire [1:0] StoreType_out; 
   
     wire [31:0] reg_data1_out; //read data1 out
     wire [31:0] reg_data2_out; //read data2 out 
@@ -70,7 +67,6 @@ module Top(
     wire [4:0] Shamt_out; //shamt out 
     wire [5:0] ALUop_out; // func out  
     
-    wire [1:0] decodeop_out; //doesnt actually exist, dont know what we're doing with data mem area as my code keeps getting deleted
     
     //wires out of ID/EX Register
     wire [31:0] pc_out_idex; // address out
@@ -120,38 +116,193 @@ module Top(
     //WB phase
     wire [31:0] memtoreg_out_wb;
     
-    InstructionFetchPhase Fetch(clk, rst, PCSrc_out, Jump_out, JumpRegister_out, BranchTarget_out, JumpTarget_out, JumpRegisterTarget_out,
-        PCADDResult_out, Instruction_out
+    InstructionFetchPhase Fetch(
+    //inputs
+        .Clk(clk),
+        .Reset(rst),
+        .pc_in(PCsel_out),
+        .Jump(Jump_out),
+        .JumpRegister(JumpRegister_out),
+        .BranchTarget(BranchTarget_out),
+        .JumpTarget(JumpTarget_out), 
+        .JumpRegisterTarget(JumpRegisterTarget_out),
+        
+    //outputs
+        .pc_out(PCADDResult_out), 
+        .instr_out(Instruction_out)
     );
-    if_id IFID(clk, rst, PCADDResult_out, Instruction_out,
-        pc_out_ifid, instruction_out_ifid
+    
+    if_id IFID(
+    //inputs
+        .clk(clk),
+        .reset(rst), 
+        .pc_in(PCADDResult_out), 
+        .instr_in(Instruction_out),
+        
+    //outputs
+        .pc_out(pc_out_ifid), 
+        .instr_out(instruction_out_ifid)
     );
-    InstructionDecodePhase Decode(clk, rst, pc_out_ifid, instruction_out_ifid, memtoreg_out_wb, WriteRegister_out_memwb, RegWrite_out_memwb,
-        RegDst_out, Jump_out_decode, Branch_out, MemRead_out, MemtoReg_out, ALUOp, MemWrite_out, ALUSrc_out, JumpRegister_out,
-        RegWrite_out, LoadType_out, StoreType_out, JumpTarget_out, reg_data1_out, reg_data2_out, pc_out, sign_ext_offset_out, 
-        rd_out, rt_out, Shamt_out, ALUop_out
+    
+    InstructionDecodePhase Decode(
+    //inputs
+        .Clk(clk), 
+        .Reset(rst), 
+        .pc_in(pc_out_ifid), 
+        .instr_in(instruction_out_ifid),
+        .WriteData(memtoreg_out_wb), 
+        .WriteRegister(WriteRegister_out_memwb), 
+        .RegWrite_in(RegWrite_out_memwb),
+        
+    //output control signals
+        .RegDst(RegDst_out), 
+        .Jump(Jump_out_decode), 
+        .Branch(Branch_out), 
+        .MemRead(MemRead_out), 
+        .MemtoReg(MemtoReg_out), 
+        .ALUOp(ALUOp), 
+        .MemWrite(MemWrite_out), 
+        .ALUSrc(ALUSrc_out), 
+        .JumpRegister(JumpRegister_out),
+        .RegWrite_out(RegWrite_out), 
+    //outputs
+        .JumpTarget(JumpTarget_out), 
+        .reg_data1_in(reg_data1_out), 
+        .reg_data2_in(reg_data2_out), 
+        .pc_out(pc_out), 
+        .sign_ext_offset_in(sign_ext_offset_out), 
+        .rd_in(rd_out), 
+        .rt_in(rt_out), 
+        .Shamt_in(Shamt_out),
+        .Func(ALUop_out),
+        .BranchTarget(BranchTarget_out)
     );
-    id_ex IDEX(clk, rst, pc_out, reg_data1_out, reg_data2_out, sign_ext_offset_out, rd_out, rt_out, ALUop_out, Shamt_out,
-        pc_out_idex, reg_data1_out_idex, reg_data2_out_idex, sign_ext_offset_out_idex, rd_out_idex, rt_out_idex, ALUop_idex,
-        Shamt_out_idex, ALUSrc_out, RegDst_out, RegWrite_out, ALUOp, MemWrite_out, MemRead_out, MemtoReg_out, decodeop_out, 
-        alusrc_out_idex, regdst_out_idex, regwrite_out_idex, memwrite_out_idex, memread_out_idex, memtoreg_out_idex, decodeop_out_idex
+    
+    id_ex IDEX(
+    //input
+        .clk(clk), 
+        .reset(rst), 
+        .pc_in(pc_out), 
+        .reg_data1(reg_data1_out), 
+        .reg_data2(reg_data2_out), 
+        .sign_ext_offset(sign_ext_offset_out), 
+        .rd(rd_out), 
+        .rt(rt_out), 
+        .Func(ALUop_out), 
+        .Shamt(Shamt_out),
+        
+    //outputs
+        .pc_out(pc_out_idex), 
+        .reg_data1_out(reg_data1_out_idex), 
+        .reg_data2_out(reg_data2_out_idex), 
+        .sign_ext_offset_out(sign_ext_offset_out_idex), 
+        .rd_out(rd_out_idex), 
+        .rt_out(rt_out_idex), 
+        .Func_out(ALUop_idex),
+        .Shamt_out(Shamt_out_idex),
+        
+    //input control signals
+        .alusrc_in(ALUSrc_out), 
+        .regdst_in(RegDst_out), 
+        .regwrite_in(RegWrite_out), 
+        .aluop_in(ALUOp), 
+        .memwrite_in(MemWrite_out), 
+        .memread_in(MemRead_out), 
+        .memtoreg_in(MemtoReg_out), 
+        
+    //output control signals
+        .alusrc_out(alusrc_out_idex), 
+        .regdst_out(regdst_out_idex), 
+        .regwrite_out(regwrite_out_idex),
+        .memwrite_out(memwrite_out_idex), 
+        .memread_out(memread_out_idex), 
+        .memtoreg_out(memtoreg_out_idex)
     );
-    ExecutePhase Execute(reg_data1_out_idex, reg_data2_out_idex, sign_ext_offset_out_idex, rd_out_idex, rt_out_idex, ALUop_idex, Shamt_out_idex, alusrc_out_idex, regdst_out_idex, aluop_out_idex,
-        ALU_result, regdst
+    
+    ExecutePhase Execute(
+    //inputs
+        .reg_data1_in(reg_data1_out_idex), 
+        .reg_data2_in(reg_data2_out_idex), 
+        .sign_ext_offset_in(sign_ext_offset_out_idex), 
+        .rd_in(rd_out_idex), 
+        .rt_in(rt_out_idex), 
+        .ALUop(ALUop_idex), 
+        .Shamt_in(Shamt_out_idex), 
+        .alusrc_in(alusrc_out_idex), 
+        .regdst_in(regdst_out_idex), 
+        .aluop_in(aluop_out_idex),
+    //outputs
+        .ALU_result(ALU_result), 
+        .regdst(regdst)
     );
-    ex_mem EXMEM(clk, rst, pc_out_idex, ALU_result, reg_data2_out_idex, regdst, ALUop_idex, decodeop_out_idex, 
-        pc_out_exmem, alu_result_out_exmem, read_data2_out_exmem, instruction_mux_out_exmem, opcode_out_exmem, decodeop_out_exmem,
-        regwrite_out_idex, memwrite_out_idex, memread_out_idex, memtoreg_out_idex,
-        regwrite_out_exmem, memwrite_out_exmem, memread_out_exmem, memtoreg_out_exmem
+    
+    ex_mem EXMEM(
+    //inputs
+        .clk(clk), 
+        .reset(rst),
+        .alu_result(ALU_result), 
+        .read_data2(reg_data2_out_idex), 
+        .regdst(regdst),
+        .ALU_op(ALUop_idex), 
+        
+    //output
+        .alu_result_out(alu_result_out_exmem), 
+        .read_data2_out(read_data2_out_exmem), 
+        .regdst_out(instruction_mux_out_exmem),
+        .ALU_op_out(opcode_out_exmem),
+        
+    //input control signals
+        .regwrite(regwrite_out_idex), 
+        .memwrite(memwrite_out_idex), 
+        .memread(memread_out_idex), 
+        .memtoreg(memtoreg_out_idex),
+        
+    //output control signals
+        .regwrite_out(regwrite_out_exmem), 
+        .memwrite_out(memwrite_out_exmem), 
+        .memread_out(memread_out_exmem), 
+        .memtoreg_out(memtoreg_out_exmem)
     );
-    MemoryPhase MemoryAcess(clk, alu_result_out_exmem, read_data2_out_exmem, opcode_out_exmem, decodeop_out_exmem, memwrite_out_exmem, memread_out_exmem,
-        read_mem_data_out
+    MemoryPhase MemoryAcess(
+    //inputs
+        .clk(clk), 
+        .alu_result(alu_result_out_exmem), 
+        .reg_data2_in(read_data2_out_exmem), 
+        .opcode(opcode_out_exmem),
+        .memwrite(memwrite_out_exmem), 
+        .memread(memread_out_exmem),
+        
+    //outputs
+        .read_data_out(read_mem_data_out)
     );
-    mem_wb MEMWB(clk, rst, alu_result_out_exmem, read_mem_data_out, instruction_mux_out_exmem, pc_out_exmem, 
-        alu_result_out_memwb, WriteData_out_memwb, WriteRegister_out_memwb, pc_out_memwb, 
-        memtoreg_out_exmem, regwrite_out_exmem, memtoreg_out_memwb, RegWrite_out_memwb
+    
+    mem_wb MEMWB(
+    //input
+        .clk(clk), 
+        .reset(rst), 
+        .ALUResult(alu_result_out_exmem), 
+        .mem_read(read_mem_data_out), 
+        .regdst(instruction_mux_out_exmem), 
+    //outputs
+        .ALUResult_out(alu_result_out_memwb), 
+        .mem_read_out(WriteData_out_memwb), 
+        .regdst_out(WriteRegister_out_memwb),
+    //intput control wire
+        .memtoreg(memtoreg_out_exmem), 
+        .regwrite(regwrite_out_exmem), 
+    //output control wire
+        .memtoreg_out(memtoreg_out_memwb), 
+        .regwrite_out(RegWrite_out_memwb)
     );
-    Mux32Bit2To1 MemToReg(memtoreg_out_wb, alu_result_out_memwb, WriteData_out_memwb, memtoreg_out_memwb);
+    
+    Mux32Bit2To1 MemToReg(
+    //input
+        .inA(alu_result_out_memwb), 
+        .inB(WriteData_out_memwb), 
+        .sel(memtoreg_out_memwb),
+    //output
+        .out(memtoreg_out_wb)
+    );
     
     
 endmodule

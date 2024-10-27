@@ -144,6 +144,6 @@ module InstructionDecodePhase(
     assign rt_in = instr_in[20:16];
     assign rd_in = instr_in[15:11]; 
     assign Shamt_in = instr_in[10:6];
-    assign Func = instr_in[5:0];
+    assign Func = instr_in[31:26];
     
 endmodule

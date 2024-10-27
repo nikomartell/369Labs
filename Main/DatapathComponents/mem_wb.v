@@ -6,12 +6,12 @@ module mem_wb (
     input wire [31:0] ALUResult,
     input wire [31:0] mem_read,
     input wire [4:0] regdst, //write register in 
-    input wire [31:0] pc_in, 
+    //input wire [31:0] pc_in, 
     
     output reg [31:0] ALUResult_out,
     output reg [31:0] mem_read_out, 
     output reg [4:0] regdst_out, //write register out
-    output reg [31:0] pc_out,
+    //output reg [31:0] pc_out,
     
     //input control signals 
     input wire [1:0] memtoreg,
@@ -28,7 +28,7 @@ always @(posedge clk or posedge reset) begin
         ALUResult_out <= 32'b0;
         mem_read_out <= 32'b0;
         regdst_out <= 5'b0;
-        pc_out <= 32'b0;
+        //pc_out <= 32'b0;
         
         //control signals reset 
         regwrite_out <= 1'b0;
@@ -38,7 +38,7 @@ always @(posedge clk or posedge reset) begin
         ALUResult_out <= ALUResult;
         mem_read_out <= mem_read;
         regdst_out <= regdst;
-        pc_out <= pc_in;
+        //pc_out <= pc_in;
         
         //control signals passing 
         regwrite_out <= regwrite;

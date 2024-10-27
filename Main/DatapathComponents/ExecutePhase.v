@@ -28,7 +28,7 @@ module ExecutePhase(
     input [4:0] rd_in, //destination reg out
     input [4:0] rt_in, //target reg out
     input [5:0] ALUop, //func out
-    input Shamt_in, //shamt out
+    input [4:0] Shamt_in, //shamt out
     
     //control signals from ID/EX Register
     input alusrc_in,
@@ -45,10 +45,10 @@ module ExecutePhase(
     wire zero;
     
     ALUController ALUCntrlr(ALUop, sign_ext_offset_in[5:0], ALU_control);
-    Mux32Bit2To1 ALUsrc(ALU_src_out, sing_ext_offset_in, reg_data2_in, alusrc_in);
-    ALU32Bit ALU(ALU_control, reg_data1_in1, ALU_src_out, Shamt_in, ALU_result, zero);
+    Mux32Bit2To1 ALUsrc(ALU_src_out, sign_ext_offset_in, reg_data2_in, alusrc_in);
+    ALU32Bit ALU(ALU_control, reg_data1_in, ALU_src_out, Shamt_in, ALU_result, zero);
     
-    Mux32Bit2To1 RegDst(regdst, rd_in, rt_in, regdst_in);
+    Mux5Bit3To1 RegDst(rt_in, rd_in, regdst_in, regdst);
     
     
 endmodule

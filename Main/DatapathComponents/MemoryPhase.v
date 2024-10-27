@@ -25,7 +25,7 @@ module MemoryPhase(
     input clk,
     
     //input [31:0] BranchTarget_in, in decode
-    input [4:0] regdst,
+    //input [4:0] regdst,
     input [31:0] alu_result,
     input [31:0] reg_data2_in, //read data2 in 
     //input [31:0] pc_in, straight from decode to fetch
@@ -34,21 +34,21 @@ module MemoryPhase(
     
     //control signals from EX/MEM
     //input Branch, straight from decode to fetch
-    input [1:0] memtoreg,
-    input regwrite,
+    //input [1:0] memtoreg,
+    //input regwrite,
     input memwrite, 
     input memread,
     //input [1:0] decodeop_in,
     
     //output control signals 
-    output [1:0] memtoreg_out, 
-    output regwrite_out, 
+    //output [1:0] memtoreg_out, 
+    //output regwrite_out, 
     //output PCSrc, // not sure if thats the name 
     
     //output to MEM/WB
-    output [31:0] read_data_out, //read data memory out - read data 2 out
-    output [4:0] regdst_out,
-    output [31:0] alu_result_out
+    output [31:0] read_data_out //read data memory out - read data 2 out
+    //output [4:0] regdst_out,
+    //output [31:0] alu_result_out
     //output [31:0] BranchTarget_out, 
     //output [31:0] pc_out
     );
@@ -56,10 +56,10 @@ module MemoryPhase(
     //control signals passthrough 
     //assign PSCrc = Branch & zero_in;
     //assign BranchTarget_out = BranchTarget_in;
-    assign alu_result_out = alu_result;
-    assign regwrite_out = regwrite;
-    assign memtoreg_out = memtoreg;
-    assign regdst_out = regdst;
+    //assign alu_result_out = alu_result;
+    //assign regwrite_out = regwrite;
+    //assign memtoreg_out = memtoreg;
+    //assign regdst_out = regdst;
     //assign pc_out = pc_in;
     
     wire [31:0] datamem_out; //what is this for?

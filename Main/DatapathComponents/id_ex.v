@@ -29,14 +29,12 @@ module id_ex (
     input memwrite_in,
     input memread_in,
     input [1:0] memtoreg_in,
-    input branch_in,
    // input [1:0] loadtype_in,
    // input [1:0] storetype_in,
 
 //output control signals 
     output reg alusrc_out,
     output reg [2:0] regdst_out,
-    output reg branch_out,
     output reg regwrite_out,
     output reg [3:0] aluop_out,
     output reg memwrite_out,
@@ -60,7 +58,6 @@ always @(posedge clk or posedge reset) begin
         //control signals reset 
         alusrc_out <= 1'b0;
         regdst_out <= 1'b0;
-        branch_out <= 1'b0;
         regwrite_out <= 1'b0;
         aluop_out <= 4'b0000;
         memwrite_out <= 1'b0;
@@ -82,7 +79,6 @@ always @(posedge clk or posedge reset) begin
         //control signals pass through 
         alusrc_out <= alusrc_in;
         regdst_out <= regdst_in;
-        branch_out <= branch_in;
         regwrite_out <= regwrite_in;
         aluop_out <= aluop_in;
         memwrite_out <= memwrite_in;
