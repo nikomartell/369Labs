@@ -38,9 +38,27 @@ module ex_mem (
     //output reg [1:0] decodeop_out
     
 );
+initial begin 
+    //branch_address_out <= 32'b0;
+        //zero_out <= 1'b0;
+        alu_result_out <= 32'b0;
+        read_data2_out <= 32'b0;
+        regdst_out <= 5'b0; //write register out
+        //pc_out <= 32'b0;
+        
+        //control signals reset 
+        memread_out <= 1'b0;
+        memwrite_out <= 1'b0;
+        memtoreg_out <= 1'b0;
+        regwrite_out <= 1'b0;
+        ALU_op_out <= 5'b0;
+        //branch_out <= 1'b0;
+        //decodeop_out <= 1'b0;
+end
+
 
 //
-always @(posedge clk or posedge reset) begin
+always @(negedge clk or posedge reset) begin
     if (reset) begin
         //branch_address_out <= 32'b0;
         //zero_out <= 1'b0;

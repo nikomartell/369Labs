@@ -33,11 +33,12 @@ module DataMemory(
     input Clk,
     input MemWrite,          // Control signal for memory write 
     input MemRead,           // Control signal for memory read 
-    output reg [31:0] ReadData // Contents of memory location at Address
+    output reg [31:0] ReadData, // Contents of memory location at Address
+    output wire [31:0] debug_reg
 ); 
-
+    
     // Declare the memory array 1024 - 32-bit words
-    reg [31:0] memory [0:1023];
+    (* mark_debug = "true" *) reg [31:0] memory [0:1023];
 
     // Initialize memory to zero
     integer i;

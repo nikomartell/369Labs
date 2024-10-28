@@ -43,7 +43,7 @@ module InstructionDecodePhase(
     output Jump,
     output Branch,
     output MemRead,
-    output [1:0] MemtoReg,
+    output MemtoReg,
     output [3:0] ALUOp,
     output MemWrite,
     output ALUSrc,

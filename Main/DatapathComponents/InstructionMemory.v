@@ -112,14 +112,8 @@ module InstructionMemory(Address, Instruction);
     end
 
     
-    always @(Address) begin //Replace with text file later , for now trash values to itirate through memory
-    for (i = 0; i < 128; i = i + 1) begin
-            memory[i] = i * 3;
-        end
-    
-    Instruction <= memory[Address[8:2]];
-    
-    
+    always @(Address) begin //Replace with text file later , for now trash values to itirate through memory    
+        Instruction <= memory[Address[8:2]];
     end 
 
 endmodule

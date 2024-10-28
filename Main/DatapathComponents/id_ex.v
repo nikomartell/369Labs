@@ -28,7 +28,7 @@ module id_ex (
     input [3:0] aluop_in,
     input memwrite_in,
     input memread_in,
-    input [1:0] memtoreg_in,
+    input memtoreg_in,
    // input [1:0] loadtype_in,
    // input [1:0] storetype_in,
 
@@ -39,12 +39,34 @@ module id_ex (
     output reg [3:0] aluop_out,
     output reg memwrite_out,
     output reg memread_out,
-    output reg [1:0] memtoreg_out
+    output reg memtoreg_out
     //output reg [1:0] loadtype_out,
     //output reg [1:0] storetype_out
 );
 
-always @(posedge clk or posedge reset) begin
+initial begin 
+        pc_out <= 32'b0;
+        reg_data1_out <= 32'b0;
+        reg_data2_out <= 32'b0;
+        sign_ext_offset_out <= 32'b0;
+        rd_out <= 5'b0;
+        rt_out <= 5'b0;
+        Func_out <= 6'b0;
+        Shamt_out <= 5'b0;
+        
+        //control signals reset 
+        alusrc_out <= 1'b0;
+        regdst_out <= 1'b0;
+        regwrite_out <= 1'b0;
+        aluop_out <= 4'b0000;
+        memwrite_out <= 1'b0;
+        memread_out <= 1'b0;
+        memtoreg_out <= 1'b0;
+        //loadtype_out <= 2'b0;
+        //storetype_out <= 2'b0;
+end
+
+always @(negedge clk or posedge reset) begin
     if (reset) begin 
         pc_out <= 32'b0;
         reg_data1_out <= 32'b0;

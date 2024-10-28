@@ -37,7 +37,7 @@ module Controller(
     output reg MemWrite,
     output reg MemRead,
     output reg Branch,
-    output reg [1:0] MemToReg, //this is a 2x1 mux
+    output reg MemToReg, //this is a 2x1 mux
     output reg Jump,
     //output reg [1:0] StoreType, //this is a 3x1 mux
     //output reg [1:0] LoadType,  //this is a 3x1 mux
@@ -60,7 +60,7 @@ module Controller(
     JumpReg <= 0; 
     end 
     
-    always@(OPCode) begin 
+    always@(*) begin 
     //default values again to prevent latch inference 
     RegWrite <= 0;
     ALUSrc <= 0;
@@ -346,7 +346,7 @@ module Controller(
                 Jump <= 0;
              end 
              //BGTZ
-             6'b000001: begin
+             6'b000111: begin
                 ALUOp <= 7;
                 RegWrite <= 0; 
                 RegDst <= 0;

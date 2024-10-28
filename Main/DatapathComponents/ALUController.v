@@ -21,7 +21,7 @@
 
 
 module ALUController(OpCode, Function,  ALUControl);
-    input [3:0] OpCode;
+    input [5:0] OpCode;
     input [5:0] Function;
     output reg [3:0] ALUControl;
     
@@ -38,6 +38,7 @@ module ALUController(OpCode, Function,  ALUControl);
                     6'b100000: ALUControl <= 0; //add
                     6'b100010: ALUControl <= 1; //sub
                     6'b100100: ALUControl <= 2; //and
+                    default: ALUControl <= 0;
                 endcase
             end
             6'b011100: ALUControl <= 8; //mul
@@ -58,6 +59,7 @@ module ALUController(OpCode, Function,  ALUControl);
             7: ALUControl <= 12; //bgtz
             6: ALUControl <= 13; //blez
             11: ALUControl <= 14; //bltz
+            default: ALUControl <= 0;
         endcase
     end
 

@@ -50,9 +50,12 @@ module Comparator(Reg1, Reg2, beq, blt, bgt, zero);
             bgt <= 0;
             zero <= 1;
         end
-        
+        else begin
+            beq <= 0;
+            blt <= 0;
+            bgt <= 0;
+            zero <= 0;
+        end
         
     end
-    
-    
 endmodule

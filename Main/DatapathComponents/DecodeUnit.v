@@ -36,6 +36,7 @@ always @(*) begin
             2'b11: begin 
                 decode_result <= {Rt[31:24], MemOut[23:0]};
             end
+            default: decode_result <= 0;
         endcase
     end
 end

@@ -36,14 +36,14 @@ module InstructionFetchPhase(
         input [31:0] JumpRegisterTarget,
         
         //outputs the current and the next instruction 
-        output [31:0] pc_out, 
-        output [31:0] instr_out
+        (* mark_debug = "true" *) output [31:0] pc_out, 
+        (* mark_debug = "true" *) output [31:0] instr_out
     );
         
-        wire [31:0] PCAddResult_BranchTarget_out;
-        wire [31:0] PCAddResult_BranchTarget_JumpTarget_out;
-        wire [31:0] PCAddResult_BranchTarget_JumpTarget_JumpRegisterTarget_Out;
-        wire [31:0] PCResult; 
+        (* mark_debug = "true" *) wire [31:0] PCAddResult_BranchTarget_out;
+        (* mark_debug = "true" *) wire [31:0] PCAddResult_BranchTarget_JumpTarget_out;
+        (* mark_debug = "true" *) wire [31:0] PCAddResult_BranchTarget_JumpTarget_JumpRegisterTarget_out;
+        (* mark_debug = "true" *) wire [31:0] PCResult; 
         
         //pc+4 adder 
         PCAdder PC_Adder (
@@ -57,8 +57,8 @@ module InstructionFetchPhase(
         //mux 
         Mux32Bit2To1 pc_out_signal (
         //inputs: next instruction and branching target address
-        .inA(pc_out),
-        .inB(BranchTarget),
+        .inA(BranchTarget),
+        .inB(pc_out),
         
         //control signal for mux
         .sel(pc_in),
@@ -70,8 +70,8 @@ module InstructionFetchPhase(
         //mux for supporting j
         Mux32Bit2To1 Jump_Signal (
         //inputs: jump target address and next instruction or branching target address
-        .inA(PCAddResult_BranchTarget_out),
-        .inB(JumpTarget),
+        .inA(JumpTarget),
+        .inB(PCAddResult_BranchTarget_out),
         
         //control signals for mux
         .sel(Jump),
@@ -83,8 +83,8 @@ module InstructionFetchPhase(
         //mux for supporting jr
         Mux32Bit2To1 JumpRegister_Signal (
         //inputs: jumpregister target address and jump target address 
-        .inA(PCAddResult_BranchTarget_JumpTarget_out),
-        .inB(JumpRegisterTarget),
+        .inA(JumpRegisterTarget),
+        .inB(PCAddResult_BranchTarget_JumpTarget_out),
         
         //control signals for mux
         .sel(JumpRegister),

@@ -24,7 +24,10 @@
 
 module Top(
     input clk,
-    input rst
+    input rst,
+    
+    output [31:0] WriteData_sim,
+    output [31:0] PCResult_sim
 );
     //wires out of Fetch stage
     wire [31:0] PCADDResult_out;
@@ -35,27 +38,25 @@ module Top(
     wire [31:0] instruction_out_ifid;
 
     //wires out of Decode stage to Fetch stage
-    wire PCsel_out;
     wire Jump_out;
     wire JumpRegister_out;
     wire [31:0] BranchTarget_out;
     wire [31:0] JumpTarget_out;
-    wire [31:0] JumpRegisterTarget_out;
     
     //wires out of decode phase
     wire [2:0] RegDst_out;
     wire Branch_out;
     wire MemRead_out;
-    wire [1:0] MemtoReg_out;
+    wire MemtoReg_out;
     wire [3:0] ALUOp;
     wire MemWrite_out;
     wire ALUSrc_out;
     wire RegWrite_out;
   
     wire [31:0] reg_data1_out; //read data1 out
-    wire [31:0] reg_data2_out; //read data2 out 
-    wire [31:0] pc_out; //needed in the execute phase too , pc+4 out 
+    wire [31:0] reg_data2_out; //read data2 out
     wire [31:0] sign_ext_offset_out; //sign extended out 
+    wire [31:0] pc_out_decode;
     wire [4:0] rd_out; //destination reg out 
     wire [4:0] rt_out; //target reg out 
     wire [4:0] Shamt_out; //shamt out 
@@ -77,7 +78,7 @@ module Top(
     wire [3:0] aluop_out_idex;
     wire memwrite_out_idex;
     wire memread_out_idex;
-    wire [1:0] memtoreg_out_idex;
+    wire memtoreg_out_idex;
     wire [1:0] decodeop_out_idex;
     
     //wires out of execute phase
@@ -92,8 +93,8 @@ module Top(
     wire regwrite_out_exmem;
     wire memwrite_out_exmem;
     wire memread_out_exmem;
-    wire [1:0] memtoreg_out_exmem;
-    wire [5:0] opcode_out_exmem; //i just want to try to see if decode will work with these 2
+    wire memtoreg_out_exmem;
+    wire [5:0] opcode_out_exmem; 
     wire [1:0] decodeop_out_exmem;
     
     //wires out of memory phase
@@ -104,22 +105,26 @@ module Top(
     wire [31:0] WriteData_out_memwb;
     wire [4:0] WriteRegister_out_memwb;
     wire [31:0] pc_out_memwb;
-    wire [1:0] memtoreg_out_memwb;
+    wire memtoreg_out_memwb;
     wire RegWrite_out_memwb;
+    
+    assign WriteData_sim = WriteData_out_memwb;
     
     //WB phase
     wire [31:0] memtoreg_out_wb;
+    
+    assign PCResult_sim = PCADDResult_out;
     
     InstructionFetchPhase Fetch(
     //inputs
         .Clk(clk),
         .Reset(rst),
-        .pc_in(PCsel_out),
+        .pc_in(Branch_out),
         .Jump(Jump_out),
         .JumpRegister(JumpRegister_out),
         .BranchTarget(BranchTarget_out),
         .JumpTarget(JumpTarget_out), 
-        .JumpRegisterTarget(JumpRegisterTarget_out),
+        .JumpRegisterTarget(reg_data1_out),
         
     //outputs
         .pc_out(PCADDResult_out), 
@@ -150,7 +155,7 @@ module Top(
         
     //output control signals
         .RegDst(RegDst_out), 
-        .Jump(Jump_out_decode), 
+        .Jump(Jump_out), 
         .Branch(Branch_out), 
         .MemRead(MemRead_out), 
         .MemtoReg(MemtoReg_out), 
@@ -163,7 +168,7 @@ module Top(
         .JumpTarget(JumpTarget_out), 
         .reg_data1_in(reg_data1_out), 
         .reg_data2_in(reg_data2_out), 
-        .pc_out(pc_out), 
+        .pc_out(pc_out_decode), 
         .sign_ext_offset_in(sign_ext_offset_out), 
         .rd_in(rd_out), 
         .rt_in(rt_out), 
@@ -176,7 +181,7 @@ module Top(
     //input
         .clk(clk), 
         .reset(rst), 
-        .pc_in(pc_out), 
+        .pc_in(pc_out_decode), 
         .reg_data1(reg_data1_out), 
         .reg_data2(reg_data2_out), 
         .sign_ext_offset(sign_ext_offset_out), 
