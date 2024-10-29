@@ -1,0 +1,5 @@
+Time resolution is 1 ps
+sel=0, out=00000002
+sel=1, out=00000001
+sel=0, out=f0000002
+sel=1, out=f0000001

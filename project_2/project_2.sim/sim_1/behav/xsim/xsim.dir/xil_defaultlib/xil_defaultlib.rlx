@@ -1,0 +1,9 @@
+0.7
+2020.2
+May 22 2024
+19:03:11
+C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.sim/sim_1/behav/xsim/glbl.v,1708598507,verilog,,,,glbl,,,,,,,,
+C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/ALUController.v,1729114033,verilog,,C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/ALUController_tb.v,,ALUController,,,,,,,,
+C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/ALUController_tb.v,1729114109,verilog,,,,ALUController_tb,,,,,,,,
+C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1.v,1729111665,verilog,,C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v,,Mux32Bit3To1,,,,,,,,
+C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v,1729112010,verilog,,,,Mux32Bit3To1_tb,,,,,,,,

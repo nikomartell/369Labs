@@ -1,0 +1,43 @@
+
+*** Running vivado
+    with args -log Mux32Bit3To1_tb.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source Mux32Bit3To1_tb.tcl
+
+
+
+****** Vivado v2024.1 (64-bit)
+  **** SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
+  **** IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+  **** SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+  **** Start of session at: Wed Oct 16 13:52:26 2024
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source Mux32Bit3To1_tb.tcl -notrace
+create_project: Time (s): cpu = 00:00:03 ; elapsed = 00:00:12 . Memory (MB): peak = 513.598 ; gain = 198.180
+Command: synth_design -top Mux32Bit3To1_tb -part xc7a100tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 20472
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:17 . Memory (MB): peak = 972.008 ; gain = 454.453
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'Mux32Bit3To1_tb' [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:22]
+INFO: [Synth 8-251] Select: 2'b00, Output: xxxxxxxx [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:50]
+INFO: [Synth 8-251] Select: 2'b01, Output: xxxxxxxx [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:55]
+INFO: [Synth 8-251] Select: 2'b10, Output: xxxxxxxx [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:60]
+INFO: [Synth 8-251] Select: 2'b11, Output: xxxxxxxx [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:65]
+WARNING: [Synth 8-11581] system task call 'finish' not supported [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:68]
+ERROR: [Synth 8-439] module 'mux3x1' not found [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:32]
+ERROR: [Synth 8-6156] failed synthesizing module 'Mux32Bit3To1_tb' [C:/Users/ual-laptop/Documents/GitHub/369Lab1/project_2/project_2.srcs/sources_1/new/Mux32Bit3To1_tb.v:22]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:19 . Memory (MB): peak = 1080.309 ; gain = 562.754
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+10 Infos, 1 Warnings, 0 Critical Warnings and 3 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 16 13:53:06 2024...
