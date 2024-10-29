@@ -107,8 +107,22 @@ module Top(
     wire [31:0] pc_out_memwb;
     wire memtoreg_out_memwb;
     wire RegWrite_out_memwb;
+
     
-    assign WriteData_sim = WriteData_out_memwb;
+    //assign WriteData_sim = WriteData_out_memwb; 
+    
+    //This is the value being written back into the register file, I think the wire you were pulling before was coming from
+    //memory, so at clk cycle 92 it would stop showing xxxxxx to show 000000 again because in that clk cycle sw was  
+    //actually doing the first memory operation 
+
+    //problem so far I think it is the sign extender
+    //sw works I believe
+    //lw works
+
+    //im not sure if alu operations work right as the current code is usign all imm fields for them, ill try to run 
+    //a few adds and subs to see whats up
+    
+    assign WriteData_sim = WriteRegister_out_memwb; 
     
     //WB phase
     wire [31:0] memtoreg_out_wb;
