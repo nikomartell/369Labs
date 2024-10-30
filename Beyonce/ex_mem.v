@@ -24,7 +24,7 @@ module ex_mem (
     input regwrite, //reg write in 
     input memwrite, 
     input memread, 
-    input [1:0] memtoreg,
+    input memtoreg,
     input [5:0] ALU_op,
     //input [1:0] decodeop_in,
    
@@ -33,7 +33,7 @@ module ex_mem (
     output reg regwrite_out, 
     output reg memwrite_out,
     output reg memread_out, 
-    output reg [1:0] memtoreg_out,
+    output reg memtoreg_out,
     output reg [5:0] ALU_op_out
     //output reg [1:0] decodeop_out
     

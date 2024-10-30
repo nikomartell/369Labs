@@ -46,6 +46,7 @@ module DataMemory(
         for (i = 0; i < 1024; i = i + 1) begin
             memory[i] = 32'b0; // Set each memory location to zero
         end
+        ReadData <= 32'b0;
     end
     
     always @(posedge Clk) begin

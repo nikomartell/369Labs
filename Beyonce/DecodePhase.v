@@ -62,7 +62,8 @@ module InstructionDecodePhase(
     output [4:0] rt_in, //target reg out 
     output [4:0] Shamt_in, //shamt out 
     output [5:0] Func, // func out  
-    output [31:0] BranchTarget //BranchTarget
+    output [31:0] BranchTarget,  //BranchTarget
+    output [5:0] FuncFunc //actually func
 );
 
     //output wires from comparator to controller for branches
@@ -145,5 +146,6 @@ module InstructionDecodePhase(
     assign rd_in = instr_in[15:11]; 
     assign Shamt_in = instr_in[10:6];
     assign Func = instr_in[31:26];
+    assign FuncFunc = instr_in[5:0];
     
 endmodule

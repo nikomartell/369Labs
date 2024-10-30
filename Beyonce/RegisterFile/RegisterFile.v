@@ -72,20 +72,27 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
     end
     
     //synchronous write 
-    always @(posedge Clk) begin
+    always @(posedge Clk or posedge Reset) begin
      if (Reset) begin
      //set each register to 0
             for (i = 0; i < 32; i = i + 1) begin
-                RegFile[i] <= i; 
-            end        
-        end else if (RegWrite) 
+                RegFile[i] <= 0; 
+            end
+        end 
+      else if (RegWrite) 
             RegFile[WriteRegister] <= WriteData;
     end
     
     //asynchronous read
-    always @(negedge Clk) begin
-        ReadData1 <= RegFile[ReadRegister1];
-        ReadData2 <= RegFile[ReadRegister2];
+    always @(negedge Clk or posedge Reset) begin
+        if (Reset) begin 
+            ReadData1 <= 0;
+            ReadData2 <= 0;  
+        end
+        else begin
+            ReadData1 <= RegFile[ReadRegister1];
+            ReadData2 <= RegFile[ReadRegister2];
+        end
     end
     
 endmodule

@@ -48,7 +48,7 @@ module ALU32Bit(ALUControl, A, B, Shamt, ALUResult, Zero);
                 ALUResult <= A & B; //and
             end
             3: begin
-                ALUResult <= A | B; //or 
+                ALUResult <= (A | B); //or 
             end
             4: begin 
 		        ALUResult <= ~(A | B); //nor 

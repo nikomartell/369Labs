@@ -6,6 +6,10 @@ module DecodeUnit (
     output reg [31:0] decode_result
 );
 
+initial begin 
+    decode_result <= 0;
+end
+
 always @(*) begin
 
     // Still need the seperate values for opcode and base

@@ -33,7 +33,7 @@ module Controller(
     output reg RegWrite,
     output reg [3:0] ALUOp,
     output reg ALUSrc, //this is a mux 1-passes imm value
-    output reg [2:0] RegDst, //this is a mux 0-passes rt, 1-passes rd 
+    output reg RegDst, //this is a mux 0-passes rt, 1-passes rd 
     output reg MemWrite,
     output reg MemRead,
     output reg Branch,
@@ -99,11 +99,11 @@ module Controller(
             //ALUOp is func 
                 ALUOp <= 6'b000000; 
                 RegWrite <= 1; 
-                RegDst <= 1;
+                RegDst <= 0;
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 0;
-                MemToReg <= 0;
+                MemToReg <= 1;
                 Branch <= 0;
                 Jump <= 0;
                 //LoadType <= 0;
@@ -117,7 +117,7 @@ module Controller(
              6'b011100: begin 
                 ALUOp <=  6'b011100;
                 RegWrite <= 1; 
-                RegDst <= 1;
+                RegDst <= 0;
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -134,7 +134,7 @@ module Controller(
             6'b001100: begin 
                 ALUOp <= 6'b001100;  
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -149,7 +149,7 @@ module Controller(
            6'b001000: begin  
                 ALUOp <= 6'b001000;
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -165,7 +165,7 @@ module Controller(
              6'b001101: begin 
                 ALUOp <= 6'b001101;
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -180,7 +180,7 @@ module Controller(
              6'b001110: begin
                 ALUOp <= 6'b001110;
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -195,7 +195,7 @@ module Controller(
              6'b001010: begin 
                 ALUOp <= 9;
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 0;
@@ -212,7 +212,7 @@ module Controller(
             6'b100011: begin 
                 ALUOp <= 6'b100011; 
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 1;
@@ -254,7 +254,7 @@ module Controller(
             6'b100001: begin
                 ALUOp <=  6'b100001;
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 1;
@@ -268,7 +268,7 @@ module Controller(
              6'b100000: begin
                 ALUOp <= 6'b100000;
                 RegWrite <= 1; 
-                RegDst <= 0;
+                RegDst <= 1;
                 ALUSrc <= 1;
                 MemWrite <= 0; 
                 MemRead <= 1;
@@ -392,7 +392,7 @@ module Controller(
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 1;
-                MemToReg <= 2;
+                MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 1;
              end 

@@ -44,7 +44,7 @@ module Top(
     wire [31:0] JumpTarget_out;
     
     //wires out of decode phase
-    wire [2:0] RegDst_out;
+    wire RegDst_out;
     wire Branch_out;
     wire MemRead_out;
     wire MemtoReg_out;
@@ -52,6 +52,7 @@ module Top(
     wire MemWrite_out;
     wire ALUSrc_out;
     wire RegWrite_out;
+    
   
     wire [31:0] reg_data1_out; //read data1 out
     wire [31:0] reg_data2_out; //read data2 out
@@ -60,7 +61,8 @@ module Top(
     wire [4:0] rd_out; //destination reg out 
     wire [4:0] rt_out; //target reg out 
     wire [4:0] Shamt_out; //shamt out 
-    wire [5:0] ALUop_out; // func out  
+    wire [5:0] ALUop_out; // opcode out  
+    wire [5:0] Func_out; // func out
     
     
     //wires out of ID/EX Register
@@ -73,13 +75,14 @@ module Top(
     wire [5:0] ALUop_idex; //func out
     wire [4:0]Shamt_out_idex; //shamt out
     wire alusrc_out_idex;
-    wire [2:0] regdst_out_idex;
+    wire regdst_out_idex;
     wire regwrite_out_idex;
     wire [3:0] aluop_out_idex;
     wire memwrite_out_idex;
     wire memread_out_idex;
     wire memtoreg_out_idex;
     wire [1:0] decodeop_out_idex;
+    wire [5:0] Func_out_idex;
     
     //wires out of execute phase
     wire [31:0] ALU_result;
@@ -122,11 +125,10 @@ module Top(
     //im not sure if alu operations work right as the current code is usign all imm fields for them, ill try to run 
     //a few adds and subs to see whats up
     
-    assign WriteData_sim = WriteRegister_out_memwb; 
-    
     //WB phase
     wire [31:0] memtoreg_out_wb;
     
+    assign WriteData_sim = memtoreg_out_wb; 
     assign PCResult_sim = PCADDResult_out;
     
     InstructionFetchPhase Fetch(
@@ -188,7 +190,8 @@ module Top(
         .rt_in(rt_out), 
         .Shamt_in(Shamt_out),
         .Func(ALUop_out),
-        .BranchTarget(BranchTarget_out)
+        .BranchTarget(BranchTarget_out),
+        .FuncFunc(Func_out)
     );
     
     id_ex IDEX(
@@ -203,6 +206,7 @@ module Top(
         .rt(rt_out), 
         .Func(ALUop_out), 
         .Shamt(Shamt_out),
+        .FuncFunc(Func_out),
         
     //outputs
         .pc_out(pc_out_idex), 
@@ -213,6 +217,7 @@ module Top(
         .rt_out(rt_out_idex), 
         .Func_out(ALUop_idex),
         .Shamt_out(Shamt_out_idex),
+        .FuncFunc_out(Func_out_idex),
         
     //input control signals
         .alusrc_in(ALUSrc_out), 
@@ -244,6 +249,7 @@ module Top(
         .alusrc_in(alusrc_out_idex), 
         .regdst_in(regdst_out_idex), 
         .aluop_in(aluop_out_idex),
+        .Func_in(Func_out_idex),
     //outputs
         .ALU_result(ALU_result), 
         .regdst(regdst)

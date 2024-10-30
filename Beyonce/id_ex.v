@@ -11,6 +11,7 @@ module id_ex (
     input [4:0] rt, //target reg in 
     input [5:0] Func, //func in
     input [4:0] Shamt, //shamt in
+    input [5:0] FuncFunc, // actually func
     
     output reg [31:0] pc_out, // address out
     output reg [31:0] reg_data1_out, //read data1 out
@@ -20,10 +21,11 @@ module id_ex (
     output reg [4:0] rt_out, //target reg out
     output reg [5:0] Func_out, //func out
     output reg [4:0] Shamt_out, //shamt out
+    output reg [5:0] FuncFunc_out, //actually func
 
 //input control signals 
     input alusrc_in,
-    input [2:0] regdst_in,
+    input regdst_in,
     input regwrite_in,
     input [3:0] aluop_in,
     input memwrite_in,
@@ -34,7 +36,7 @@ module id_ex (
 
 //output control signals 
     output reg alusrc_out,
-    output reg [2:0] regdst_out,
+    output reg regdst_out,
     output reg regwrite_out,
     output reg [3:0] aluop_out,
     output reg memwrite_out,
@@ -53,6 +55,7 @@ initial begin
         rt_out <= 5'b0;
         Func_out <= 6'b0;
         Shamt_out <= 5'b0;
+        FuncFunc_out <= 6'b0;
         
         //control signals reset 
         alusrc_out <= 1'b0;
@@ -76,6 +79,7 @@ always @(negedge clk or posedge reset) begin
         rt_out <= 5'b0;
         Func_out <= 6'b0;
         Shamt_out <= 5'b0;
+        FuncFunc_out <= 6'b0;
         
         //control signals reset 
         alusrc_out <= 1'b0;
@@ -97,6 +101,7 @@ always @(negedge clk or posedge reset) begin
         rt_out <= rt;
         Func_out <= Func;
         Shamt_out <= Shamt;
+        FuncFunc_out <= FuncFunc;
         
         //control signals pass through 
         alusrc_out <= alusrc_in;
