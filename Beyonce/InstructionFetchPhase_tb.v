@@ -37,16 +37,19 @@ module tb_InstructionFetchPhase;
 
     // Test stimulus
     initial begin
-        // Test Case 1: Reset Behavior
-        // Inputs: Reset = 1, Clk = 0
-        // Expected Output: During reset, pc_out and instr_out should remain unchanged or zero.
-        Reset = 1;
+        // Initialize inputs
+        Reset = 0;
         pc_in = 0;
         Jump = 0;
         JumpRegister = 0;
-        BranchTarget = 32'h00000004; // Example branch target
-        JumpTarget = 32'h00000008; // Example jump target
-        JumpRegisterTarget = 32'h0000000C; // Example jump register target
+        BranchTarget = 32'h00000004;
+        JumpTarget = 32'h00000008;
+        JumpRegisterTarget = 32'h0000000C;
+
+        // Test Case 1: Reset Behavior
+        // Inputs: Reset = 1
+        // Expected Output: During reset, pc_out and instr_out should remain unchanged or zero.
+        Reset = 1;
         #10; // Wait for 10 ns
 
         // Release reset
@@ -56,26 +59,26 @@ module tb_InstructionFetchPhase;
         // Inputs: Reset = 0, pc_in = 0, Jump = 0, JumpRegister = 0
         // Expected Output: pc_out should increment by 4 and instr_out should reflect fetched instructions.
         #10; // Wait for a clock cycle
-        pc_in = 0; Jump = 0; JumpRegister = 0;
 
         // Test Case 3: Branch Instruction Fetch
         // Inputs: pc_in = 1, Jump = 0, JumpRegister = 0
         // Expected Output: pc_out should take the value of BranchTarget (4).
-        #10;
-        pc_in = 1; // Branch taken
-        Jump = 0; JumpRegister = 0;
+        pc_in = 1;
+        #10; // Wait for a clock cycle
 
         // Test Case 4: Jump Instruction Fetch
         // Inputs: pc_in = 0, Jump = 1, JumpRegister = 0
         // Expected Output: pc_out should take the value of JumpTarget (8).
-        #10;
-        pc_in = 0; Jump = 1; JumpRegister = 0;
+        pc_in = 0;
+        Jump = 1;
+        #10; // Wait for a clock cycle
 
         // Test Case 5: Jump Register Instruction Fetch
         // Inputs: pc_in = 0, Jump = 0, JumpRegister = 1
         // Expected Output: pc_out should take the value of JumpRegisterTarget (12).
-        #10;
-        pc_in = 0; Jump = 0; JumpRegister = 1;
+        Jump = 0;
+        JumpRegister = 1;
+        #10; // Wait for a clock cycle
 
         // Finish simulation
         $finish;

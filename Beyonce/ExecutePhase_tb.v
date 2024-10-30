@@ -3,13 +3,15 @@
 module ExecutePhase_tb;
 
     // Testbench signals
+    reg clk;
+    reg reset;
     reg [31:0] reg_data1_in;
     reg [31:0] reg_data2_in;
     reg [31:0] sign_ext_offset_in;
     reg [4:0] rd_in;
     reg [4:0] rt_in;
     reg [5:0] ALUop;
-    reg Shamt_in;
+    reg [4:0] Shamt_in; // Updated to 5-bit register
     reg alusrc_in;
     reg [2:0] regdst_in;
     reg [3:0] aluop_in;
@@ -19,6 +21,8 @@ module ExecutePhase_tb;
 
     // Instantiate the ExecutePhase module
     ExecutePhase uut (
+        .clk(clk),
+        .reset(reset),
         .reg_data1_in(reg_data1_in),
         .reg_data2_in(reg_data2_in),
         .sign_ext_offset_in(sign_ext_offset_in),
@@ -33,22 +37,30 @@ module ExecutePhase_tb;
         .regdst(regdst)
     );
 
+    // Clock generation
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // 10ns clock period
+    end
+
     // Test stimulus
     initial begin
         // Initialize inputs
-        reg_data1_in = 32'h00000005; // Example register data 1
-        reg_data2_in = 32'h00000003; // Example register data 2
-        sign_ext_offset_in = 32'h00000002; // Example sign-extended offset
-        rd_in = 5'b00001; // Destination register
-        rt_in = 5'b00010; // Target register
-        ALUop = 6'b000000; // Example ALU operation code
-        Shamt_in = 0; // Shift amount
-        alusrc_in = 1; // Use second input for ALU
-        regdst_in = 3'b001; // Example register destination selector
-        aluop_in = 4'b0000; // ALU operation selector
-        
-        // Wait for a clock cycle
+        reset = 1;
+        reg_data1_in = 32'h00000000;
+        reg_data2_in = 32'h00000000;
+        sign_ext_offset_in = 32'h00000000;
+        rd_in = 5'b00000;
+        rt_in = 5'b00000;
+        ALUop = 6'b000000;
+        Shamt_in = 5'b00000;
+        alusrc_in = 0;
+        regdst_in = 3'b000;
+        aluop_in = 4'b0000;
+
+        // Apply reset
         #10;
+        reset = 0;
 
         // Test Case 1: Simple Addition
         reg_data1_in = 32'h00000005; // 5
@@ -57,17 +69,11 @@ module ExecutePhase_tb;
         ALUop = 6'b100000; // ALU operation code for addition (add)
         #10; // Wait and observe outputs
 
-        // Check expected output for addition
-        // Expected ALU_result = 5 + 3 = 8
-
         // Test Case 2: Subtraction
         reg_data1_in = 32'h00000005; // 5
         reg_data2_in = 32'h00000003; // 3
         ALUop = 6'b100010; // ALU operation code for subtraction (sub)
         #10; // Wait and observe outputs
-
-        // Check expected output for subtraction
-        // Expected ALU_result = 5 - 3 = 2
 
         // Test Case 3: ALU with Immediate Value
         alusrc_in = 1; // ALU uses second input as immediate
@@ -76,16 +82,10 @@ module ExecutePhase_tb;
         ALUop = 6'b000000; // Example ALU operation code (e.g., add)
         #10; // Wait and observe outputs
 
-        // Check expected output for addition with immediate
-        // Expected ALU_result = 5 + 2 = 7
-
         // Test Case 4: Shift Operation
-        Shamt_in = 2; // Shift amount
+        Shamt_in = 5'b00010; // Shift amount
         ALUop = 6'b000100; // ALU operation code for logical left shift (sll)
         #10; // Wait and observe outputs
-
-        // Check expected output for shift
-        // Expected ALU_result = 5 << 2 = 20 (binary 10100)
 
         // Finish simulation
         $finish;

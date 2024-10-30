@@ -87,7 +87,7 @@ module if_id_tb;
         // Wait for global reset
         #100;
         
-        // Apply some test vectors
+        // Apply first test vector
         reset = 1;
         #10;
         reset = 0;
@@ -108,9 +108,33 @@ module if_id_tb;
         // Wait for some time
         #50;
 
-        // Add more test vectors as needed
-    end
+        // Apply second test vector
+        id_instr = 32'h87654321;
+        id_pc = 32'h00000008;
+        id_data1 = 32'h00000003;
+        id_data2 = 32'h00000004;
+        id_rd = 5'b00100;
+        id_rs1 = 5'b00101;
+        id_rs2 = 5'b00110;
+        id_reg_write = 0;
+        id_mem_read = 1;
+        id_mem_write = 0;
+        id_mem_to_reg = 1;
+        id_alu_src = 0;
+        id_alu_op = 2'b01;
 
-    always #5 clk = ~clk;
+        // Wait for some time
+        #50;
 
-endmodule
+        // Apply third test vector
+        id_instr = 32'hAABBCCDD;
+        id_pc = 32'h0000000C;
+        id_data1 = 32'h00000005;
+        id_data2 = 32'h00000006;
+        id_rd = 5'b01000;
+        id_rs1 = 5'b01001;
+        id_rs2 = 5'b01010;
+        id_reg_write = 1;
+        id_mem_read = 1;
+        id_mem_write = 1;
+        id_mem_to_reg = 1;

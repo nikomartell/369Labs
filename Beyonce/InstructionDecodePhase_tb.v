@@ -117,7 +117,22 @@ module InstructionDecodePhase_tb;
         // MemRead = 0, MemWrite = 1
         // Jump = 0, Branch = 0
         // ALUSrc = 1, RegWrite_out = 0
+
+        // Test case 3: R-type instruction (e.g., ADD)
+        instr_in = 32'b00000000001000100001100000100000; // ADD $3, $1, $2
+        pc_in = 32'h0000000C; // PC = 12
         
+        // Wait for a clock cycle
+        #10;
+
+        // Check outputs for R-type
+        // Expected Outputs:
+        // RegDst = 3'b010 (destination is rd)
+        // MemRead = 0, MemWrite = 0
+        // Jump = 0, Branch = 0
+        // ALUSrc = 0, RegWrite_out = 1
+        // ALUOp = 4'b0010 (for ADD operation)
+
         // Finish simulation
         #10;
         $finish;

@@ -30,48 +30,49 @@ module DecodeUnit_tb;
                  $time, MemOut, Rt, opcode, DecodeOp, decode_result);
         
         // Test case 1: LW (Load Word)
+        #10;
         opcode = 6'b100011; // LW
         MemOut = 32'hAABBCCDD; // Example data from memory
         Rt = 32'h00000000;
-        #10; // Wait for 10 time units
         
         // Test case 2: SW (Store Word)
+        #10;
         opcode = 6'b101011; // SW
         Rt = 32'h11223344; // Example data to store
-        #10;
         
         // Test case 3: LH (Load Halfword)
+        #10;
         opcode = 6'b100001; // LH
         MemOut = 32'h12345678; // Example data from memory
         DecodeOp = 2'b00; // Default
-        #10;
-
+        
         // Test case 4: SH (Store Halfword)
+        #10;
         opcode = 6'b101001; // SH
         Rt = 32'hAABBCCDD; // Example data to store
         DecodeOp = 2'b01; // Change DecodeOp
-        #10;
-
+        
         // Test case 5: LB (Load Byte)
+        #10;
         opcode = 6'b100000; // LB
         MemOut = 32'hDEADBEEF; // Example data from memory
         DecodeOp = 2'b10; // Different DecodeOp
-        #10;
-
+        
         // Test case 6: SB (Store Byte)
+        #10;
         opcode = 6'b101000; // SB
         Rt = 32'hFF000000; // Example data to store
         DecodeOp = 2'b11; // Different DecodeOp
-        #10;
-
+        
         // Test case 7: Invalid opcode
+        #10;
         opcode = 6'b111111; // Invalid opcode
         MemOut = 32'hFFFFFFFF; 
         Rt = 32'hFFFFFFFF; 
         DecodeOp = 2'b00; 
-        #10;
-
+        
         // Finish simulation
+        #10;
         $finish;
     end
 endmodule

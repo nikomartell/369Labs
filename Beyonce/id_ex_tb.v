@@ -1,4 +1,4 @@
-'timescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 module id_ex_tb;
 
@@ -36,12 +36,35 @@ module id_ex_tb;
         reset = 1;
         #10;
         reset = 0;
+        
+        // Test vector 1
         id_data = 32'hA5A5A5A5;
         id_reg = 5'b10101;
         #10;
         
+        // Test vector 2
         id_data = 32'h5A5A5A5A;
         id_reg = 5'b01010;
+        #10;
+        
+        // Test vector 3
+        id_data = 32'hFFFFFFFF;
+        id_reg = 5'b11111;
+        #10;
+        
+        // Test vector 4
+        id_data = 32'h00000000;
+        id_reg = 5'b00000;
+        #10;
+        
+        // Test vector 5
+        id_data = 32'h12345678;
+        id_reg = 5'b00101;
+        #10;
+        
+        // Test vector 6
+        id_data = 32'h87654321;
+        id_reg = 5'b11010;
         #10;
         
         // Add more test vectors as needed

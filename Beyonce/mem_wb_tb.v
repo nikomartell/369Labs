@@ -48,18 +48,41 @@ module mem_wb_tb;
         reset = 0;
         #10;
         
+        // Test vector 1
         mem_data_in = 32'hA5A5A5A5;
         alu_result_in = 32'h5A5A5A5A;
         reg_write_addr_in = 5'b10101;
         reg_write_en_in = 1;
         #20;
         
+        // Test vector 2
         mem_data_in = 32'hFFFFFFFF;
         alu_result_in = 32'h00000000;
         reg_write_addr_in = 5'b01010;
         reg_write_en_in = 0;
         #20;
-        
+
+        // Test vector 3
+        mem_data_in = 32'h12345678;
+        alu_result_in = 32'h87654321;
+        reg_write_addr_in = 5'b11111;
+        reg_write_en_in = 1;
+        #20;
+
+        // Test vector 4
+        mem_data_in = 32'hDEADBEEF;
+        alu_result_in = 32'hBEEFDEAD;
+        reg_write_addr_in = 5'b00001;
+        reg_write_en_in = 0;
+        #20;
+
+        // Test vector 5
+        mem_data_in = 32'hCAFEBABE;
+        alu_result_in = 32'hBABECAFE;
+        reg_write_addr_in = 5'b00100;
+        reg_write_en_in = 1;
+        #20;
+
         // Add more test vectors as needed
     end
     
