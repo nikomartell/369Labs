@@ -15,8 +15,11 @@ always @(*) begin
     // Still need the seperate values for opcode and base
 
     // Set the decode result based on the opcode and base
-    if (opcode == 6'b100011 || opcode == 6'b101011) begin //LW or SW
+    if (opcode == 6'b100011) begin //LW 
         decode_result <= MemOut;
+    end
+    else if (opcode == 6'b101011) begin //SW
+        decode_result <= Rt;
     end
     else if (opcode == 6'b100001 || opcode == 6'b101001) begin //LH or SH
         if (DecodeOp[1]) begin 

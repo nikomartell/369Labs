@@ -58,7 +58,7 @@ end
 
 
 //
-always @(negedge clk or posedge reset) begin
+always @(posedge clk or posedge reset) begin
     if (reset) begin
         //branch_address_out <= 32'b0;
         //zero_out <= 1'b0;

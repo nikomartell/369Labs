@@ -35,7 +35,7 @@ initial begin
 end
 
 
-always @(negedge clk or posedge reset) begin
+always @(posedge clk or posedge reset) begin
     if (reset) begin
         ALUResult_out <= 32'b0;
         mem_read_out <= 32'b0;

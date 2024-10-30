@@ -42,39 +42,50 @@ module InstructionMemory(Address, Instruction);
 
     output reg [31:0] Instruction;    // Instruction at memory location Address
     
-    reg [31:0] memory [127:0]; //Memory to hold instructions 128 words of 32-bits memory sort of like matrix  
+    reg [31:0] Memory [127:0]; //Memory to hold instructions 128 words of 32-bits memory sort of like matrix  
     integer i;
    
    initial begin
-        memory[0] = 32'b0;
-        memory[1] = 32'b001000_00000_00010_0000000000001111; // loop: addi $2, $0, 15
-        memory[2] = 32'b0; // nop
-        memory[3] = 32'b0; // nop
-        memory[4] = 32'b0; // nop
-        memory[5] = 32'b0; // nop
-        memory[6] = 32'b0; // nop
-        memory[7] = 32'b001000_00000_00011_0000000000001010; // addi $3, $0, 10
-        memory[8] = 32'b0; // nop
-        memory[9] = 32'b0; // nop
-        memory[10] = 32'b0; // nop
-        memory[11] = 32'b0; // nop 
-        memory[12] = 32'b0; // nop
-        memory[13] = 32'b001101_00010_00001_00000_00000_000011; // ori $1, $2, 3
-        memory[14] = 32'b0; // nop
-        memory[15] = 32'b0; // nop
-        memory[16] = 32'b0; // nop
-        memory[17] = 32'b0; // nop
-        memory[18] = 32'b0; // nop
-        memory[19] = 32'b001100_00001_00100_0000000000001111; // andi $4, $1, 15
-        memory[20] = 32'b0; // nop
-        memory[21] = 32'b0; // nop
-        memory[22] = 32'b0; // nop
-        memory[23] = 32'b0; // nop
+        Memory[0] = 32'b0; // nop
+        Memory[1] = 32'b001000_00000_00010_0000000000001110; // loop: addi $2, $0, 14
+        Memory[2] = 32'b0; // nop
+        Memory[3] = 32'b0; // nop
+        Memory[4] = 32'b0; // nop
+        Memory[5] = 32'b0; // nop
+        Memory[6] = 32'b0; // nop
+        Memory[7] = 32'b001000_00000_00011_1111_1111_1111_1110; // addi $3, $0, some large int
+        Memory[8] = 32'b0; // nop
+        Memory[9] = 32'b0; // nop
+        Memory[10] = 32'b0; // nop
+        Memory[11] = 32'b0; // nop 
+        Memory[12] = 32'b0; // nop
+        Memory[13] = 32'b000000_00010_00011_00001_00000_100111; // nor $1, $2, $3
+        Memory[14] = 32'b0; // nop
+        Memory[15] = 32'b0; // nop
+        Memory[16] = 32'b0; // nop
+        Memory[17] = 32'b0; // nop
+        Memory[18] = 32'b0; // nop
+        Memory[19] = 32'b000000_00011_00010_00100_00000_101010; // slt $4, $3, $1
+        Memory[20] = 32'b0; // nop
+        Memory[21] = 32'b0; // nop
+        Memory[22] = 32'b0; // nop
+        Memory[23] = 32'b0; // nop
+        Memory[24] = 32'b000100_00100_00101_1111111111101000; // beq $4, $5 loop 
+        Memory[25] = 32'b0; // nop
+        Memory[26] = 32'b0; // nop
+        Memory[27] = 32'b0; // nop
+        Memory[28] = 32'b0; // nop
+        Memory[29] = 32'b0; // nop
+
+
+
+
+
     end
 
     
     always @(Address) begin //Replace with text file later , for now trash values to itirate through memory    
-        Instruction <= memory[Address[8:2]];
+        Instruction <= Memory[Address[8:2]];
     end 
 
 endmodule

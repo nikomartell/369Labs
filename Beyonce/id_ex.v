@@ -69,7 +69,7 @@ initial begin
         //storetype_out <= 2'b0;
 end
 
-always @(negedge clk or posedge reset) begin
+always @(posedge clk or posedge reset) begin
     if (reset) begin 
         pc_out <= 32'b0;
         reg_data1_out <= 32'b0;

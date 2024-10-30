@@ -14,7 +14,7 @@ initial begin
     instr_out <= 0;
 end
 
-always @(negedge clk or posedge reset) begin
+always @(posedge clk or posedge reset) begin
     if (reset) begin
         pc_out <= 32'b0;
         instr_out <= 32'b0;
