@@ -16,6 +16,10 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
+//Percent effort: 
+//Sebastian Mares - 33%
+//Abril Torres - 33%
+//Niko Martell - 33%
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
