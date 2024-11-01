@@ -193,7 +193,7 @@ module Controller(
                 end
               //SLTI
              6'b001010: begin 
-                ALUOp <= 9;
+                ALUOp <= 6'b001010; // oopsi
                 RegWrite <= 1; 
                 RegDst <= 1;
                 ALUSrc <= 1;
