@@ -27,12 +27,20 @@
 
 
 module Top(
-    input clk,
+    input Clk,
     input rst,
     
     output [31:0] WriteData_sim,
     output [31:0] PCResult_sim
 );
+        
+    //wires out of clock divider
+    wire Clk_out;
+    
+    //wires out of 7 segment display
+    wire [6:0] out7;
+    wire [7:0] en_out;
+
     //wires out of Fetch stage
     wire [31:0] PCADDResult_out;
     wire [31:0] Instruction_out;
@@ -119,7 +127,7 @@ module Top(
     //assign WriteData_sim = WriteData_out_memwb; 
     
     //This is the value being written back into the register file, I think the wire you were pulling before was coming from
-    //memory, so at clk cycle 92 it would stop showing xxxxxx to show 000000 again because in that clk cycle sw was  
+    //memory, so at Clk cycle 92 it would stop showing xxxxxx to show 000000 again because in that Clk cycle sw was  
     //actually doing the first memory operation 
 
     //problem so far I think it is the sign extender
@@ -135,9 +143,13 @@ module Top(
     assign WriteData_sim = memtoreg_out_wb; 
     assign PCResult_sim = PCADDResult_out;
     
+    ClkDiv clock(Clk,0,Clk_out);
+    Two4DigitDisplay display(Clk, PCResult_sim[15:0], WriteData_sim[15:0], out7, en_out);
+    // Display the current PC value and the value written into the register file
+
     InstructionFetchPhase Fetch(
     //inputs
-        .Clk(clk),
+        .Clk(Clk_out),
         .Reset(rst),
         .pc_in(Branch_out),
         .Jump(Jump_out),
@@ -153,7 +165,7 @@ module Top(
     
     if_id IFID(
     //inputs
-        .clk(clk),
+        .clk(Clk_out),
         .reset(rst), 
         .pc_in(PCADDResult_out), 
         .instr_in(Instruction_out),
@@ -165,7 +177,7 @@ module Top(
     
     InstructionDecodePhase Decode(
     //inputs
-        .Clk(clk), 
+        .Clk(Clk_out), 
         .Reset(rst), 
         .pc_in(pc_out_ifid), 
         .instr_in(instruction_out_ifid),
@@ -200,7 +212,7 @@ module Top(
     
     id_ex IDEX(
     //input
-        .clk(clk), 
+        .clk(Clk_out), 
         .reset(rst), 
         .pc_in(pc_out_decode), 
         .reg_data1(reg_data1_out), 
@@ -261,7 +273,7 @@ module Top(
     
     ex_mem EXMEM(
     //inputs
-        .clk(clk), 
+        .clk(Clk_out), 
         .reset(rst),
         .alu_result(ALU_result), 
         .read_data2(reg_data2_out_idex), 
@@ -288,7 +300,7 @@ module Top(
     );
     MemoryPhase MemoryAcess(
     //inputs
-        .clk(clk), 
+        .clk(Clk_out), 
         .alu_result(alu_result_out_exmem), 
         .reg_data2_in(read_data2_out_exmem), 
         .opcode(opcode_out_exmem),
@@ -301,7 +313,7 @@ module Top(
     
     mem_wb MEMWB(
     //input
-        .clk(clk), 
+        .clk(Clk_out), 
         .reset(rst), 
         .ALUResult(alu_result_out_exmem), 
         .mem_read(read_mem_data_out), 
