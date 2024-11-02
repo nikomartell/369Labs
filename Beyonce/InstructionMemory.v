@@ -46,7 +46,7 @@ module InstructionMemory(Address, Instruction);
     integer i;
    
     initial begin
-        $readmemb("instructions.mem", Memory);
+        $readmemb("lh_Test.mem", Memory); // Change the file name to the file you want to read from (must ONLY contain binary instructions)
     end
 
     always @(Address) begin //Replace with text file later , for now trash values to itirate through memory    
