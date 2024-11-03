@@ -36,7 +36,7 @@ module ALU32Bit(ALUControl, A, B, Shamt, ALUResult, Zero);
 	output reg [31:0] ALUResult;	// answer
 	output reg Zero;	    // Zero=1 if ALUResult == 0
 
-    always @(ALUControl, A, B) begin
+    always @(ALUControl, A, B, Shamt) begin
         case (ALUControl) //ALU Opcode
             0: begin 
                 ALUResult <= A + B; //add

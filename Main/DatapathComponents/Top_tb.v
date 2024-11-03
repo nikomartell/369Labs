@@ -7,15 +7,15 @@ module Top_tb;
     reg rst;
 
     // Outputs
-    wire [31:0] WriteData_sim;
-    wire [31:0] PCResult_sim;
+    //wire [6:0] out7;
+    //wire [7:0] end_out;
 
     // Instantiate the Unit Under Test (UUT)
     Top uut (
-        .clk(clk), 
-        .rst(rst), 
-        .WriteData_sim(WriteData_sim), 
-        .PCResult_sim(PCResult_sim)
+        .Clk(clk), 
+        .rst(rst) 
+        //.out7(out7), 
+        //.en_out(end_out)
     );
 
     // Clock generation

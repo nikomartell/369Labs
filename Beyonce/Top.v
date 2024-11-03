@@ -134,6 +134,7 @@ module Top(
     
     //WB phase
     wire [31:0] memtoreg_out_wb;
+    //assign Clk_out = Clk;
     
     ClkDiv clock(Clk,0,Clk_out);
     Two4DigitDisplay display(Clk, PCADDResult_out[15:0], memtoreg_out_wb[15:0], out7, en_out);

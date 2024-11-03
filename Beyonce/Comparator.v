@@ -20,12 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Comparator(Reg1, Reg2, beq, blt, bgt, zero);
+module Comparator(Clk, Reg1, Reg2, beq, blt, bgt, zero);
+    input Clk;
     input [31:0] Reg1;
     input [31:0] Reg2;
     output reg beq, blt, bgt, zero;
     
-    always @(Reg1, Reg2) begin 
+    always @(*) begin 
         if (Reg1 > Reg2) begin 
             beq <= 0;
             blt <= 0;

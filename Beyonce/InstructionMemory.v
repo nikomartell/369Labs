@@ -42,16 +42,15 @@ module InstructionMemory(Address, Instruction);
 
     output reg [31:0] Instruction;    // Instruction at memory location Address
     
-    reg [31:0] Memory [127:0]; //Memory to hold instructions 128 words of 32-bits memory sort of like matrix  
+    reg [31:0] memory [127:0]; //Memory to hold instructions 128 words of 32-bits memory sort of like matrix  
     integer i;
    
     initial begin
-        $readmemb("and-or-nor-xor-xori.mem", Memory); // Change the file name to the file you want to read from (must ONLY contain binary instructions)
-                                        // The file needs to be imported to vivado before synthesis
+        $readmemh("", memory);
     end
 
     always @(Address) begin //Replace with text file later , for now trash values to itirate through memory    
-        Instruction <= Memory[Address[8:2]];
+        Instruction <= memory[Address[8:2]];
     end 
 
 endmodule

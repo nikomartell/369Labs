@@ -229,7 +229,7 @@ module Controller(
                 RegDst <= 0;
                 ALUSrc <= 1;
                 MemWrite <= 1; 
-                MemRead <= 0;
+                MemRead <= 1;
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
@@ -243,7 +243,7 @@ module Controller(
                 RegDst <= 0;
                 ALUSrc <= 1;
                 MemWrite <= 1; 
-                MemRead <= 0;
+                MemRead <= 1;
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
@@ -284,7 +284,7 @@ module Controller(
                 RegDst <= 0;
                 ALUSrc <= 1;
                 MemWrite <= 1; 
-                MemRead <= 0;
+                MemRead <= 1;
                 MemToReg <= 0;
                 Branch <= 0;
                 Jump <= 0;
@@ -296,6 +296,9 @@ module Controller(
              case(TargetReg)
              //BGEZ
              5'b00001: begin 
+                if(bgt || zero) begin 
+                    Branch <= 1;
+                end
                 ALUOp <= 9;
                 RegWrite <= 0; 
                 RegDst <= 0;
@@ -303,11 +306,13 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                if(bgt || zero) Branch <= 1;
                 Jump <= 0;
              end 
              //BLTZ 
              5'b00000: begin
+                if(blt || zero) begin
+                    Branch <= 1;
+                end
                 ALUOp <= 11;
                 RegWrite <= 0; 
                 RegDst <= 0;
@@ -315,7 +320,6 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                if(blt || zero) Branch <= 1;
                 Jump <= 0;
              end 
              endcase
@@ -323,6 +327,9 @@ module Controller(
              
              //BEQ
              6'b000100: begin
+                if(beq) begin
+                    Branch <= 1;
+                end
                 ALUOp <= 4;
                 RegWrite <= 0; 
                 RegDst <= 0;
@@ -330,11 +337,13 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                if(beq) Branch <= 1;
                 Jump <= 0;
              end
              //BNE 
              6'b000101: begin
+                if(!beq) begin
+                    Branch <= 1;
+                end
                 ALUOp <= 5;
                 RegWrite <= 0; 
                 RegDst <= 0;
@@ -342,11 +351,13 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                if(!beq) Branch <= 1;
                 Jump <= 0;
              end 
              //BGTZ
              6'b000111: begin
+                if (bgt) begin
+                    Branch <= 1;
+                end
                 ALUOp <= 7;
                 RegWrite <= 0; 
                 RegDst <= 0;
@@ -354,11 +365,13 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                if (bgt) Branch <= 1;
                 Jump <= 0;
              end 
              //BLEZ
              6'b000110: begin
+                if(blt || zero) begin
+                    Branch <= 1;
+                end
                 ALUOp <= 13;
                 RegWrite <= 0; 
                 RegDst <= 0;
@@ -366,7 +379,6 @@ module Controller(
                 MemWrite <= 0; 
                 MemRead <= 0;
                 MemToReg <= 0;
-                if(blt || zero) Branch <= 1;
                 Jump <= 0;
              end 
              
