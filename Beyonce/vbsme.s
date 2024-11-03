@@ -819,6 +819,7 @@ right:
     # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
     j      window_loop_y
+
 down:
     sub     $t9, $t0, $t2   # frame y - window y (set y limit)
     sub     $t9, $t9, $s7   # limit y - radius
@@ -832,9 +833,10 @@ left:
     # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
     j       window_loop_y
+
 up:
     add    $t9, $s7, $zero       # Radius
-    addi    $t9, $t9, 1    # Radius + 1
+    addi    $t9, $t9, 1          # Radius + 1
     # ^ this is because when it goes up, the y limit is not 0. It is always one less than the radius
     blt     $t4, $t9, end_up  # if y < radius + 1, end outer loop
 
@@ -868,14 +870,14 @@ window_loop_x:
     lw      $s5, 0($s4)      # window[window_y * window width + window_x] address
 
     sub     $s6, $s3, $s5    # frame - window
-    blt     $s6, 0, abs     # if frame - window < 0, go to abs
+    blt     $s6, 0, abso      # if frame - window < 0, go to abs.
 
     add     $t9, $t9, $s6    # sad += abs(frame - window)
 
     addi    $s1, $s1, 1      # window_x++
     j       window_loop_x
 
-abs:
+abso:
     sub     $s6, $zero, $s6  # set to positive
     add     $t9, $t9, $s6    # sad += abs(frame - window)
 
