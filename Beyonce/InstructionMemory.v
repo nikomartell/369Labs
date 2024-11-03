@@ -46,7 +46,7 @@ module InstructionMemory(Address, Instruction);
     integer i;
    
     initial begin
-        $readmemb("lh-sh.bin", Memory); // Change the file name to the file you want to read from (must ONLY contain binary instructions)
+        $readmemb("and-or-nor-xor-xori.mem", Memory); // Change the file name to the file you want to read from (must ONLY contain binary instructions)
                                         // The file needs to be imported to vivado before synthesis
     end
 

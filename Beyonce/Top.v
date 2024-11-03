@@ -20,7 +20,7 @@
 //Sebastian Mares - 33%
 //Abril Torres - 33%
 //Niko Martell - 33%
-// 
+// (* IOSTANDARD = "LVCMOS33" *) 
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -29,17 +29,12 @@
 module Top(
     input Clk,
     input rst,
-    
-    output [31:0] WriteData_sim,
-    output [31:0] PCResult_sim
+    output [6:0] out7,
+    output [7:0] en_out
 );
-        
+    
     //wires out of clock divider
     wire Clk_out;
-    
-    //wires out of 7 segment display
-    wire [6:0] out7;
-    wire [7:0] en_out;
 
     //wires out of Fetch stage
     wire [31:0] PCADDResult_out;
@@ -140,11 +135,8 @@ module Top(
     //WB phase
     wire [31:0] memtoreg_out_wb;
     
-    assign WriteData_sim = memtoreg_out_wb; 
-    assign PCResult_sim = PCADDResult_out;
-    
     ClkDiv clock(Clk,0,Clk_out);
-    Two4DigitDisplay display(Clk, PCResult_sim[15:0], WriteData_sim[15:0], out7, en_out);
+    Two4DigitDisplay display(Clk, PCADDResult_out[15:0], memtoreg_out_wb[15:0], out7, en_out);
     // Display the current PC value and the value written into the register file
 
     InstructionFetchPhase Fetch(

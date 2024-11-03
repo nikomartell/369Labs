@@ -138,3 +138,7 @@ module if_id_tb;
         id_mem_read = 1;
         id_mem_write = 1;
         id_mem_to_reg = 1;
+
+    end
+
+endmodule
