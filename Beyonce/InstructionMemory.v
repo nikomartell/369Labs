@@ -46,7 +46,7 @@ module InstructionMemory(Address, Instruction);
     integer i;
    
     initial begin
-        $readmemh("", memory);
+        $readmemb("", memory);
     end
 
     always @(Address) begin //Replace with text file later , for now trash values to itirate through memory    
