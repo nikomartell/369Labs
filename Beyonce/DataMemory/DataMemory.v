@@ -38,28 +38,26 @@ module DataMemory(
 ); 
     
     // Declare the memory array 1024 - 32-bit words
-    (* mark_debug = "true" *) reg [31:0] memory [0:1023];
+    (* mark_debug = "true" *) reg [31:0] Memory [0:1023];
 
     // Initialize memory to zero
     integer i;
     initial begin
-        for (i = 0; i < 1024; i = i + 1) begin
-            memory[i] = 32'b0; // Set each memory location to zero
-        end
+        $readmemh("data_memory.mem", Memory);
         ReadData <= 32'b0;
     end
     
     always @(posedge Clk) begin
         // Write operation
         if (MemWrite) begin
-            memory[Address[11:2]] <= WriteData; // Use Address[11:2] for word alignment
+            Memory[Address[11:2]] <= WriteData; // Use Address[11:2] for word alignment
         end
     end
 
     always @(*) begin
         // Read operation
         if (MemRead) begin
-            ReadData = memory[Address[11:2]]; // Read data if MemRead is asserted
+            ReadData = Memory[Address[11:2]]; // Read data if MemRead is asserted
         end else begin
             ReadData = 32'b0; // Return 0 if MemRead is not asserted
         end

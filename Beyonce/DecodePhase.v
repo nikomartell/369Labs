@@ -119,7 +119,6 @@ module InstructionDecodePhase(
     
     Comparator Comp(
     //inputs
-        .Clk(Clk),
         .Reg1(reg_data1_in),
         .Reg2(reg_data2_in),
     //outputs

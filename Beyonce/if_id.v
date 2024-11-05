@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module if_id (
     input wire clk,
     input wire reset,

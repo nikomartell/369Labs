@@ -20,8 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Comparator(Clk, Reg1, Reg2, beq, blt, bgt, zero, bltz, bgtz);
-    input Clk;
+module Comparator(Reg1, Reg2, beq, blt, bgt, zero, bltz, bgtz);
     input [31:0] Reg1;
     input [31:0] Reg2;
     output reg beq, blt, bgt, zero, bltz, bgtz;

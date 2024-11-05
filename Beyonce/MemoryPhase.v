@@ -62,7 +62,7 @@ module MemoryPhase(
     //assign regdst_out = regdst;
     //assign pc_out = pc_in;
     
-    wire [31:0] datamem_out; //what is this for?
+    wire [31:0] datamem_out; 
     
     DecodeUnit decode(datamem_out, reg_data2_in, opcode, alu_result[1:0], read_data_out);
     DataMemory DM(alu_result, read_data_out, clk, memwrite, memread, datamem_out);
