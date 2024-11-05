@@ -28,9 +28,9 @@
 
 module Top(
     input Clk,
-    input rst,
-    output [6:0] out7,
-    output [7:0] en_out
+    input rst
+    //output [6:0] out7,
+    //output [7:0] en_out
 );
     
     //wires out of clock divider
@@ -134,10 +134,10 @@ module Top(
     
     //WB phase
     wire [31:0] memtoreg_out_wb;
-    //assign Clk_out = Clk;
+    assign Clk_out = Clk;
     
-    ClkDiv clock(Clk,0,Clk_out);
-    Two4DigitDisplay display(Clk, PCADDResult_out[15:0], memtoreg_out_wb[15:0], out7, en_out);
+    //ClkDiv clock(Clk,0,Clk_out);
+    //Two4DigitDisplay display(Clk, PCADDResult_out[15:0], memtoreg_out_wb[15:0], out7, en_out);
     // Display the current PC value and the value written into the register file
 
     InstructionFetchPhase Fetch(

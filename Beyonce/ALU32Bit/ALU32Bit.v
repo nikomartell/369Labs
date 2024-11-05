@@ -68,21 +68,6 @@ module ALU32Bit(ALUControl, A, B, Shamt, ALUResult, Zero);
             9: begin
 		        ALUResult <= (A < B) ? 1 : 0; //set on less than 
 	        end 
-	         10: begin 
-		        ALUResult <= (A >= 0) ? 0 : 1; //branch on greater than or equal to zero 
-	        end 
-	    11: begin 
-			ALUResult <= (A - B != 0) ? 0 : 1;  //branch if not equal 
-   		end 
-     		12: begin 
-       			ALUResult <= (A > 0) ? 0 : 1; //branch greater than zero 
-	  end 
-   		13: begin 
-     			ALUResult <= (A <= 0) ? 0 : 1; //branch less than or equal to zero 
-	end
- 		14: begin 
-   			ALUResult <= (A < 0) ? 0 : 1; // branch on less than zero 
-      end 
 		
         endcase
     end

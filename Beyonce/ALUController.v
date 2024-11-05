@@ -53,12 +53,12 @@ module ALUController(OpCode, Function,  ALUControl);
             6'b001101: ALUControl <= 3; //ori
             6'b001110: ALUControl <= 5; //xori
             6'b001010: ALUControl <= 9; //slti
-            9: ALUControl <= 10; //bgez
-            4: ALUControl <= 1; //beq
-            5: ALUControl <= 11; //bne
-            7: ALUControl <= 12; //bgtz
-            6: ALUControl <= 13; //blez
-            11: ALUControl <= 14; //bltz
+            //9: ALUControl <= 10; //bgez
+            //4: ALUControl <= 1; //beq
+            //5: ALUControl <= 11; //bne
+            //7: ALUControl <= 12; //bgtz
+            //6: ALUControl <= 13; //blez
+            //11: ALUControl <= 14; //bltz
             default: ALUControl <= 0;
         endcase
     end

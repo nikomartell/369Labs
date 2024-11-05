@@ -28,6 +28,8 @@ module Controller(
     input blt,
     input bgt,
     input zero,
+    input bltz,
+    input bgtz,
     
     //Control signals 
     output reg RegWrite,
@@ -296,7 +298,7 @@ module Controller(
              case(TargetReg)
              //BGEZ
              5'b00001: begin 
-                if(bgt || zero) begin 
+                if(bgtz || zero) begin 
                     Branch <= 1;
                 end
                 ALUOp <= 9;
@@ -310,7 +312,7 @@ module Controller(
              end 
              //BLTZ 
              5'b00000: begin
-                if(blt || zero) begin
+                if(bltz) begin
                     Branch <= 1;
                 end
                 ALUOp <= 11;
@@ -355,7 +357,7 @@ module Controller(
              end 
              //BGTZ
              6'b000111: begin
-                if (bgt) begin
+                if (bgtz) begin
                     Branch <= 1;
                 end
                 ALUOp <= 7;
@@ -369,7 +371,7 @@ module Controller(
              end 
              //BLEZ
              6'b000110: begin
-                if(blt || zero) begin
+                if(bltz || zero) begin
                     Branch <= 1;
                 end
                 ALUOp <= 13;

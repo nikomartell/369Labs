@@ -67,7 +67,7 @@ module InstructionDecodePhase(
 );
 
     //output wires from comparator to controller for branches
-    wire beq, bgt, blt, zero;
+    wire beq, bgt, blt, zero, bltz, bgtz;
 
     Controller Controller_main ( 
     //inputs: parsed instructions 
@@ -80,6 +80,8 @@ module InstructionDecodePhase(
     .blt(blt),
     .bgt(bgt),
     .zero(zero),
+    .bltz(bltz),
+    .bgtz(bgtz),
     
     //outputs: control signals 
         .RegWrite(RegWrite_out),
@@ -124,7 +126,9 @@ module InstructionDecodePhase(
         .beq(beq),
         .blt(blt),
         .bgt(bgt),
-        .zero(zero)
+        .zero(zero),
+        .bgtz(bgtz),
+        .bltz(bltz)
     );
     
     SignExtension Sign_Extension (
