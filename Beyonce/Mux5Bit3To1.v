@@ -10,17 +10,24 @@
 module Mux5Bit3To1(
     input [4:0] inA,
     input [4:0] inB,
-    input sel,
+    input [4:0] inC,
+    input [1:0] sel,
     output reg [4:0] out
  );
- 
+    
     always @(inA, inB, sel) begin 
-        if (sel) begin
-            out <= inA;
-        end
-        else begin 
-            out <= inB;
-        end
+        case(sel) 
+            0: begin
+                out <= inB;
+            end
+            1: begin
+                out <= inA;
+            end
+            2: begin
+                out <= inC;
+            end
+        
+        endcase
     end
     
 endmodule

@@ -10,6 +10,7 @@ module ex_mem (
     input [31:0] alu_result,
     input [31:0] read_data2, //read data2 in 
     input [4:0] regdst, //write register in mux 
+    input [31:0] pc_in,
     //input zero_in, 
     
     //output reg [31:0] branch_address_out,
@@ -18,6 +19,7 @@ module ex_mem (
     output reg [31:0] alu_result_out,
     output reg [31:0] read_data2_out,
     output reg [4:0] regdst_out, //write reg out mux 
+    output reg [31:0] pc_out, 
     
     //input control signals 
     
@@ -25,7 +27,7 @@ module ex_mem (
     input regwrite, //reg write in 
     input memwrite, 
     input memread, 
-    input memtoreg,
+    input [1:0] memtoreg,
     input [5:0] ALU_op,
     //input [1:0] decodeop_in,
    
@@ -34,7 +36,7 @@ module ex_mem (
     output reg regwrite_out, 
     output reg memwrite_out,
     output reg memread_out, 
-    output reg memtoreg_out,
+    output reg [1:0] memtoreg_out,
     output reg [5:0] ALU_op_out
     //output reg [1:0] decodeop_out
     
@@ -45,12 +47,12 @@ initial begin
         alu_result_out <= 32'b0;
         read_data2_out <= 32'b0;
         regdst_out <= 5'b0; //write register out
-        //pc_out <= 32'b0;
+        pc_out <= 32'b0;
         
         //control signals reset 
         memread_out <= 1'b0;
         memwrite_out <= 1'b0;
-        memtoreg_out <= 1'b0;
+        memtoreg_out <= 2'b0;
         regwrite_out <= 1'b0;
         ALU_op_out <= 5'b0;
         //branch_out <= 1'b0;
@@ -66,12 +68,12 @@ always @(posedge clk or posedge reset) begin
         alu_result_out <= 32'b0;
         read_data2_out <= 32'b0;
         regdst_out <= 5'b0; //write register out
-        //pc_out <= 32'b0;
+        pc_out <= 32'b0;
         
         //control signals reset 
         memread_out <= 1'b0;
         memwrite_out <= 1'b0;
-        memtoreg_out <= 1'b0;
+        memtoreg_out <= 2'b0;
         regwrite_out <= 1'b0;
         ALU_op_out <= 5'b0;
         //branch_out <= 1'b0;
@@ -83,7 +85,7 @@ always @(posedge clk or posedge reset) begin
         alu_result_out <= alu_result;
         read_data2_out <= read_data2;
         regdst_out <= regdst;
-        //pc_out <= pc_in;
+        pc_out <= pc_in;
         
         //control signals passing 
         memread_out <= memread;
