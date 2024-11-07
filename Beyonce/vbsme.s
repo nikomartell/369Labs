@@ -812,7 +812,7 @@ outer_loop:
     bge     $t8, 4, reset_direction  # if direction >= 4, reset direction
 
 right:
-    sub     $t9, $t0, $t3   # frame x - window x (set x limit)
+    sub     $t9, $t1, $t3   # frame x - window x (set x limit)
     sub     $t9, $t9, $s7   # limit x - radius
     bgt     $t5, $t9, end_right  # if x >= limit x, end inner loop
 
@@ -835,17 +835,14 @@ left:
     j       window_loop_y
 
 up:
-    add    $t9, $s7, $zero       # Radius
-    addi    $t9, $t9, 1          # Radius + 1
-    # ^ this is because when it goes up, the y limit is not 0. It is always one less than the radius
-    blt     $t4, $t9, end_up  # if y < radius + 1, end outer loop
+    
+    blt     $t4, $s7, end_up  # if y < radius + 1, end outer loop
 
     # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
     j       window_loop_y
 reset_direction:
     add    $t8, $zero, $zero       # direction = 0
-    addi    $s7, $s7, 1      # radius++
     j       outer_loop
 
 window_loop_y:
@@ -890,7 +887,7 @@ end_window_loop_x:
 end_window_loop_y:
 
     # Update minimum SAD and coordinates if necessary
-    blt     $t9, $t6, update_min    # if sad < min_sad  <-- SAD IS BROKEN
+    blt     $t9, $t6, update_min    # if sad < min_sad
     j       increment
 
 update_min:
@@ -932,6 +929,7 @@ end_left:
     addi    $t8, $t8, 1      # direction++
     add     $t5, $t5, 1      # x++ (puts x back into bounds)
     sub     $t4, $t4, 1      # y-- (puts y back into bounds)
+    addi    $s7, $s7, 1      # radius++
     j       outer_loop
 end_up:
     addi    $t8, $t8, 1      # direction++
@@ -943,6 +941,3 @@ end_outer_loop:
     lw      $ra, 0($sp)     #restore return address
     addi    $sp, $sp, 4     #restore stack t8inter
     jr      $ra             #return
-
-    
-   
