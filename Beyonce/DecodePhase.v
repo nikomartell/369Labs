@@ -39,11 +39,11 @@ module InstructionDecodePhase(
     
     //outputs 
     //control signals from controller 
-    output RegDst,
+    output [1:0] RegDst,
     output Jump,
     output Branch,
     output MemRead,
-    output MemtoReg,
+    output [1:0] MemtoReg,
     output [3:0] ALUOp,
     output MemWrite,
     output ALUSrc,

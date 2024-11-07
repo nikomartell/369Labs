@@ -33,7 +33,7 @@ module ExecutePhase(
     
     //control signals from ID/EX Register
     input alusrc_in,
-    input regdst_in,
+    input [1:0] regdst_in,
     input [3:0] aluop_in,
     
     //inputs to MEM/WB
@@ -50,7 +50,7 @@ module ExecutePhase(
     
     ALU32Bit ALU(ALU_control, reg_data1_in, ALU_src_out, Shamt_in, ALU_result, zero);
     
-    Mux5Bit3To1 RegDst(rt_in, rd_in, regdst_in, regdst);
+    Mux5Bit3To1 RegDst(rt_in, rd_in, 31, regdst_in, regdst);
     
     
 endmodule

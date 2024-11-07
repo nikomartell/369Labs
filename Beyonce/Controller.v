@@ -35,11 +35,11 @@ module Controller(
     output reg RegWrite,
     output reg [3:0] ALUOp,
     output reg ALUSrc, //this is a mux 1-passes imm value
-    output reg RegDst, //this is a mux 0-passes rt, 1-passes rd 
+    output reg [1:0] RegDst, //this is a mux 0-passes rt, 1-passes rd 
     output reg MemWrite,
     output reg MemRead,
     output reg Branch,
-    output reg MemToReg, //this is a 2x1 mux
+    output reg [1:0] MemToReg, //this is a 3x1 mux
     output reg Jump,
     //output reg [1:0] StoreType, //this is a 3x1 mux
     //output reg [1:0] LoadType,  //this is a 3x1 mux
@@ -406,7 +406,7 @@ module Controller(
                 ALUSrc <= 0;
                 MemWrite <= 0; 
                 MemRead <= 1;
-                MemToReg <= 0;
+                MemToReg <= 2;
                 Branch <= 0;
                 Jump <= 1;
              end 

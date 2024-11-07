@@ -25,23 +25,23 @@ module id_ex (
 
 //input control signals 
     input alusrc_in,
-    input regdst_in,
+    input [1:0] regdst_in,
     input regwrite_in,
     input [3:0] aluop_in,
     input memwrite_in,
     input memread_in,
-    input memtoreg_in,
+    input [1:0] memtoreg_in,
    // input [1:0] loadtype_in,
    // input [1:0] storetype_in,
 
 //output control signals 
     output reg alusrc_out,
-    output reg regdst_out,
+    output reg [1:0] regdst_out,
     output reg regwrite_out,
     output reg [3:0] aluop_out,
     output reg memwrite_out,
     output reg memread_out,
-    output reg memtoreg_out
+    output reg [1:0] memtoreg_out
     //output reg [1:0] loadtype_out,
     //output reg [1:0] storetype_out
 );
@@ -59,12 +59,12 @@ initial begin
         
         //control signals reset 
         alusrc_out <= 1'b0;
-        regdst_out <= 1'b0;
+        regdst_out <= 2'b0;
         regwrite_out <= 1'b0;
         aluop_out <= 4'b0000;
         memwrite_out <= 1'b0;
         memread_out <= 1'b0;
-        memtoreg_out <= 1'b0;
+        memtoreg_out <= 2'b0;
         //loadtype_out <= 2'b0;
         //storetype_out <= 2'b0;
 end
@@ -83,12 +83,12 @@ always @(posedge clk or posedge reset) begin
         
         //control signals reset 
         alusrc_out <= 1'b0;
-        regdst_out <= 1'b0;
+        regdst_out <= 2'b0;
         regwrite_out <= 1'b0;
         aluop_out <= 4'b0000;
         memwrite_out <= 1'b0;
         memread_out <= 1'b0;
-        memtoreg_out <= 1'b0;
+        memtoreg_out <= 2'b0;
         //loadtype_out <= 2'b0;
         //storetype_out <= 2'b0;
             

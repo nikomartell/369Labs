@@ -51,10 +51,10 @@ module Top(
     wire [31:0] JumpTarget_out;
     
     //wires out of decode phase
-    wire RegDst_out;
+    wire [1:0] RegDst_out;
     wire Branch_out;
     wire MemRead_out;
-    wire MemtoReg_out;
+    wire [1:0] MemtoReg_out;
     wire [3:0] ALUOp;
     wire MemWrite_out;
     wire ALUSrc_out;
@@ -82,12 +82,12 @@ module Top(
     wire [5:0] ALUop_idex; //func out
     wire [4:0]Shamt_out_idex; //shamt out
     wire alusrc_out_idex;
-    wire regdst_out_idex;
+    wire [1:0] regdst_out_idex;
     wire regwrite_out_idex;
     wire [3:0] aluop_out_idex;
     wire memwrite_out_idex;
     wire memread_out_idex;
-    wire memtoreg_out_idex;
+    wire [1:0] memtoreg_out_idex;
     wire [1:0] decodeop_out_idex;
     wire [5:0] Func_out_idex;
     
@@ -103,7 +103,7 @@ module Top(
     wire regwrite_out_exmem;
     wire memwrite_out_exmem;
     wire memread_out_exmem;
-    wire memtoreg_out_exmem;
+    wire [1:0] memtoreg_out_exmem;
     wire [5:0] opcode_out_exmem; 
     wire [1:0] decodeop_out_exmem;
     
@@ -115,7 +115,7 @@ module Top(
     wire [31:0] WriteData_out_memwb;
     wire [4:0] WriteRegister_out_memwb;
     wire [31:0] pc_out_memwb;
-    wire memtoreg_out_memwb;
+    wire [1:0] memtoreg_out_memwb;
     wire RegWrite_out_memwb;
 
     
@@ -262,12 +262,14 @@ module Top(
         .read_data2(reg_data2_out_idex), 
         .regdst(regdst),
         .ALU_op(ALUop_idex), 
+        .pc_in(pc_out_idex),
         
     //output
         .alu_result_out(alu_result_out_exmem), 
         .read_data2_out(read_data2_out_exmem), 
         .regdst_out(instruction_mux_out_exmem),
         .ALU_op_out(opcode_out_exmem),
+        .pc_out(pc_out_exmem),
         
     //input control signals
         .regwrite(regwrite_out_idex), 
@@ -301,10 +303,12 @@ module Top(
         .ALUResult(alu_result_out_exmem), 
         .mem_read(read_mem_data_out), 
         .regdst(instruction_mux_out_exmem), 
+        .pc_in(pc_out_exmem),
     //outputs
         .ALUResult_out(alu_result_out_memwb), 
         .mem_read_out(WriteData_out_memwb), 
         .regdst_out(WriteRegister_out_memwb),
+        .pc_out(pc_out_memwb),
     //intput control wire
         .memtoreg(memtoreg_out_exmem), 
         .regwrite(regwrite_out_exmem), 
@@ -313,10 +317,11 @@ module Top(
         .regwrite_out(RegWrite_out_memwb)
     );
     
-    Mux32Bit2To1 MemToReg(
+    Mux32Bit3To1 MemToReg(
     //input
         .inA(alu_result_out_memwb), 
         .inB(WriteData_out_memwb), 
+        .inC(pc_out_memwb),
         .sel(memtoreg_out_memwb),
     //output
         .out(memtoreg_out_wb)
