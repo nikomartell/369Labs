@@ -39,7 +39,7 @@ module DataHazardDetector(
 always @(*) begin 
     // Reset the control signals to 0 (output registers) 
     PCWrite = 0;
-    IF_IDWrite = 0;
+    IF_IDWrite = 1;
     HazardDetect_Mux = 0;
     
 
@@ -47,7 +47,7 @@ always @(*) begin
     if (ID_EXMemRead & (OPCode != LW) & (OPCode != LH) & (OPCode != LB) & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) |  
                          (IF_IDRt == EX_MemRegdst) | (IF_IDRs == EX_MemRegdst))) begin
         PCWrite = 1;
-        IF_IDWrite = 1;
+        IF_IDWrite = 0;
         HazardDetect_Mux = 1;
          
     end 
@@ -56,7 +56,7 @@ always @(*) begin
     if (IF_IDBranchSignal & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) |  
                               (IF_IDRt == EX_MemRegdst) | (IF_IDRs == EX_MemRegdst))) begin
         PCWrite = 1;
-        IF_IDWrite = 1;
+        IF_IDWrite = 0;
         HazardDetect_Mux = 1;
         
     end 
