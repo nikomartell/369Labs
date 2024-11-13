@@ -29,6 +29,7 @@ module InstructionFetchPhase(
         input pc_in, //pc adder 4 in 
         input Jump, 
         input JumpRegister, 
+        input PCWrite,
         
         //branch target reg, jump register reg, jump register trager address
         input [31:0] BranchTarget,
@@ -98,6 +99,7 @@ module InstructionFetchPhase(
         //inputs: clk and reset
         .Clk(Clk),
         .Reset(Reset),
+        .PCWrite(PCWrite),
         
         //jumpreg target address, jump target address, next instruction or branching target address
         .Address(PCAddResult_BranchTarget_JumpTarget_JumpRegisterTarget_out),

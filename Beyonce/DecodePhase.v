@@ -30,6 +30,14 @@ module InstructionDecodePhase(
     input [31:0] instr_in, //instruction in 
     input [31:0] pc_in, //pc adder 4 out  
     
+    //from pipelined reg id_ex
+    input [4:0] Rt_id_ex,
+    
+    //from pipelined reg ex_mem
+    input [4:0] EX_MemRegdst,
+    input ID_EXMemRead,
+    input IF_IDBranchSignal,  // what is this?
+    
     //from reg file
     input [31:0] WriteData, //write data out 
     input [4:0] WriteRegister, //write register out 
@@ -60,10 +68,17 @@ module InstructionDecodePhase(
     output wire [31:0] sign_ext_offset_in, //sign extended out 
     output [4:0] rd_in, //destination reg out 
     output [4:0] rt_in, //target reg out 
+    output [4:0] rs_in, //for forwarding
     output [4:0] Shamt_in, //shamt out 
     output [5:0] Func, // func out  
     output [31:0] BranchTarget,  //BranchTarget
-    output [5:0] FuncFunc //actually func
+    output [5:0] FuncFunc, //actually func
+    
+    //outputs from the data hazard detector
+    output PCWrite,
+    output IF_IDWrite,        //not done
+    output HazardDetect_Mux   //not done
+    
 );
 
     //output wires from comparator to controller for branches
@@ -96,6 +111,22 @@ module InstructionDecodePhase(
         .JumpReg(JumpRegister)
         //.LoadType(LoadType),
         //.StoreType(StoreType)
+    );
+    
+    
+    DataHazardDetector DHD(
+    //inputs 
+        .IF_IDRs(instr_in[25:21]),
+        .IF_IDRt(instr_in[20:16]),
+        .ID_EXRt(Rt_id_ex),
+        .EX_MemRegdst(EX_MemRegdst),
+        .ID_EXMemRead(ID_EXMemRead),
+        .branch(Branch),
+    //outputs
+        .PCWrite(PCWrite),
+        .IF_IDWrite(IF_IDWrite),
+        .HazardDetect_Mux(HazardDetect_Mux)
+    
     );
     
     RegisterFile Register_File (
@@ -148,6 +179,7 @@ module InstructionDecodePhase(
     assign pc_out = pc_in;
     assign rt_in = instr_in[20:16];
     assign rd_in = instr_in[15:11]; 
+    assign rs_in = instr_in[25:21];
     assign Shamt_in = instr_in[10:6];
     assign Func = instr_in[31:26];
     assign FuncFunc = instr_in[5:0];
