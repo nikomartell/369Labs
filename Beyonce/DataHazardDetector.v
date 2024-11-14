@@ -56,7 +56,11 @@ always @(*) begin
     end 
 
     // Branch hazard: stall/flush conditions
-    if (IF_IDBranchSignal & (ID_EXRegWrite | EX_MEMRegWrite) & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt))) begin
+    if (IF_IDBranchSignal & EX_MEMRegWrite & 
+        (((EX_MEMRegWrite == IF_IDRs) & (IF_IDRs != 0)) | 
+        ((EX_MEMRegWrite == IF_IDRt) & (IF_IDRt != 0)) | 
+        ((ID_EXRt == IF_IDRs) & (IF_IDRs != 0)) | 
+        ((ID_EXRt == IF_IDRt) & (IF_IDRt != 0)))) begin
         PCWrite = 0;
         IF_IDWrite = 0;
         Stall = 1;
