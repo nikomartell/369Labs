@@ -61,6 +61,9 @@ module Top(
     wire ALUSrc_out;
     wire RegWrite_out;
     
+    wire Stall;
+    wire IF_IDWrite;
+    
   
     wire [31:0] reg_data1_out; //read data1 out
     wire [31:0] reg_data2_out; //read data2 out
@@ -93,6 +96,7 @@ module Top(
     wire [1:0] memtoreg_out_idex;
     wire [1:0] decodeop_out_idex;
     wire [5:0] Func_out_idex;
+    wire [3:0] alu_op_idex;
     
     //wires out of execute phase
     wire [31:0] ALU_result;
@@ -121,12 +125,11 @@ module Top(
     wire [1:0] memtoreg_out_memwb;
     wire RegWrite_out_memwb;
 
-    
+    wire [31:0] memtoreg_out_wb;
     assign WriteData_sim = memtoreg_out_wb;
     assign PCResult_sim = PCADDResult_out;
     
     //WB phase
-    wire [31:0] memtoreg_out_wb;
     assign Clk_out = Clk;
     
     //ClkDiv clock(Clk,0,Clk_out);
@@ -156,6 +159,8 @@ module Top(
         .reset(rst), 
         .pc_in(PCADDResult_out), 
         .instr_in(Instruction_out),
+        .IF_IDWrite(IF_IDWrite),
+        .Branch(Branch_out),
         
     //outputs
         .pc_out(pc_out_ifid), 
@@ -174,6 +179,8 @@ module Top(
         .Rt_id_ex(rt_out_idex),
         .EX_MemRegdst(instruction_mux_out_exmem),
         .ID_EXMemRead(memread_out_idex),
+        .ID_EXRegWrite(regwrite_out_idex),
+        .EX_MEMRegWrite(regwrite_out_exmem),
         
     //output control signals
         .RegDst(RegDst_out), 
@@ -200,13 +207,16 @@ module Top(
         .BranchTarget(BranchTarget_out),
         .FuncFunc(Func_out),
     // outputs from data hazard
-        .PCWrite(PCWrite)
+        .PCWrite(PCWrite),
+        .IF_IDWrite(IF_IDWrite),
+        .Stall(Stall)
     );
     
     id_ex IDEX(
     //input
         .clk(Clk_out), 
         .reset(rst), 
+        .Stall(Stall),
         .pc_in(pc_out_decode), 
         .reg_data1(reg_data1_out), 
         .reg_data2(reg_data2_out), 
@@ -243,6 +253,7 @@ module Top(
         .alusrc_out(alusrc_out_idex), 
         .regdst_out(regdst_out_idex), 
         .regwrite_out(regwrite_out_idex),
+        .aluop_out(alu_op_idex),
         .memwrite_out(memwrite_out_idex), 
         .memread_out(memread_out_idex), 
         .memtoreg_out(memtoreg_out_idex)

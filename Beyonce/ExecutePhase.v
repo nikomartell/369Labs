@@ -91,8 +91,8 @@ module ExecutePhase(
     );
     Mux32Bit3To1 ReadData2(
     //inputs 
-        .inB(reg_data2_in),
         .inA(Mem_Wb_Data),
+        .inB(reg_data2_in),
         .inC(Ex_Mem_Data),
         .sel(ReadData2_mux),
     //outputs
@@ -104,7 +104,7 @@ module ExecutePhase(
     
     ALU32Bit ALU(ALU_control, ReadData1_mux_out, ALU_src_out, Shamt_in, ALU_result, zero);
     
-    Mux5Bit3To1 RegDst(rt_in, rd_in, 31, regdst_in, regdst);
+    Mux5Bit3To1 RegDst(rt_in, rd_in, 5'b11111, regdst_in, regdst);
     
     
 endmodule

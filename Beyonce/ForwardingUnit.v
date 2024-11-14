@@ -36,19 +36,18 @@ module ForwardingUnit(
         ReadData1_mux <= 0;
         ReadData2_mux <= 0;
         
-        if (RegWrite_mem_wb && (Rs == RegDst_mem_wb)) begin 
-            ReadData1_mux <= 2'b01;
+        if (RegWrite_ex_mem && (Rs != 0) && (Rs == RegDst_ex_mem)) begin 
+            ReadData1_mux <= 2;
         end
-        else if (RegWrite_ex_mem && (Rs == RegDst_ex_mem)) begin 
-            ReadData1_mux <= 2'b10;
+        else if (RegWrite_mem_wb && (Rs != 0) && (Rs == RegDst_mem_wb)) begin 
+            ReadData1_mux <= 1;
         end
-        
-        
-        if (RegWrite_ex_mem && (Rt == RegWrite_ex_mem)) begin 
-            ReadData2_mux <= 2'b01;
+         
+        if (RegWrite_ex_mem && (Rt != 0) && (Rt == RegDst_ex_mem)) begin 
+            ReadData2_mux <= 2;
         end
-        else if (RegWrite_mem_wb && (Rt == RegDst_mem_wb)) begin 
-            ReadData2_mux <= 2'b10;
+        else if (RegWrite_mem_wb && (Rt != 0) && (Rt == RegDst_mem_wb)) begin 
+            ReadData2_mux <= 1;
         end
     end
     

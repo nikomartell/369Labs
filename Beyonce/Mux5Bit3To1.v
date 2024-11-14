@@ -15,7 +15,7 @@ module Mux5Bit3To1(
     output reg [4:0] out
  );
     
-    always @(inA, inB, sel) begin 
+    always @(inA, inB, inC, sel) begin 
         case(sel) 
             0: begin
                 out <= inB;

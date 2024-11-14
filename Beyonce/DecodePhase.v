@@ -32,11 +32,13 @@ module InstructionDecodePhase(
     
     //from pipelined reg id_ex
     input [4:0] Rt_id_ex,
+    input ID_EXRegWrite,
     
     //from pipelined reg ex_mem
     input [4:0] EX_MemRegdst,
     input ID_EXMemRead,
-    input IF_IDBranchSignal,  // what is this?
+    input EX_MEMRegWrite,
+    
     
     //from reg file
     input [31:0] WriteData, //write data out 
@@ -76,8 +78,8 @@ module InstructionDecodePhase(
     
     //outputs from the data hazard detector
     output PCWrite,
-    output IF_IDWrite,        //not done
-    output HazardDetect_Mux   //not done
+    output IF_IDWrite,
+    output Stall   //not done
     
 );
 
@@ -119,13 +121,16 @@ module InstructionDecodePhase(
         .IF_IDRs(instr_in[25:21]),
         .IF_IDRt(instr_in[20:16]),
         .ID_EXRt(Rt_id_ex),
+        .OPCode(instr_in[31:26]),
         .EX_MemRegdst(EX_MemRegdst),
         .ID_EXMemRead(ID_EXMemRead),
-        .branch(Branch),
+        .IF_IDBranchSignal(Branch),
+        .ID_EXRegWrite(ID_EXRegWrite),
+        .EX_MEMRegWrite(EX_MEMRegWrite),
     //outputs
         .PCWrite(PCWrite),
         .IF_IDWrite(IF_IDWrite),
-        .HazardDetect_Mux(HazardDetect_Mux)
+        .Stall(Stall)
     
     );
     
