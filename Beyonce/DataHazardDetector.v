@@ -44,46 +44,22 @@ module DataHazardDetector(
        
 always @(*) begin 
     // Reset the control signals to 0 (output registers) 
-<<<<<<< Updated upstream
-    PCWrite = 0;
-    IF_IDWrite = 1;
-    HazardDetect_Mux = 0;
-    
-
-    // Load-use hazard: stall conditions
-    if (ID_EXMemRead & (OPCode != LW) & (OPCode != LH) & (OPCode != LB) & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) |  
-                         (IF_IDRt == EX_MemRegdst) | (IF_IDRs == EX_MemRegdst))) begin
-        PCWrite = 1;
-        IF_IDWrite = 0;
-        HazardDetect_Mux = 1;
-=======
     PCWrite = 1;
     IF_IDWrite = 1;
     Stall = 0;
-    
 
     // Load-use hazard: stall conditions
     if (ID_EXMemRead & (OPCode != LW) & (OPCode != LH) & (OPCode != LB) & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt))) begin
         PCWrite = 0;
         IF_IDWrite = 0;
-        Stall = 1;
->>>>>>> Stashed changes
-         
+        Stall = 1;         
     end 
 
     // Branch hazard: stall/flush conditions
-<<<<<<< Updated upstream
-    if (IF_IDBranchSignal & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) |  
-                              (IF_IDRt == EX_MemRegdst) | (IF_IDRs == EX_MemRegdst))) begin
-        PCWrite = 1;
-        IF_IDWrite = 0;
-        HazardDetect_Mux = 1;
-=======
     if (IF_IDBranchSignal & (ID_EXRegWrite | EX_MEMRegWrite) & ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt))) begin
         PCWrite = 0;
         IF_IDWrite = 0;
         Stall = 1;
->>>>>>> Stashed changes
         
     end 
 end 

@@ -275,7 +275,7 @@ module Top(
         .Func_in(Func_out_idex),
         .RegDst_ex_mem(instruction_mux_out_exmem),
         .RegDst_mem_wb(WriteRegister_out_memwb),
-        .Ex_Mem_Data(read_data2_out_exmem),
+        .Ex_Mem_Data(alu_result_out_exmem),
         .Mem_Wb_Data(memtoreg_out_wb),
         .RegWrite_ex_mem(regwrite_out_exmem),
         .RegWrite_mem_wb(RegWrite_out_memwb),
