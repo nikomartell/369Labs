@@ -26,6 +26,9 @@ module Mux5Bit3To1(
             2: begin
                 out <= inC;
             end
+            default: begin
+                out <= 0;
+            end
         
         endcase
     end

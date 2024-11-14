@@ -38,7 +38,7 @@ module DataMemory(
 ); 
     
     // Declare the memory array 1024 - 32-bit words
-    (* mark_debug = "true" *) reg [31:0] Memory [0:1023];
+    reg [31:0] Memory [0:1023];
 
     // Initialize memory to zero
     integer i;

@@ -100,6 +100,7 @@ module Top(
     
     //wires out of execute phase
     wire [31:0] ALU_result;
+    wire [31:0] ReadData2_mux_out;
     wire [4:0] regdst;
     
     //wires out of EX/MEM Register 
@@ -281,7 +282,8 @@ module Top(
         .RegWrite_mem_wb(RegWrite_out_memwb),
         
     //outputs
-        .ALU_result(ALU_result), 
+        .ALU_result(ALU_result),
+        .ReadData2_mux_out(ReadData2_mux_out), 
         .regdst(regdst)
     );
     
@@ -290,7 +292,7 @@ module Top(
         .clk(Clk_out), 
         .reset(rst),
         .alu_result(ALU_result), 
-        .read_data2(reg_data2_out_idex), 
+        .read_data2(ReadData2_mux_out), 
         .regdst(regdst),
         .ALU_op(ALUop_idex), 
         .pc_in(pc_out_idex),

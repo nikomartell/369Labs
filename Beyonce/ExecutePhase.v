@@ -50,7 +50,8 @@ module ExecutePhase(
     input RegWrite_mem_wb,
     
     //inputs to MEM/WB
-    (* mark_debug = "true" *) output [31:0] ALU_result,
+    output [31:0] ALU_result,
+    output wire [31:0] ReadData2_mux_out,
     output [4:0] regdst
     
     );
@@ -61,7 +62,7 @@ module ExecutePhase(
     wire [1:0] ReadData1_mux;
     wire [1:0] ReadData2_mux;
     wire [31:0] ReadData1_mux_out;
-    wire [31:0] ReadData2_mux_out;
+    //wire [31:0] ReadData2_mux_out;
     
     ALUController ALUCntrlr(ALUop, Func_in, ALU_control);
     
@@ -90,9 +91,9 @@ module ExecutePhase(
         .out(ReadData1_mux_out)
     );
     Mux32Bit3To1 ReadData2(
-    //inputs 
-        .inA(Mem_Wb_Data),
+    //inputs
         .inB(reg_data2_in),
+        .inA(Mem_Wb_Data),
         .inC(Ex_Mem_Data),
         .sel(ReadData2_mux),
     //outputs

@@ -72,6 +72,9 @@ always @(*) begin
         endcase
         
     end
+    else begin
+        decode_result <= 0;
+    end
 end
 
 endmodule
