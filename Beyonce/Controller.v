@@ -232,7 +232,7 @@ module Controller(
                 ALUSrc <= 1;
                 MemWrite <= 1; 
                 MemRead <= 1;
-                MemToReg <= 0;
+                MemToReg <= 3;
                 Branch <= 0;
                 Jump <= 0;
                 //LoadType <= 0;
@@ -246,7 +246,7 @@ module Controller(
                 ALUSrc <= 1;
                 MemWrite <= 1; 
                 MemRead <= 1;
-                MemToReg <= 0;
+                MemToReg <= 3;
                 Branch <= 0;
                 Jump <= 0;
                 //LoadType <= 0;
@@ -287,7 +287,7 @@ module Controller(
                 ALUSrc <= 1;
                 MemWrite <= 1; 
                 MemRead <= 1;
-                MemToReg <= 0;
+                MemToReg <= 3;
                 Branch <= 0;
                 Jump <= 0;
              end 
