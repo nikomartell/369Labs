@@ -3,3 +3,5 @@ HW1:    https://docs.google.com/document/d/1jMlQvV9aTqRW50C6mf0kt9_MrzdkDU52XhGD
 HW 2:   https://docs.google.com/document/d/1KzRWXlspdxoHWwOzar4tGT_bvl7-FrJH6tvawB9MH8s/edit?usp=sharing
 
 Datapath Diagram: https://lucid.app/lucidchart/645947ad-3d41-455f-b537-4d2076adf661/edit?viewport_loc=-1553%2C-554%2C2412%2C1745%2C0_0&invitationId=inv_27c278cb-92ee-481f-855b-df47395b832b
+
+HW 3:   https://docs.google.com/document/d/16SWf42sDGj46KtdX2a_0Kie7ZkMlj1Tr-AaOMfySxQ8/edit?usp=sharing
