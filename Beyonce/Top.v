@@ -49,6 +49,7 @@ module Top(
     wire JumpRegister_out;
     wire [31:0] BranchTarget_out;
     wire [31:0] JumpTarget_out;
+    wire PCWrite;
     
     //wires out of decode phase
     wire [1:0] RegDst_out;
@@ -60,6 +61,9 @@ module Top(
     wire ALUSrc_out;
     wire RegWrite_out;
     
+    wire Stall;
+    wire IF_IDWrite;
+    
   
     wire [31:0] reg_data1_out; //read data1 out
     wire [31:0] reg_data2_out; //read data2 out
@@ -67,6 +71,7 @@ module Top(
     wire [31:0] pc_out_decode;
     wire [4:0] rd_out; //destination reg out 
     wire [4:0] rt_out; //target reg out 
+    wire [4:0] rs_out; //For Forwarding
     wire [4:0] Shamt_out; //shamt out 
     wire [5:0] ALUop_out; // opcode out  
     wire [5:0] Func_out; // func out
@@ -79,6 +84,7 @@ module Top(
     wire [31:0] sign_ext_offset_out_idex; //sign extended out
     wire [4:0] rd_out_idex; //destination reg out
     wire [4:0] rt_out_idex; //target reg out
+    wire [4:0] rs_out_idex; //forwarding
     wire [5:0] ALUop_idex; //func out
     wire [4:0]Shamt_out_idex; //shamt out
     wire alusrc_out_idex;
@@ -90,9 +96,11 @@ module Top(
     wire [1:0] memtoreg_out_idex;
     wire [1:0] decodeop_out_idex;
     wire [5:0] Func_out_idex;
+    wire [3:0] alu_op_idex;
     
     //wires out of execute phase
     wire [31:0] ALU_result;
+    wire [31:0] ReadData2_mux_out;
     wire [4:0] regdst;
     
     //wires out of EX/MEM Register 
@@ -118,12 +126,11 @@ module Top(
     wire [1:0] memtoreg_out_memwb;
     wire RegWrite_out_memwb;
 
-    
+    wire [31:0] memtoreg_out_wb;
     assign WriteData_sim = memtoreg_out_wb;
     assign PCResult_sim = PCADDResult_out;
     
     //WB phase
-    wire [31:0] memtoreg_out_wb;
     assign Clk_out = Clk;
     
     //ClkDiv clock(Clk,0,Clk_out);
@@ -140,6 +147,7 @@ module Top(
         .BranchTarget(BranchTarget_out),
         .JumpTarget(JumpTarget_out), 
         .JumpRegisterTarget(reg_data1_out),
+        .PCWrite(PCWrite),
         
     //outputs
         .pc_out(PCADDResult_out), 
@@ -152,6 +160,8 @@ module Top(
         .reset(rst), 
         .pc_in(PCADDResult_out), 
         .instr_in(Instruction_out),
+        .IF_IDWrite(IF_IDWrite),
+        .Branch(Branch_out),
         
     //outputs
         .pc_out(pc_out_ifid), 
@@ -167,6 +177,11 @@ module Top(
         .WriteData(memtoreg_out_wb), 
         .WriteRegister(WriteRegister_out_memwb), 
         .RegWrite_in(RegWrite_out_memwb),
+        .Rt_id_ex(rt_out_idex),
+        .EX_MemRegdst(instruction_mux_out_exmem),
+        .ID_EXMemRead(memread_out_idex),
+        .ID_EXRegWrite(regwrite_out_idex),
+        .EX_MEMRegWrite(regwrite_out_exmem),
         
     //output control signals
         .RegDst(RegDst_out), 
@@ -187,22 +202,29 @@ module Top(
         .sign_ext_offset_in(sign_ext_offset_out), 
         .rd_in(rd_out), 
         .rt_in(rt_out), 
+        .rs_in(rs_out),
         .Shamt_in(Shamt_out),
         .Func(ALUop_out),
         .BranchTarget(BranchTarget_out),
-        .FuncFunc(Func_out)
+        .FuncFunc(Func_out),
+    // outputs from data hazard
+        .PCWrite(PCWrite),
+        .IF_IDWrite(IF_IDWrite),
+        .Stall(Stall)
     );
     
     id_ex IDEX(
     //input
         .clk(Clk_out), 
         .reset(rst), 
+        .Stall(Stall),
         .pc_in(pc_out_decode), 
         .reg_data1(reg_data1_out), 
         .reg_data2(reg_data2_out), 
         .sign_ext_offset(sign_ext_offset_out), 
         .rd(rd_out), 
         .rt(rt_out), 
+        .rs(rs_out),
         .Func(ALUop_out), 
         .Shamt(Shamt_out),
         .FuncFunc(Func_out),
@@ -213,7 +235,8 @@ module Top(
         .reg_data2_out(reg_data2_out_idex), 
         .sign_ext_offset_out(sign_ext_offset_out_idex), 
         .rd_out(rd_out_idex), 
-        .rt_out(rt_out_idex), 
+        .rt_out(rt_out_idex),
+        .rs_out(rs_out_idex), 
         .Func_out(ALUop_idex),
         .Shamt_out(Shamt_out_idex),
         .FuncFunc_out(Func_out_idex),
@@ -231,6 +254,7 @@ module Top(
         .alusrc_out(alusrc_out_idex), 
         .regdst_out(regdst_out_idex), 
         .regwrite_out(regwrite_out_idex),
+        .aluop_out(alu_op_idex),
         .memwrite_out(memwrite_out_idex), 
         .memread_out(memread_out_idex), 
         .memtoreg_out(memtoreg_out_idex)
@@ -243,14 +267,23 @@ module Top(
         .sign_ext_offset_in(sign_ext_offset_out_idex), 
         .rd_in(rd_out_idex), 
         .rt_in(rt_out_idex), 
+        .rs_in(rs_out_idex),
         .ALUop(ALUop_idex), 
         .Shamt_in(Shamt_out_idex), 
         .alusrc_in(alusrc_out_idex), 
         .regdst_in(regdst_out_idex), 
         .aluop_in(aluop_out_idex),
         .Func_in(Func_out_idex),
+        .RegDst_ex_mem(instruction_mux_out_exmem),
+        .RegDst_mem_wb(WriteRegister_out_memwb),
+        .Ex_Mem_Data(alu_result_out_exmem),
+        .Mem_Wb_Data(memtoreg_out_wb),
+        .RegWrite_ex_mem(regwrite_out_exmem),
+        .RegWrite_mem_wb(RegWrite_out_memwb),
+        
     //outputs
-        .ALU_result(ALU_result), 
+        .ALU_result(ALU_result),
+        .ReadData2_mux_out(ReadData2_mux_out), 
         .regdst(regdst)
     );
     
@@ -259,7 +292,7 @@ module Top(
         .clk(Clk_out), 
         .reset(rst),
         .alu_result(ALU_result), 
-        .read_data2(reg_data2_out_idex), 
+        .read_data2(ReadData2_mux_out), 
         .regdst(regdst),
         .ALU_op(ALUop_idex), 
         .pc_in(pc_out_idex),

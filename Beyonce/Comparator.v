@@ -26,20 +26,20 @@ module Comparator(Reg1, Reg2, beq, blt, bgt, zero, bltz, bgtz);
     output reg beq, blt, bgt, zero, bltz, bgtz;
 
     initial begin
-            beq = 0;
-            blt = 0;
-            bgt = 0;
-            zero = 0;
-            bgtz = 0;
-            bltz = 0;
+            beq <= 0;
+            blt <= 0;
+            bgt <= 0;
+            zero <= 0;
+            bgtz <= 0;
+            bltz <= 0;
     end
     always @(*) begin
-    beq = 0;
-    blt = 0;
-    bgt = 0;
-    zero = 0;
-    bgtz = 0;
-    bltz = 0;
+    beq <= 0;
+    blt <= 0;
+    bgt <= 0;
+    zero <= 0;
+    bgtz <= 0;
+    bltz <= 0;
         if (Reg1[31] && Reg2[31]) begin
             bltz <= 1;
             if (Reg1 > Reg2) begin

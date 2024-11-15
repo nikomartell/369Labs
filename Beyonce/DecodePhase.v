@@ -30,6 +30,16 @@ module InstructionDecodePhase(
     input [31:0] instr_in, //instruction in 
     input [31:0] pc_in, //pc adder 4 out  
     
+    //from pipelined reg id_ex
+    input [4:0] Rt_id_ex,
+    input ID_EXRegWrite,
+    
+    //from pipelined reg ex_mem
+    input [4:0] EX_MemRegdst,
+    input ID_EXMemRead,
+    input EX_MEMRegWrite,
+    
+    
     //from reg file
     input [31:0] WriteData, //write data out 
     input [4:0] WriteRegister, //write register out 
@@ -60,10 +70,17 @@ module InstructionDecodePhase(
     output wire [31:0] sign_ext_offset_in, //sign extended out 
     output [4:0] rd_in, //destination reg out 
     output [4:0] rt_in, //target reg out 
+    output [4:0] rs_in, //for forwarding
     output [4:0] Shamt_in, //shamt out 
     output [5:0] Func, // func out  
     output [31:0] BranchTarget,  //BranchTarget
-    output [5:0] FuncFunc //actually func
+    output [5:0] FuncFunc, //actually func
+    
+    //outputs from the data hazard detector
+    output PCWrite,
+    output IF_IDWrite,
+    output Stall   //not done
+    
 );
 
     //output wires from comparator to controller for branches
@@ -96,6 +113,25 @@ module InstructionDecodePhase(
         .JumpReg(JumpRegister)
         //.LoadType(LoadType),
         //.StoreType(StoreType)
+    );
+    
+    
+    DataHazardDetector DHD(
+    //inputs 
+        .IF_IDRs(instr_in[25:21]),
+        .IF_IDRt(instr_in[20:16]),
+        .ID_EXRt(Rt_id_ex),
+        .OPCode(instr_in[31:26]),
+        .EX_MemRegdst(EX_MemRegdst),
+        .ID_EXMemRead(ID_EXMemRead),
+        .IF_IDBranchSignal(Branch),
+        .ID_EXRegWrite(ID_EXRegWrite),
+        .EX_MEMRegWrite(EX_MEMRegWrite),
+    //outputs
+        .PCWrite(PCWrite),
+        .IF_IDWrite(IF_IDWrite),
+        .Stall(Stall)
+    
     );
     
     RegisterFile Register_File (
@@ -148,6 +184,7 @@ module InstructionDecodePhase(
     assign pc_out = pc_in;
     assign rt_in = instr_in[20:16];
     assign rd_in = instr_in[15:11]; 
+    assign rs_in = instr_in[25:21];
     assign Shamt_in = instr_in[10:6];
     assign Func = instr_in[31:26];
     assign FuncFunc = instr_in[5:0];

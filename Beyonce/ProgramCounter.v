@@ -24,10 +24,11 @@
 // location, 0x00000000H).
 ////////////////////////////////////////////////////////////////////////////////
 
-module ProgramCounter(Address, PCResult, Reset, Clk);
+module ProgramCounter(Address, PCResult, PCWrite, Reset, Clk);
 
 	input [31:0] Address;
 	input Reset, Clk;
+	input PCWrite;
 
 	output reg [31:0] PCResult;
 
@@ -38,9 +39,12 @@ module ProgramCounter(Address, PCResult, Reset, Clk);
     always @(posedge Clk or posedge Reset) begin 
     if(Reset) 
         PCResult <=0;
-    else 
+    else if (PCWrite) begin
         PCResult <= Address;
     end 
-
+    else begin
+        PCResult <= PCResult;
+    end
+    end
 endmodule
 

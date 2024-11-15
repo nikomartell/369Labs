@@ -2,6 +2,7 @@
 module id_ex (
     input clk,
     input reset,
+    input Stall,
     
     input [31:0] pc_in, //address passed
     input [31:0] reg_data1, //read data 1 
@@ -9,6 +10,7 @@ module id_ex (
     input [31:0] sign_ext_offset, //sign extended in
     input [4:0] rd, //destination reg in
     input [4:0] rt, //target reg in 
+    input [4:0] rs, //for forwarding
     input [5:0] Func, //func in
     input [4:0] Shamt, //shamt in
     input [5:0] FuncFunc, // actually func
@@ -19,6 +21,7 @@ module id_ex (
     output reg [31:0] sign_ext_offset_out, //sign extended out
     output reg [4:0] rd_out, //destination reg out
     output reg [4:0] rt_out, //target reg out
+    output reg [4:0] rs_out, // for forwarding
     output reg [5:0] Func_out, //func out
     output reg [4:0] Shamt_out, //shamt out
     output reg [5:0] FuncFunc_out, //actually func
@@ -53,6 +56,7 @@ initial begin
         sign_ext_offset_out <= 32'b0;
         rd_out <= 5'b0;
         rt_out <= 5'b0;
+        rs_out <= 5'b0;
         Func_out <= 6'b0;
         Shamt_out <= 5'b0;
         FuncFunc_out <= 6'b0;
@@ -70,13 +74,14 @@ initial begin
 end
 
 always @(posedge clk or posedge reset) begin
-    if (reset) begin 
+    if (reset || Stall) begin 
         pc_out <= 32'b0;
         reg_data1_out <= 32'b0;
         reg_data2_out <= 32'b0;
         sign_ext_offset_out <= 32'b0;
         rd_out <= 5'b0;
         rt_out <= 5'b0;
+        rs_out <= 5'b0;
         Func_out <= 6'b0;
         Shamt_out <= 5'b0;
         FuncFunc_out <= 6'b0;
@@ -99,6 +104,7 @@ always @(posedge clk or posedge reset) begin
         sign_ext_offset_out <= sign_ext_offset;
         rd_out <= rd;
         rt_out <= rt;
+        rs_out <= rs;
         Func_out <= Func;
         Shamt_out <= Shamt;
         FuncFunc_out <= FuncFunc;
