@@ -16,7 +16,7 @@ module Top_tb;
 
     // Instantiate the Unit Under Test (UUT)
     Top uut (
-        .clk(clk), 
+        .Clk(clk), 
         .rst(rst), 
         .WriteData_sim(WriteData_sim), 
         .PCResult_sim(PCResult_sim)
