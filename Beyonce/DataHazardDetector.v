@@ -28,7 +28,7 @@ module DataHazardDetector(
     input IF_IDBranchSignal,
     input ID_EXRegWrite,
     input EX_MEMRegWrite,
-    
+    input JR_Signal, // added for jr hazard
     output reg PCWrite,    //Controls PC
     output reg IF_IDWrite, //Controls IF_ID Register 
     output reg Stall       //ID_EX Reguster to reset
@@ -56,25 +56,14 @@ always @(*) begin
         IF_IDWrite = 0;
         Stall = 1;         
     end 
-
+    
     // Branch hazard: stall/flush conditions
-    if (
-    (IF_IDBranchSignal | EX_MEMRegWrite) & 
-        (ID_EXRegWrite | EX_MEMRegWrite) & //added condition to check dependency on lw hehe we already had the wire for some reason
-        
-        (
-        (EX_MEMRegWrite == IF_IDRs) & (IF_IDRs != 0)
-        ) | 
-        (
-        (EX_MEMRegWrite == IF_IDRt) & (IF_IDRt != 0)
-        ) | 
-        (
-        (ID_EXRt == IF_IDRs) & (IF_IDRs != 0)
-        ) | 
-        (
-        (ID_EXRt == IF_IDRt) & (IF_IDRt != 0)
-        )
-        ) begin
+    if ((IF_IDBranchSignal | JR_Signal) &
+        (ID_EXRegWrite | EX_MEMRegWrite) &
+        ((EX_MEMRegWrite == IF_IDRs) & (IF_IDRs != 0)) | 
+        ((EX_MEMRegWrite == IF_IDRt) & (IF_IDRt != 0)) | 
+        ((ID_EXRt == IF_IDRs) & (IF_IDRs != 0)) | 
+        ((ID_EXRt == IF_IDRt) & (IF_IDRt != 0))) begin
         PCWrite = 0;
         IF_IDWrite = 0;
         Stall = 1;
