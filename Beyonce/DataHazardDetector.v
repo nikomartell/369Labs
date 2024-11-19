@@ -60,7 +60,7 @@ always @(*) begin
     if (ID_EXMemRead &
        (
        (ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt)
-       //add wire since maybe the problem is forwarding from mem to decode which is where branches are resolved 
+       
        )
        ) begin
         PCWrite = 0;
@@ -76,7 +76,7 @@ always @(*) begin
     
     if ((IF_IDBranchSignal | JR_Signal | (OPCode == BNE) |(OPCode == BEQ)  //works for this 2 
     
-    | (OPCode == BGEZ) | (OPCode == BLTZ)  // doesnt work because of the same op code 
+    | (OPCode == BGEZ) | (OPCode == BLTZ)  // doesnt work  
     
     | (OPCode == BGTZ) //doesnt work 
     
