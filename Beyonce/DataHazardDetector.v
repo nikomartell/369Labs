@@ -71,7 +71,8 @@ always @(*) begin
     // Branch hazard: stall/flush conditions
     
     //what has comments of "doesnt work" was tested with lw then branch, when tested with addi with immediate dependence on branch works
-    // clueless on why :) 
+    //the 4 that dont work are (rs,offset) maybe it is not the right wire?? 
+    //but why would it work for addi which is (rt,rs,imm) and not lw (rt,offset)? 
     
     if ((IF_IDBranchSignal | JR_Signal | (OPCode == BNE) |(OPCode == BEQ)  //works for this 2 
     
@@ -80,9 +81,7 @@ always @(*) begin
     | (OPCode == BGTZ) //doesnt work 
     
     | (OPCode == BLEZ)) //doesnt work 
-    
     & 
-    
         (ID_EXRegWrite | EX_MEMRegWrite) &
         ((EX_MemRegdst == IF_IDRs) & (IF_IDRs != 0)) | 
         ((EX_MemRegdst == IF_IDRt) & (IF_IDRt != 0)) | 
