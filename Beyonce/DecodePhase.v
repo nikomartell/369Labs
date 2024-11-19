@@ -127,6 +127,8 @@ module InstructionDecodePhase(
         .IF_IDBranchSignal(Branch),
         .ID_EXRegWrite(ID_EXRegWrite),
         .EX_MEMRegWrite(EX_MEMRegWrite),
+    //added input for JR
+        .JR_Signal(JumpRegister),
     //outputs
         .PCWrite(PCWrite),
         .IF_IDWrite(IF_IDWrite),
