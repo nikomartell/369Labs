@@ -68,3 +68,4 @@ module MemoryPhase(
     DataMemory DM(alu_result, read_data_out, clk, memwrite, memread, datamem_out);
     
 endmodule
+
