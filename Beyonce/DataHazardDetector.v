@@ -41,6 +41,13 @@ module DataHazardDetector(
         parameter LW = 6'b100011;
         parameter LH = 6'b100001;
         parameter LB = 6'b100000;
+        parameter BNE = 6'b000101;
+        parameter BEQ =  6'b000100; 
+        parameter BGEZ = 6'b000001;
+        parameter BLTZ = 6'b000001;
+        parameter BGTZ = 6'b000111;
+        parameter BLEZ = 6'b000110;
+        
        
 always @(*) begin 
     // Reset the control signals to 0 (output registers) 
@@ -49,8 +56,11 @@ always @(*) begin
     Stall = 0;
 
     // Load-use hazard: stall conditions
-    if (ID_EXMemRead & (OPCode != LW) & (OPCode != LH) & (OPCode != LB) &
-       ((ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt))
+    //(OPCode != LW) & (OPCode != LH) & (OPCode != LB)
+    if (ID_EXMemRead &
+       (
+       (ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) 
+       )
        ) begin
         PCWrite = 0;
         IF_IDWrite = 0;
@@ -58,10 +68,11 @@ always @(*) begin
     end 
     
     // Branch hazard: stall/flush conditions
-    if ((IF_IDBranchSignal | JR_Signal) &
-        (ID_EXRegWrite | EX_MEMRegWrite) &
-        ((EX_MEMRegWrite == IF_IDRs) & (IF_IDRs != 0)) | 
-        ((EX_MEMRegWrite == IF_IDRt) & (IF_IDRt != 0)) | 
+    
+    if ((IF_IDBranchSignal | JR_Signal | (OPCode == BNE) |(OPCode == BEQ) | (OPCode == BGEZ) | (OPCode == BLTZ) | (OPCode == BGTZ) | (OPCode == BLEZ)) 
+    & (ID_EXRegWrite | EX_MEMRegWrite) & 
+    ((EX_MemRegdst == IF_IDRs) & (IF_IDRs != 0)) | 
+    ((EX_MemRegdst == IF_IDRt) & (IF_IDRt != 0)) | 
         ((ID_EXRt == IF_IDRs) & (IF_IDRs != 0)) | 
         ((ID_EXRt == IF_IDRt) & (IF_IDRt != 0))) begin
         PCWrite = 0;

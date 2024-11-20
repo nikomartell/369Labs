@@ -67,7 +67,10 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
         for (i = 0; i < 32; i = i + 1) begin
             RegFile[i] <= 0; // Set each register to 0
         end
+<<<<<<< HEAD
         RegFile[29] <= 16384;
+=======
+>>>>>>> 23cad413c61e72a7b7bc6ab53b74fd5cad90726a
     end
     
     //synchronous write 
