@@ -59,8 +59,7 @@ always @(*) begin
     //(OPCode != LW) & (OPCode != LH) & (OPCode != LB)
     if (ID_EXMemRead &
        (
-       (ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt)
-       
+       (ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) 
        )
        ) begin
         PCWrite = 0;
@@ -70,21 +69,10 @@ always @(*) begin
     
     // Branch hazard: stall/flush conditions
     
-    //what has comments of "doesnt work" was tested with lw then branch, when tested with addi with immediate dependence on branch works
-    //the 4 that dont work are (rs,offset) maybe it is not the right wire?? 
-    //but why would it work for addi which is (rt,rs,imm) and not lw (rt,offset)? 
-    
-    if ((IF_IDBranchSignal | JR_Signal | (OPCode == BNE) |(OPCode == BEQ)  //works for this 2 
-    
-    | (OPCode == BGEZ) | (OPCode == BLTZ)  // doesnt work  
-    
-    | (OPCode == BGTZ) //doesnt work 
-    
-    | (OPCode == BLEZ)) //doesnt work 
-    & 
-        (ID_EXRegWrite | EX_MEMRegWrite) &
-        ((EX_MemRegdst == IF_IDRs) & (IF_IDRs != 0)) | 
-        ((EX_MemRegdst == IF_IDRt) & (IF_IDRt != 0)) | 
+    if ((IF_IDBranchSignal | JR_Signal | (OPCode == BNE) |(OPCode == BEQ) | (OPCode == BGEZ) | (OPCode == BLTZ) | (OPCode == BGTZ) | (OPCode == BLEZ)) 
+    & (ID_EXRegWrite | EX_MEMRegWrite) & 
+    ((EX_MemRegdst == IF_IDRs) & (IF_IDRs != 0)) | 
+    ((EX_MemRegdst == IF_IDRt) & (IF_IDRt != 0)) | 
         ((ID_EXRt == IF_IDRs) & (IF_IDRs != 0)) | 
         ((ID_EXRt == IF_IDRt) & (IF_IDRt != 0))) begin
         PCWrite = 0;
@@ -95,4 +83,3 @@ always @(*) begin
 end 
 
 endmodule
-
