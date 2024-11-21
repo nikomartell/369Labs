@@ -38,7 +38,7 @@ module DataMemory(
 ); 
     
     // Declare the memory array 1024 - 32-bit words
-    reg [31:0] Memory [0:1023];
+    reg [31:0] Memory [0:4095];
 
     // Initialize memory to zero
     integer i;
@@ -50,7 +50,7 @@ module DataMemory(
     always @(posedge Clk) begin
         // Write operation
         if (MemWrite) begin
-            Memory[Address[11:2]] <= WriteData; // Use Address[11:2] for word alignment
+            Memory[Address[13:2]] <= WriteData; // Use Address[11:2] for word alignment
         end
     end
 
