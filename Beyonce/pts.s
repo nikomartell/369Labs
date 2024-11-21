@@ -947,8 +947,8 @@ print_result:
 
 # Begin subroutine
 vbsme:  
-    li      $v0, 0              # reset $v0 and $V1
-    li      $v1, 0
+    addi      $v0, $zero, 0              # reset $v0 and $V1
+    addi      $v1, $zero, 0
 
     addi $sp, $sp, -12 #make space on stack
     sw $ra, 0($sp) #save return address
@@ -959,33 +959,44 @@ vbsme:
     lw      $t2, 8($a0)      # k (window height)
     lw      $t3, 12($a0)     # l (window width)
 
-    add    $t4, $zero, $zero      # y = 0
-    add    $t5, $zero, $zero      # x = 0
+    addi    $t4, $zero, 0      # y = 0
+    addi    $t5, $zero, 0      # x = 0
 
     # Initialize coordinates
-    li      $v0, 0           # min_y
-    li      $v1, 0           # min_x
+    addi      $v0, $zero, 0             # min_y
+    addi      $v1, $zero, 0             # min_x
     # Initialize Radius to control spiral collapse
-    add    $s7, $zero, $zero      # Creates radius
+    addi    $s7, $zero, 0      # Creates radius
 
     # Initialize minimum SAD to a large value
-    li      $t6, 0x7FFFFFFF  # min_sad
+    addi      $t6, $zero, 0x7fff  # min_sad
     
     srl    $t7, $t0, 1       # set centerX/Y
     add   $t8, $zero, $zero        # set direction
 
 outer_loop:
-    bge     $s7, $t7, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
-    beq     $t8, 0, right    # if direction == 0, go right
-    beq     $t8, 1, down     # if direction == 1, go down
-    beq     $t8, 2, left     # if direction == 2, go left
-    beq     $t8, 3, up       # if direction == 3, go up
-    bge     $t8, 4, reset_direction  # if direction >= 4, reset direction
+    slt     $t9, $t7, $s7
+    bne     $t9, $zero, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
+    
+    beq     $t8, $zero, right    # if direction == 0, go right
+
+    addi    $t9, $zero, 1
+    beq     $t8, $t9, down     # if direction == 1, go down
+
+    addi    $t9, $zero, 2
+    beq     $t8, $t9, left     # if direction == 2, go left
+
+    addi    $t9, $zero, 3
+    beq     $t8, $t9, up       # if direction == 3, go up
+    
+    slti    $t9, $t8, 4
+    beq     $t9, $zero, reset_direction  # if direction >= 4, reset direction
 
 right:
     sub     $t9, $t1, $t3   # frame x - window x (set x limit)
     sub     $t9, $t9, $s7   # limit x - radius
-    bgt     $t5, $t9, end_right  # if x >= limit x, end inner loop
+    slt     $t9, $t9, $t5  # if limit x < x
+    beq     $t9, 1, end_right  # if x >= limit x, end inner loop
 
     # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
@@ -994,12 +1005,14 @@ right:
 down:
     sub     $t9, $t0, $t2   # frame y - window y (set y limit)
     sub     $t9, $t9, $s7   # limit y - radius
-    bgt     $t4, $t9, end_down  # if y >= limit y, end outer loop
+    slt     $t9, $t9, $t4  # if limit y < y
+    beq     $t9, 1, end_down  # if y >= limit y, end outer loop
 
     add    $t9, $zero, $zero       # sad = 0
     j       window_loop_y
 left:
-    blt     $t5, $s7, end_left  # if x < radius, end inner loop
+    slt     $t9, $t5, $s7  # if x < radius
+    beq     $t9, 1, end_left  # if x < radius, end inner loop
 
     # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
@@ -1007,7 +1020,8 @@ left:
 
 up:
     
-    blt     $t4, $s7, end_up  # if y < radius + 1, end outer loop
+    slt     $t9, $t4, $s7  # if y < radius + 1
+    beq     $t9, 1, end_up  # if y < radius + 1, end outer loop
 
     # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
@@ -1017,10 +1031,13 @@ reset_direction:
     j       outer_loop
 
 window_loop_y:
-    bge     $s0, $t2, end_window_loop_y  # if y >= k, end window loop y
-    add     $s1, $zero, $zero       # v(window_x) = 0
+    slt     $s1, $s0, $t2
+    beq     $s1, $zero, end_window_loop_y  # if y >= k, end window loop y
+
+    addi    $s1, $zero, 0                 # v(window_x) = 0
 window_loop_x:
-    bge     $s1, $t3, end_window_loop_x  # if x >= l, end window loop x
+    slt     $s2, $s1, $t3
+    beq     $s2, $zero, end_window_loop_x  # if x >= l, end window loop x
 
     # Calculate absolute difference
     add     $s2, $s0, $t4    # window_y + y
@@ -1036,9 +1053,9 @@ window_loop_x:
     sll     $s4, $s4, 2      # (window_y * window width + window_x) * 4
     add     $s4, $s4, $a2    # window_y * window width + window_x + window[] address
     lw      $s5, 0($s4)      # window[window_y * window width + window_x] address
-
     sub     $s6, $s3, $s5    # frame - window
-    blt     $s6, 0, abso      # if frame - window < 0, go to abs.
+    slt     $s2, $s6, $zero
+    bne     $s2, $zero, abso      # if frame - window < 0, go to abs.
 
     add     $t9, $t9, $s6    # sad += abs(frame - window)
 
@@ -1055,18 +1072,22 @@ abso:
 end_window_loop_x:
     addi    $s0, $s0, 1      # window_y++
     j       window_loop_y
+
 end_window_loop_y:
+    slt     $s1, $t9, $t6
+    bne     $s1, $zero, update_min    # if sad < min_sad
 
     # Update minimum SAD and coordinates if necessary
-    blt     $t9, $t6, update_min    # if sad < min_sad
+    slt     $s1, $t9, $t6
+    blt     $s1, $t6, update_min    # if sad < min_sad
     j       increment
 
 update_min:
-    add    $t6, $t9, $zero         # min_sad = sad
-    add    $v0, $t4, $zero         # min_y = y
-    add    $v1, $t5, $zero         # min_x = x
+    addi    $t6, $t9, 0         # min_sad = sad
+    addi    $v0, $t4, 0         # min_y = y
+    addi    $v1, $t5, 0         # min_x = x
 increment:
-    add    $s0, $zero, $zero       # u(window_y) = 0
+    addi    $s0, $zero, 0       # u(window_y) = 0
 
     beq     $t8, 0, increment_right    # if direction == 0, go add right
     beq     $t8, 1, increment_down     # if direction == 1, go add down
