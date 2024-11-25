@@ -954,7 +954,7 @@ vbsme:
     sw $ra, 0($sp) #save return address
 
     # Load dimensions
-    lw      $t0, 0($a0)      # i (frame height/width)
+    lw      $t0, 0($a0)      # i (frame height)
     lw      $t1, 4($a0)      # j (frame width)
     lw      $t2, 8($a0)      # k (window height)
     lw      $t3, 12($a0)     # l (window width)
@@ -965,67 +965,25 @@ vbsme:
     # Initialize coordinates
     addi      $v0, $zero, 0             # min_y
     addi      $v1, $zero, 0             # min_x
-    # Initialize Radius to control spiral collapse
-    addi    $s7, $zero, 0      # Creates radius
+    # Initialize boundary to control spiral collapse
+    addi    $s7, $zero, 0      # Creates boundary
 
     # Initialize minimum SAD to a large value
     addi      $t6, $zero, 0x7fff  # min_sad
     
-    srl    $t7, $t0, 1       # set centerX/Y
+    sub    $t7, $t0, $t2      
+    srl    $t7, $t7, 1       # set centerX/Y
     add   $t8, $zero, $zero        # set direction
 
 outer_loop:
     slt     $t9, $t7, $s7
-    bne     $t9, $zero, end_outer_loop  # if radius >= centerX/Y, end search (if the radius is larger than half the circle size)
+    bne     $t9, $zero, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
     
-    beq     $t8, $zero, right    # if direction == 0, go right
+    beq     $t8, 4, reset_direction  # if direction >= 4, reset direction
 
-    addi    $t9, $zero, 1
-    beq     $t8, $t9, down     # if direction == 1, go down
-
-    addi    $t9, $zero, 2
-    beq     $t8, $t9, left     # if direction == 2, go left
-
-    addi    $t9, $zero, 3
-    beq     $t8, $t9, up       # if direction == 3, go up
-    
-    slti    $t9, $t8, 4
-    beq     $t9, $zero, reset_direction  # if direction >= 4, reset direction
-
-right:
-    sub     $t9, $t1, $t3   # frame x - window x (set x limit)
-    sub     $t9, $t9, $s7   # limit x - radius
-    slt     $t9, $t9, $t5  # if limit x < x
-    beq     $t9, 1, end_right  # if x >= limit x, end inner loop
-
-    # Calculate SAD for current t8sition
     add    $t9, $zero, $zero       # sad = 0
     j      window_loop_y
 
-down:
-    sub     $t9, $t0, $t2   # frame y - window y (set y limit)
-    sub     $t9, $t9, $s7   # limit y - radius
-    slt     $t9, $t9, $t4  # if limit y < y
-    beq     $t9, 1, end_down  # if y >= limit y, end outer loop
-
-    add    $t9, $zero, $zero       # sad = 0
-    j       window_loop_y
-left:
-    slt     $t9, $t5, $s7  # if x < radius
-    beq     $t9, 1, end_left  # if x < radius, end inner loop
-
-    # Calculate SAD for current t8sition
-    add    $t9, $zero, $zero       # sad = 0
-    j       window_loop_y
-
-up:
-    
-    slt     $t9, $t4, $s7  # if y < radius + 1
-    beq     $t9, 1, end_up  # if y < radius + 1, end outer loop
-
-    # Calculate SAD for current t8sition
-    add    $t9, $zero, $zero       # sad = 0
-    j       window_loop_y
 reset_direction:
     add    $t8, $zero, $zero       # direction = 0
     j       outer_loop
@@ -1095,39 +1053,58 @@ increment:
     beq     $t8, 3, increment_up       # if direction == 3, go add up
     
 increment_right:
+    sub     $t9, $t1, $t3   # frame x - window x (set x limit)
+    sub     $t9, $t9, $s7   # limit x - boundary
+    slt     $t9, $t9, $t5  # if limit x < x
+    beq     $t9, 1, end_right  # if x >= limit x, end inner loop
+
     addi    $t5, $t5, 1      # x++
-    j       right
+    j       outer_loop
+
 increment_down:
+    sub     $t9, $t0, $t2   # frame y - window y (set y limit)
+    sub     $t9, $t9, $s7   # limit y - boundary
+    slt     $t9, $t9, $t4  # if limit y < y
+    beq     $t9, 1, end_down  # if y >= limit y, end outer loop
+
     addi    $t4, $t4, 1      # y++
-    j       down
+    j       outer_loop
+
 increment_left:
+    slt     $t9, $t5, $s7  # if x < boundary
+    beq     $t9, 1, end_left  # if x < boundary, end inner loop
+
     addi    $t5, $t5, -1      # x--
-    j       left
+    j       outer_loop
+
 increment_up:
+    slt     $t9, $t4, $s7  # if y < boundary + 1
+    beq     $t9, 1, end_up  # if y < boundary + 1, end outer loop
+    
     addi    $t4, $t4, -1      # y--
-    j       up
+    j       outer_loop
 
 end_right:
     addi    $t8, $t8, 1      # direction++
     sub     $t5, $t5, 1      # x-- (puts x back into bounds)
-    addi    $t4, $t4, 1      # y++ (increments y to not repeat the same check)
-    j       outer_loop
+    j       increment_down
 end_down:
     addi    $t8, $t8, 1      # direction++
     sub     $t4, $t4, 1      # y-- (puts y back into bounds)
-    addi    $t5, $t5, 1      # x-- (increments x to not repeat the same check)
-    j       outer_loop
+    j       increment_left
+
 end_left:
     addi    $t8, $t8, 1      # direction++
     add     $t5, $t5, 1      # x++ (puts x back into bounds)
-    sub     $t4, $t4, 1      # y-- (puts y back into bounds)
-    addi    $s7, $s7, 1      # radius++
-    j       outer_loop
+    addi    $s7, $s7, 1      # boundary++
+    slt     $t9, $t7, $s7
+    bne     $t9, $zero, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
+
+    j       increment_up
 end_up:
-    addi    $t8, $t8, 1      # direction++
+    addi    $t8, $zero, 0      # direction = Right
     add     $t4, $t4, 1      # y++ (puts y back into bounds)
-    addi    $t5, $t5, 1      # x++ (increments x to not repeat the same check)
-    j       outer_loop
+    j       increment_right
 
 end_outer_loop:
     lw      $ra, 0($sp)     #restore return address
