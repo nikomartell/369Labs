@@ -48,16 +48,18 @@
 // to allow for data multiplexing and setup time.
 ////////////////////////////////////////////////////////////////////////////////
 
-module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Reset, RegWrite, Clk, ReadData1, ReadData2);
+module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Reset, RegWrite, Clk, ReadData1, ReadData2, x, y);
     input [4:0] ReadRegister1;
     input [4:0] ReadRegister2;
     input [4:0] WriteRegister;
     input [31:0] WriteData;
     input RegWrite, Clk, Reset;
-    output [31:0] ReadData1;
-    output [31:0] ReadData2;
+    output reg [31:0] ReadData1;
+    output reg [31:0] ReadData2;
+    output [4:0] x;
+    output [4:0] y;
     
-    reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
+    (* mark_debug = "true" *) reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
     
     //iterator 
     integer i;
@@ -67,7 +69,8 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
         for (i = 0; i < 32; i = i + 1) begin
             RegFile[i] <= 0; // Set each register to 0
         end
-        RegFile[29] <= 16384;
+        ReadData1 <= 0;
+        ReadData2 <= 0;
     end
     
     //synchronous write 
@@ -82,7 +85,19 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
             RegFile[WriteRegister] <= WriteData;
     end
     
-    assign ReadData1 = RegFile[ReadRegister1];
-    assign ReadData2 = RegFile[ReadRegister2];
-
+    //asynchronous read
+    always @(*) begin
+        if (Reset) begin 
+            ReadData1 <= 0;
+            ReadData2 <= 0;  
+        end
+        else begin
+            ReadData1 <= RegFile[ReadRegister1];
+            ReadData2 <= RegFile[ReadRegister2];
+        end
+    end
+    
+            assign y = RegFile[12];
+            assign x = RegFile[13];
+            
 endmodule
