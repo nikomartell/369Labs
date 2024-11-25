@@ -29,8 +29,11 @@ module Top(
     output [6:0] out7,
     output [7:0] en_out,
     
-    output [31:0] WriteData_sim,
-    output [31:0] PCResult_sim 
+    output [15:0] x,
+    output [15:0] y
+    
+    //output [31:0] WriteData_sim,
+    //output [31:0] PCResult_sim 
 );
     
     //wires out of clock divider
@@ -127,14 +130,14 @@ module Top(
     wire RegWrite_out_memwb;
 
     wire [31:0] memtoreg_out_wb;
-    assign WriteData_sim = memtoreg_out_wb;
-    assign PCResult_sim = PCADDResult_out;
+    //assign WriteData_sim = memtoreg_out_wb;
+    //assign PCResult_sim = PCADDResult_out;
     
     //WB phase
     //assign Clk_out = Clk;
     
     ClkDiv clock(Clk,0,Clk_out);
-    Two4DigitDisplay display(Clk, PCADDResult_out[15:0], memtoreg_out_wb[15:0], out7, en_out);
+    Two4DigitDisplay display(Clk, y, x, out7, en_out);
     //Display the current PC value and the value written into the register file
 
     InstructionFetchPhase Fetch(
@@ -210,7 +213,10 @@ module Top(
     // outputs from data hazard
         .PCWrite(PCWrite),
         .IF_IDWrite(IF_IDWrite),
-        .Stall(Stall)
+        .Stall(Stall),
+    //ripped wires
+        .x(x),
+        .y(y)
     );
     
     id_ex IDEX(

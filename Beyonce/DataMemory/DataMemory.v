@@ -38,19 +38,19 @@ module DataMemory(
 ); 
     
     // Declare the memory array 1024 - 32-bit words
-    reg [31:0] Memory [0:4095];
+    reg [31:0] Memory [0:32767];
 
     // Initialize memory to zero
     integer i;
     initial begin
-        $readmemh("data_memory.mem", Memory);
+        $readmemh("Data_Memory.mem", Memory);
         ReadData <= 32'b0;
     end
     
     always @(posedge Clk) begin
         // Write operation
         if (MemWrite) begin
-            Memory[Address[13:2]] <= WriteData; // Use Address[11:2] for word alignment
+            Memory[Address[15:2]] <= WriteData; // Use Address[11:2] for word alignment
         end
     end
 
