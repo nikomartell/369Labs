@@ -3,6 +3,10 @@
 ## 100 MHz frequency, 10 ns period,, duty cycle 50%, no phase shift
 create_clock -period 10 [get_ports Clk]
 
+##Remove clock divider to have clock go throughb data path
+##Step 2 adjust the period of the clock after the thing above^
+##Step 3 is to send it to the board and test this works 
+
 ##This part is to assign a pin number to 100MHz clock signal
 set_property PACKAGE_PIN E3 [get_ports Clk]
 set_property IOSTANDARD LVCMOS33 [get_ports Clk]
