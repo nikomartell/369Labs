@@ -749,9 +749,9 @@ main:
          
     # Start test 1 
     ############################################################
-    la      $a0, asize1     # 1st parameter: address of asize1[0]
-    la      $a1, frame1     # 2nd parameter: address of frame1[0]
-    la      $a2, window1    # 3rd parameter: address of window1[0] 
+    la      $a0, asize10     # 1st parameter: address of asize1[0]
+    la      $a1, frame10     # 2nd parameter: address of frame1[0]
+    la      $a2, window10    # 3rd parameter: address of window1[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
@@ -762,9 +762,9 @@ main:
    
     # Start test 2 
     ############################################################
-    la      $a0, asize2     # 1st parameter: address of asize2[0]
-    la      $a1, frame2     # 2nd parameter: address of frame2[0]
-    la      $a2, window2    # 3rd parameter: address of window2[0] 
+    la      $a0, asize11     # 1st parameter: address of asize2[0]
+    la      $a1, frame11     # 2nd parameter: address of frame2[0]
+    la      $a2, window11    # 3rd parameter: address of window2[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
@@ -983,7 +983,7 @@ set_center_x:
 
 set_center_y:
     sub    $t7, $t0, $t2      
-    srl    $t7, $t7, 1          # set centerX
+    srl    $t7, $t7, 1          # set centerY
     j      outer_loop
 
 outer_loop:
@@ -1042,11 +1042,8 @@ end_window_loop_x:
 
 end_window_loop_y:
     slt     $s1, $t9, $t6
-    bne     $s1, $zero, update_min    # if sad < min_sad
+    beq     $s1, 1, update_min    # if sad < min_sad
 
-    # Update minimum SAD and coordinates if necessary
-    slt     $s1, $t9, $t6
-    blt     $s1, $t6, update_min    # if sad < min_sad
     j       increment
 
 update_min:
@@ -1064,35 +1061,35 @@ increment:
     beq     $t8, 3, increment_up       # if direction == 3, go add up
     
 increment_right:
+    addi    $t5, $t5, 1      # x++
     sub     $t9, $t1, $t3   # frame x - window x (set x limit)
     sub     $t9, $t9, $s7   # limit x - boundary
     slt     $t9, $t9, $t5  # if limit x < x
     beq     $t9, 1, end_right  # if x >= limit x, end inner loop
-
-    addi    $t5, $t5, 1      # x++
+    
     j       outer_loop
 
 increment_down:
+    addi    $t4, $t4, 1      # y++
     sub     $t9, $t0, $t2   # frame y - window y (set y limit)
     sub     $t9, $t9, $s7   # limit y - boundary
     slt     $t9, $t9, $t4  # if limit y < y
     beq     $t9, 1, end_down  # if y >= limit y, end outer loop
 
-    addi    $t4, $t4, 1      # y++
     j       outer_loop
 
 increment_left:
+    addi    $t5, $t5, -1      # x--
     slt     $t9, $t5, $s7  # if x < boundary
     beq     $t9, 1, end_left  # if x < boundary, end inner loop
 
-    addi    $t5, $t5, -1      # x--
     j       outer_loop
 
 increment_up:
+    addi    $t4, $t4, -1      # y--
     slt     $t9, $t4, $s7  # if y < boundary + 1
     beq     $t9, 1, end_up  # if y < boundary + 1, end outer loop
     
-    addi    $t4, $t4, -1      # y--
     j       outer_loop
 
 end_right:
@@ -1108,8 +1105,8 @@ end_left:
     addi    $t8, $t8, 1      # direction++
     add     $t5, $t5, 1      # x++ (puts x back into bounds)
     addi    $s7, $s7, 1      # boundary++
-    slt     $t9, $t7, $s7
-    beq     $t9, 1, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
+    sgt     $t9, $s7, $t7
+    beq     $t9, 1, end_outer_loop  # if boundary > centerX/Y, end search (if the boundary is larger than half the circle size)
 
     j       increment_up
 end_up:
