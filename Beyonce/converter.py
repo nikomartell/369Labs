@@ -1,5 +1,5 @@
 # Define the input and output file paths
-input_file = "input_file.txt"  # Replace with your input file name
+input_file = "Beyonce\data_memory.txt"  # Replace with your input file name
 output_file = "output_file.txt"  # Replace with your desired output file name
 
 # Open the input file and read its lines
