@@ -56,10 +56,10 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
     input RegWrite, Clk, Reset;
     output reg [31:0] ReadData1;
     output reg [31:0] ReadData2;
-    output [15:0] x;
-    output [15:0] y;
+    output [31:0] x;
+    output [31:0] y;
     
-    (* mark_debug = "true" *) reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
+    reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
     
     //iterator 
     integer i;
@@ -98,7 +98,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
         end
     end
     
-            assign y = RegFile[12][15:0];
-            assign x = RegFile[13][15:0];
+            assign y = RegFile[12];
+            assign x = RegFile[13];
             
 endmodule
