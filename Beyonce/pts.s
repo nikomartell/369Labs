@@ -970,14 +970,23 @@ vbsme:
 
     # Initialize minimum SAD to a large value
     addi      $t6, $zero, 0x7fff  # min_sad
-    
+
+    add   $t8, $zero, $zero     # set direction
+
+    slt    $t7, $t0, $t1      
+    beq    $t7, 1, set_center_y  # if frame height < width, go to set_center_y
+
+set_center_x:
+    sub    $t7, $t1, $t3      
+    srl    $t7, $t7, 1          # set centerX
+    j      outer_loop
+
+set_center_y:
     sub    $t7, $t0, $t2      
-    srl    $t7, $t7, 1       # set centerX/Y
-    add   $t8, $zero, $zero        # set direction
+    srl    $t7, $t7, 1          # set centerX
+    j      outer_loop
 
 outer_loop:
-    slt     $t9, $t7, $s7
-    bne     $t9, $zero, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
     
     beq     $t8, 4, reset_direction  # if direction >= 4, reset direction
 
@@ -1046,6 +1055,8 @@ update_min:
     addi    $v1, $t5, 0         # min_x = x
 increment:
     addi    $s0, $zero, 0       # u(window_y) = 0
+    slt     $t9, $t7, $s7
+    bne     $t9, $zero, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
 
     beq     $t8, 0, increment_right    # if direction == 0, go add right
     beq     $t8, 1, increment_down     # if direction == 1, go add down
@@ -1098,7 +1109,7 @@ end_left:
     add     $t5, $t5, 1      # x++ (puts x back into bounds)
     addi    $s7, $s7, 1      # boundary++
     slt     $t9, $t7, $s7
-    bne     $t9, $zero, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
+    beq     $t9, 1, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
 
     j       increment_up
 end_up:
