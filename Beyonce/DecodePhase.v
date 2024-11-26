@@ -79,8 +79,12 @@ module InstructionDecodePhase(
     //outputs from the data hazard detector
     output PCWrite,
     output IF_IDWrite,
-    output Stall   //not done
+    output Stall,   //not done
     
+    //ripping the wires
+    output [15:0] x,
+    output [15:0] y
+
 );
 
     //output wires from comparator to controller for branches
@@ -152,7 +156,11 @@ module InstructionDecodePhase(
 
         // Ouputs: Read Data
         .ReadData1(reg_data1_in),
-        .ReadData2(reg_data2_in)
+        .ReadData2(reg_data2_in),
+        
+        //ripped wires
+        .x(x),
+        .y(y)
     );
     
     Comparator Comp(
