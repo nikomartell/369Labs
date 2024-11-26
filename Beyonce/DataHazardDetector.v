@@ -21,7 +21,7 @@
 module DataHazardDetector(
     input [4:0] IF_IDRs,
     input [4:0] IF_IDRt,
-    input [4:0] ID_EXRt,
+    input [4:0] ID_EXRegdst, //added wire 
     input [4:0] EX_MemRegdst,
     input [5:0] OPCode,
     input ID_EXMemRead,
@@ -59,7 +59,7 @@ always @(*) begin
     //(OPCode != LW) & (OPCode != LH) & (OPCode != LB)
     if (ID_EXMemRead &
        (
-       (ID_EXRt == IF_IDRs) | (ID_EXRt == IF_IDRt) 
+       (ID_EXRegdst == IF_IDRs) | (ID_EXRegdst == IF_IDRt) 
        )
        ) begin
         PCWrite = 0;
@@ -73,8 +73,8 @@ always @(*) begin
     & (ID_EXRegWrite | EX_MEMRegWrite) & 
     ((EX_MemRegdst == IF_IDRs) & (IF_IDRs != 0)) | 
     ((EX_MemRegdst == IF_IDRt) & (IF_IDRt != 0)) | 
-        ((ID_EXRt == IF_IDRs) & (IF_IDRs != 0)) | 
-        ((ID_EXRt == IF_IDRt) & (IF_IDRt != 0))) begin
+        ((ID_EXRegdst == IF_IDRs) & (IF_IDRs != 0)) | 
+        ((ID_EXRegdst == IF_IDRt) & (IF_IDRt != 0))) begin
         PCWrite = 0;
         IF_IDWrite = 0;
         Stall = 1;
