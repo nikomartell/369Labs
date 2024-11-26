@@ -749,9 +749,9 @@ main:
          
     # Start test 1 
     ############################################################
-    la      $a0, asize10     # 1st parameter: address of asize1[0]
-    la      $a1, frame10     # 2nd parameter: address of frame1[0]
-    la      $a2, window10    # 3rd parameter: address of window1[0] 
+    la      $a0, asize1     # 1st parameter: address of asize1[0]
+    la      $a1, frame1     # 2nd parameter: address of frame1[0]
+    la      $a2, window1    # 3rd parameter: address of window1[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
@@ -762,9 +762,9 @@ main:
    
     # Start test 2 
     ############################################################
-    la      $a0, asize11     # 1st parameter: address of asize2[0]
-    la      $a1, frame11     # 2nd parameter: address of frame2[0]
-    la      $a2, window11    # 3rd parameter: address of window2[0] 
+    la      $a0, asize2     # 1st parameter: address of asize2[0]
+    la      $a1, frame2     # 2nd parameter: address of frame2[0]
+    la      $a2, window2    # 3rd parameter: address of window2[0] 
    
     jal     vbsme           # call function
     jal     print_result    # print results to console
@@ -1003,8 +1003,11 @@ window_loop_y:
 
     addi    $s1, $zero, 0                 # v(window_x) = 0
 window_loop_x:
+    slt     $s2, $t9, $t6
+    bne     $s2, 1, increment  # if sad >= min_sad
+
     slt     $s2, $s1, $t3
-    beq     $s2, $zero, end_window_loop_x  # if x >= l, end window loop x
+    beq     $s2, $zero, end_window_loop_x  # if sad >= min_sad, end SAD calculation (it wont be the minimum anyway, so why keep going?)
 
     # Calculate absolute difference
     add     $s2, $s0, $t4    # window_y + y

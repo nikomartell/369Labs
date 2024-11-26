@@ -987,6 +987,10 @@ window_loop_y:
 
     addi    $s1, $zero, 0                 # v(window_x) = 0
 window_loop_x:
+
+    slt     $s2, $t9, $t6
+    bne     $s2, 1, increment  # if sad >= min_sad, end SAD calculation (it wont be the minimum anyway, so why keep going?)
+
     slt     $s2, $s1, $t3
     beq     $s2, $zero, end_window_loop_x  # if x >= l, end window loop x
 
