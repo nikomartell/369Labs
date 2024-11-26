@@ -796,23 +796,34 @@ vbsme:
     li      $v1, 0           # min_x
 
     # Initialize minimum SAD to a large value
-    li      $t6, 0x7FFFFFFF  # min_sad
+    li      $t6, 0x7fff  # min_sad
 
 outer_loop:
-    bge     $t4, $t0, end_outer_loop  # if y >= frame height, end outer loop
+    slt     $t7, $t4, $t0             # if y < frame height
+    beq     $t7, $zero, end_outer_loop # if y >= frame height, end outer loop
+
     add     $t5, $zero, $zero         # x = 0
+
 inner_loop:
-    bge     $t5, $t1, end_inner_loop  # if x >= frame width, end inner loop
+    slt     $t7, $t5, $t1             # if x < frame width
+    beq     $t7, $zero, end_inner_loop # if x >= frame width, end inner loop
 
     add     $t9, $zero, $zero         # sad = 0
     add     $t7, $zero, $zero         # window_y = 0
     
 window_loop_y:
-    bge     $t7, $t2, end_window_loop_y  # if window_y >= window height, end window loop y
+    slt     $t8, $t7, $t2
+    beq     $t8, $zero, end_window_loop_y  # if y >= k, end window loop y
+
     add     $t8, $zero, $zero         # window_x = 0
 
 window_loop_x:
-    bge     $t8, $t3, end_window_loop_x  # if window_x >= window width, end window loop x
+
+    slt     $s0, $t9, $t6
+    bne     $s0, 1, increment  # if sad >= min_sad
+
+    slt     $s0, $t8, $t3
+    beq     $s0, $zero, end_window_loop_x  # if x >= l, end window loop x
 
     # Calculate absolute difference
     add     $s0, $t7, $t4             # window_y + y
@@ -830,7 +841,9 @@ window_loop_x:
     lw      $s3, 0($s1)               # window[window_y * window width + window_x] address
 
     sub     $s4, $s2, $s3             # frame - window
-    blt     $s4, 0, abso              # if frame - window < 0, go to abs.
+
+    slt     $s0, $s4, $zero
+    bne     $s0, $zero, abso        # if frame - window < 0, go to abs.
 
     add     $t9, $t9, $s4             # sad += abs(frame - window)
 
@@ -847,10 +860,13 @@ abso:
 end_window_loop_x:
     addi    $t7, $t7, 1               # window_y++
     j       window_loop_y
+
 end_window_loop_y:
 
     # Update minimum SAD and coordinates if necessary
-    blt     $t9, $t6, update_min      # if sad < min_sad
+    slt     $s0, $t9, $t6
+    beq     $s0, 1, update_min    # if sad < min_sad
+    
     j       increment
 
 update_min:
