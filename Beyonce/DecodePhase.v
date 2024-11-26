@@ -31,7 +31,6 @@ module InstructionDecodePhase(
     input [31:0] pc_in, //pc adder 4 out  
     
     //from pipelined reg id_ex
-    input [4:0] Rt_id_ex,
     input ID_EXRegWrite,
     
     //from pipelined reg ex_mem
@@ -43,6 +42,7 @@ module InstructionDecodePhase(
     //from reg file
     input [31:0] WriteData, //write data out 
     input [4:0] WriteRegister, //write register out 
+    input [4:0] ID_EXRegdst,
     
     //control signals
     input RegWrite_in, 
@@ -59,8 +59,7 @@ module InstructionDecodePhase(
     output ALUSrc,
     output JumpRegister,
     output RegWrite_out,
-    //output [1:0] LoadType,
-    //output [1:0] StoreType,    
+        
     
     //instructions decoded 
     output [31:0] JumpTarget, //needed in the execute phase too
@@ -79,12 +78,8 @@ module InstructionDecodePhase(
     //outputs from the data hazard detector
     output PCWrite,
     output IF_IDWrite,
-    output Stall,   //not done
+    output Stall   //not done
     
-    //ripping the wires
-    output [15:0] x,
-    output [15:0] y
-
 );
 
     //output wires from comparator to controller for branches
@@ -115,8 +110,7 @@ module InstructionDecodePhase(
         .MemToReg(MemtoReg),
         .Jump(Jump),
         .JumpReg(JumpRegister)
-        //.LoadType(LoadType),
-        //.StoreType(StoreType)
+        
     );
     
     
@@ -124,7 +118,7 @@ module InstructionDecodePhase(
     //inputs 
         .IF_IDRs(instr_in[25:21]),
         .IF_IDRt(instr_in[20:16]),
-        .ID_EXRt(Rt_id_ex),
+        .ID_EXRegdst(ID_EXRegdst),
         .OPCode(instr_in[31:26]),
         .EX_MemRegdst(EX_MemRegdst),
         .ID_EXMemRead(ID_EXMemRead),
@@ -156,11 +150,7 @@ module InstructionDecodePhase(
 
         // Ouputs: Read Data
         .ReadData1(reg_data1_in),
-        .ReadData2(reg_data2_in),
-        
-        //ripped wires
-        .x(x),
-        .y(y)
+        .ReadData2(reg_data2_in)
     );
     
     Comparator Comp(
