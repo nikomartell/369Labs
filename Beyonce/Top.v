@@ -29,11 +29,11 @@ module Top(
     output [6:0] out7,
     output [7:0] en_out,
     
+   // output [31:0] WriteData_sim,
+    //output [31:0] PCResult_sim
+    
     output [15:0] x,
     output [15:0] y
-    
-    //output [31:0] WriteData_sim,
-    //output [31:0] PCResult_sim 
 );
     
     //wires out of clock divider
@@ -138,7 +138,7 @@ module Top(
     
     ClkDiv clock(Clk,0,Clk_out);
     Two4DigitDisplay display(Clk, y, x, out7, en_out);
-    //Display the current PC value and the value written into the register file
+    // Display the current PC value and the value written into the register file
 
     InstructionFetchPhase Fetch(
     //inputs
@@ -165,6 +165,8 @@ module Top(
         .instr_in(Instruction_out),
         .IF_IDWrite(IF_IDWrite),
         .Branch(Branch_out),
+      //  .Jump(Jump_out),
+      // .JumpRegister(JumpRegister_out),
         
     //outputs
         .pc_out(pc_out_ifid), 
@@ -180,7 +182,9 @@ module Top(
         .WriteData(memtoreg_out_wb), 
         .WriteRegister(WriteRegister_out_memwb), 
         .RegWrite_in(RegWrite_out_memwb),
-        .Rt_id_ex(rt_out_idex),
+        
+        // Hazard Detector Inputs
+        .ID_EXRegdst(regdst),
         .EX_MemRegdst(instruction_mux_out_exmem),
         .ID_EXMemRead(memread_out_idex),
         .ID_EXRegWrite(regwrite_out_idex),
