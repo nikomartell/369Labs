@@ -1108,7 +1108,7 @@ end_left:
     addi    $t8, $t8, 1      # direction++
     add     $t5, $t5, 1      # x++ (puts x back into bounds)
     addi    $s7, $s7, 1      # boundary++
-    sgt     $t9, $s7, $t7
+    slt     $t9, $t7, $s7
     beq     $t9, 1, end_outer_loop  # if boundary > centerX/Y, end search (if the boundary is larger than half the circle size)
 
     j       increment_up
