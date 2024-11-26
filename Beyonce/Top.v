@@ -165,8 +165,8 @@ module Top(
         .instr_in(Instruction_out),
         .IF_IDWrite(IF_IDWrite),
         .Branch(Branch_out),
-      //  .Jump(Jump_out),
-      // .JumpRegister(JumpRegister_out),
+        .Jump(Jump_out),
+       .JumpRegister(JumpRegister_out),
         
     //outputs
         .pc_out(pc_out_ifid), 
