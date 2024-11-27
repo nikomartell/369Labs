@@ -26,11 +26,11 @@
 module Top(
     input Clk,
     input rst,
-    //output [6:0] out7,
-    //output [7:0] en_out,
+   // output [6:0] out7,
+   // output [7:0] en_out,
     
-    //output [31:0] WriteData_sim,
-    //output [31:0] PCResult_sim
+   // output [31:0] WriteData_sim,
+   // output [31:0] PCResult_sim,
     
     output [31:0] x,
     output [31:0] y
@@ -67,7 +67,6 @@ module Top(
     wire Stall;
     wire IF_IDWrite;
     
-  
     wire [31:0] reg_data1_out; //read data1 out
     wire [31:0] reg_data2_out; //read data2 out
     wire [31:0] sign_ext_offset_out; //sign extended out 
@@ -138,7 +137,7 @@ module Top(
     
     //ClkDiv clock(Clk,0,Clk_out);
     //Two4DigitDisplay display(Clk, y, x, out7, en_out);
-    // Display the current PC value and the value written into the register file
+    //Display the current PC value and the value written into the register file
 
     InstructionFetchPhase Fetch(
     //inputs
