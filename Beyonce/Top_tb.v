@@ -11,15 +11,21 @@ module Top_tb;
     reg rst;
 
     // Outputs
-    wire [31:0] WriteData_sim;
-    wire [31:0] PCResult_sim;
+    //wire [31:0] WriteData_sim;
+    //wire [31:0] PCResult_sim;
+    
+    //new wires for simulation of vbsme 
+    wire [31:0] x; 
+    wire [31:0] y; 
 
     // Instantiate the Unit Under Test (UUT)
     Top uut (
         .Clk(clk), 
         .rst(rst), 
-        .WriteData_sim(WriteData_sim), 
-        .PCResult_sim(PCResult_sim)
+       // .WriteData_sim(WriteData_sim), 
+       // .PCResult_sim(PCResult_sim)
+       .x(x),
+       .y(y)
     );
 
     // Clock generation
