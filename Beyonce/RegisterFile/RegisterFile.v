@@ -59,7 +59,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
     output [31:0] x;
     output [31:0] y;
     
-    reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
+    (* mark_debug = "true" *) reg [31:0] RegFile [0:31]; //declare 32x32-bit registers
     
     //iterator 
     integer i;
@@ -71,7 +71,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
         end
         ReadData1 <= 0;
         ReadData2 <= 0;
-        RegFile[29] <= 131064;
+        RegFile[29] <= 131064; //sp
     end
     
     //synchronous write 
