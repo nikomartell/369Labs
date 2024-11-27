@@ -78,9 +78,9 @@ module InstructionDecodePhase(
     //outputs from the data hazard detector
     output PCWrite,
     output IF_IDWrite,
-    output Stall,   //not done
+    output Stall,
     
-    //ripping wires
+    //x and y 
     output [31:0] x,
     output [31:0] y
     
@@ -156,9 +156,10 @@ module InstructionDecodePhase(
         .ReadData1(reg_data1_in),
         .ReadData2(reg_data2_in),
         
-        //ripping wires
+        // Outputs: x and y 
         .x(x),
         .y(y)
+        
     );
     
     Comparator Comp(
