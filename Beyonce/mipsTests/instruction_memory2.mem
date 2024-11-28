@@ -1,8 +1,8 @@
 23bdfffc	//	main:			addi	$sp, $sp, -4 ->	main:			addi	$sp, $sp, -4
 afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
-00000000	//				nop ->				nop
-00000000	//				nop ->				nop
-00000000	//				nop ->				nop
+34040000	//				ori	$a0, $zero, 0 ->				ori	$a0, $zero, 0
+34050010	//				ori	$a1, $zero, 16 ->				ori	$a1, $zero, 16
+340630ec	//				ori	$a2, $zero, 12524 ->				ori	$a2, $zero, 12524
 0c000009	//				jal	vbsme ->				jal	vbsme
 8fbf0000	//				lw	$ra, 0($sp) ->				lw	$ra, 0($sp)
 23bd0004	//				addi	$sp, $sp, 4 ->				addi	$sp, $sp, 4
