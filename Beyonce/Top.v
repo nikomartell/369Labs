@@ -26,11 +26,11 @@
 module Top(
     input Clk,
     input rst,
-   // output [6:0] out7,
-   // output [7:0] en_out,
+    // output [6:0] out7,
+    // output [7:0] en_out,
     
-   // output [31:0] WriteData_sim,
-   // output [31:0] PCResult_sim,
+    //output [31:0] WriteData_sim,
+    //output [31:0] PCResult_sim
     
     output [31:0] x,
     output [31:0] y
@@ -165,7 +165,7 @@ module Top(
         .IF_IDWrite(IF_IDWrite),
         .Branch(Branch_out),
         .Jump(Jump_out),
-       .JumpRegister(JumpRegister_out),
+        .JumpRegister(JumpRegister_out),
         
     //outputs
         .pc_out(pc_out_ifid), 

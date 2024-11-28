@@ -32,7 +32,7 @@ module Top_toppp(
     
     
     ClkDiv clock(Clk,0,Clk_out);
-    Two4DigitDisplay display(Clk, y, x, out7, en_out);
+    Two4DigitDisplay display(Clk, x[15:0], y[15:0], out7, en_out);
     Top top(Clk_out, rst, x, y);
     
     

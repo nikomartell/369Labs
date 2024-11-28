@@ -4,6 +4,8 @@ module if_id (
     input wire reset,
     input IF_IDWrite,
     input Branch,
+    input Jump,
+    input JumpRegister,
     
     input wire [31:0] pc_in,
     input wire [31:0] instr_in,
@@ -18,7 +20,7 @@ initial begin
 end
 
 always @(posedge clk or posedge reset) begin
-    if (reset || (IF_IDWrite && Branch)) begin
+    if (reset || (IF_IDWrite && (Branch || JumpRegister || Jump))) begin
         pc_out <= 32'b0;
         instr_out <= 32'b0;
     end 

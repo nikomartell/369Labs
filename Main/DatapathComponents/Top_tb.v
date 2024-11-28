@@ -7,13 +7,18 @@ module Top_tb;
     reg rst;
 
     // Outputs
+    wire [31:0] x;
+    wire [31:0] y;
+    
     //wire [6:0] out7;
     //wire [7:0] end_out;
 
     // Instantiate the Unit Under Test (UUT)
     Top uut (
         .Clk(clk), 
-        .rst(rst) 
+        .rst(rst),
+        .x(x),
+        .y(y)
         //.out7(out7), 
         //.en_out(end_out)
     );

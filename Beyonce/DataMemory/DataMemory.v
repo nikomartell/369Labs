@@ -43,7 +43,7 @@ module DataMemory(
     // Initialize memory to zero
     integer i;
     initial begin
-        $readmemh("Data_Memory.mem", Memory);
+        $readmemh("output_file.mem", Memory);
         ReadData <= 32'b0;
     end
     
