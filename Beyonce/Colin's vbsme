@@ -4,82 +4,82 @@ afbf0000 // sw $ra, 0($sp) -> sw $ra, 0($sp)
 34050010 // ori $a1, $zero, 16 -> ori $a1, $zero, 16
 34060050 // ori $a2, $zero, 80 -> ori $a2, $zero, 80
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34040060 // ori $a0, $zero, 96 -> ori $a0, $zero, 96
 34050070 // ori $a1, $zero, 112 -> ori $a1, $zero, 112
 34060470 // ori $a2, $zero, 1136 -> ori $a2, $zero, 1136
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 340404b0 // ori $a0, $zero, 1200 -> ori $a0, $zero, 1200
 340504c0 // ori $a1, $zero, 1216 -> ori $a1, $zero, 1216
 340608c0 // ori $a2, $zero, 2240 -> ori $a2, $zero, 2240
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34040940 // ori $a0, $zero, 2368 -> ori $a0, $zero, 2368
 34050950 // ori $a1, $zero, 2384 -> ori $a1, $zero, 2384
 34060d50 // ori $a2, $zero, 3408 -> ori $a2, $zero, 3408
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34040dd0 // ori $a0, $zero, 3536 -> ori $a0, $zero, 3536
 34050de0 // ori $a1, $zero, 3552 -> ori $a1, $zero, 3552
 340611e0 // ori $a2, $zero, 4576 -> ori $a2, $zero, 4576
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34041220 // ori $a0, $zero, 4640 -> ori $a0, $zero, 4640
 34051230 // ori $a1, $zero, 4656 -> ori $a1, $zero, 4656
 34062230 // ori $a2, $zero, 8752 -> ori $a2, $zero, 8752
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34042430 // ori $a0, $zero, 9264 -> ori $a0, $zero, 9264
 34052440 // ori $a1, $zero, 9280 -> ori $a1, $zero, 9280
 34063440 // ori $a2, $zero, 13376 -> ori $a2, $zero, 13376
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34043480 // ori $a0, $zero, 13440 -> ori $a0, $zero, 13440
 34053490 // ori $a1, $zero, 13456 -> ori $a1, $zero, 13456
 34064490 // ori $a2, $zero, 17552 -> ori $a2, $zero, 17552
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34044510 // ori $a0, $zero, 17680 -> ori $a0, $zero, 17680
 34054520 // ori $a1, $zero, 17696 -> ori $a1, $zero, 17696
 34064920 // ori $a2, $zero, 18720 -> ori $a2, $zero, 18720
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 340449a0 // ori $a0, $zero, 18848 -> ori $a0, $zero, 18848
 340549b0 // ori $a1, $zero, 18864 -> ori $a1, $zero, 18864
 34064db0 // ori $a2, $zero, 19888 -> ori $a2, $zero, 19888
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34044df0 // ori $a0, $zero, 19952 -> ori $a0, $zero, 19952
 34054e00 // ori $a1, $zero, 19968 -> ori $a1, $zero, 19968
 34065200 // ori $a2, $zero, 20992 -> ori $a2, $zero, 20992
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34045300 // ori $a0, $zero, 21248 -> ori $a0, $zero, 21248
 34055310 // ori $a1, $zero, 21264 -> ori $a1, $zero, 21264
 34066310 // ori $a2, $zero, 25360 -> ori $a2, $zero, 25360
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34046710 // ori $a0, $zero, 26384 -> ori $a0, $zero, 26384
 34056720 // ori $a1, $zero, 26400 -> ori $a1, $zero, 26400
 34066b20 // ori $a2, $zero, 27424 -> ori $a2, $zero, 27424
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34046b60 // ori $a0, $zero, 27488 -> ori $a0, $zero, 27488
 34056b70 // ori $a1, $zero, 27504 -> ori $a1, $zero, 27504
 34067b70 // ori $a2, $zero, 31600 -> ori $a2, $zero, 31600
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34047bb0 // ori $a0, $zero, 31664 -> ori $a0, $zero, 31664
 34057bc0 // ori $a1, $zero, 31680 -> ori $a1, $zero, 31680
 34067c00 // ori $a2, $zero, 31744 -> ori $a2, $zero, 31744
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 34047c40 // ori $a0, $zero, 31808 -> ori $a0, $zero, 31808
 34057c50 // ori $a1, $zero, 31824 -> ori $a1, $zero, 31824
 34067cdc // ori $a2, $zero, 31964 -> ori $a2, $zero, 31964
 0c000069 // jal vbsme -> jal vbsme
-0c000059 // jal print_result -> jal print_result
+//0c000059 // jal print_result -> jal print_result
 2002000a // addi $v0, $0, 10 -> addi $v0, $0, 10
 00000000 // nop -> nop
 8fbf0000 // lw $ra, 0($sp) -> lw $ra, 0($sp)
@@ -324,3 +324,4 @@ afb50000 // sw $s5, 0($sp) -> sw $s5, 0($sp)
 22d60001 // addi $s6, $s6, 1 -> addi $s6, $s6, 1
 08000074 // next_spiral_loop: j while_loop -> next_spiral_loop: j while_loop
 03e00008 // end_while: jr $ra -> end_while: jr $ra
+
