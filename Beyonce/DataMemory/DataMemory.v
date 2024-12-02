@@ -34,30 +34,28 @@ module DataMemory(
     input MemWrite,          // Control signal for memory write 
     input MemRead,           // Control signal for memory read 
     output reg [31:0] ReadData // Contents of memory location at Address
-    //output wire [31:0] debug_reg
 ); 
     
     // Declare the memory array 1024 - 32-bit words
     reg [31:0] Memory [0:32767];
 
     // Initialize memory to zero
-    integer i;
     initial begin
-        $readmemh("output_file.mem", Memory);
-        ReadData <= 32'b0;
+        $readmemh("data_memory.mem", Memory);
+        ReadData = 32'b0;
     end
     
     always @(posedge Clk) begin
         // Write operation
         if (MemWrite) begin
-            Memory[Address[15:2]] <= WriteData; // Use Address[11:2] for word alignment
+            Memory[Address[15:2]] = WriteData; // Use Address[11:2] for word alignment
         end
     end
 
     always @(*) begin
         // Read operation
         if (MemRead) begin
-            ReadData = Memory[Address[11:2]]; // Read data if MemRead is asserted
+            ReadData = Memory[Address[15:2]]; // Read data if MemRead is asserted
         end else begin
             ReadData = 32'b0; // Return 0 if MemRead is not asserted
         end
