@@ -46,7 +46,7 @@ module InstructionMemory(Address, Instruction);
     integer i;
    
     initial begin
-        $readmemh("Test2_lab7.mem", Memory);
+        $readmemh("Instruction_Final.mem", Memory);
 //        Memory[0] = 32'b001000_00000_00010_0000000000001111; // loop: addi $2, $0, 15
 //        Memory[1] = 32'b0; // nop
 //        Memory[2] = 32'b0; // nop
@@ -82,7 +82,7 @@ module InstructionMemory(Address, Instruction);
     end
 
     always @(Address) begin //Replace with text file later , for now trash values to itirate through memory    
-        Instruction <= Memory[Address[11:2]];
+        Instruction <= Memory[Address[16:2]];
     end 
 
 endmodule
