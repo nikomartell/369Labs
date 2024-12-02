@@ -46,7 +46,7 @@ module InstructionMemory(Address, Instruction);
     integer i;
    
     initial begin
-        $readmemh("instruction_memory.mem", Memory);
+        $readmemh("Test2_lab7.mem", Memory);
 //        Memory[0] = 32'b001000_00000_00010_0000000000001111; // loop: addi $2, $0, 15
 //        Memory[1] = 32'b0; // nop
 //        Memory[2] = 32'b0; // nop
