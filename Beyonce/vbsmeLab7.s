@@ -783,6 +783,8 @@ main:
     ############################################################
     # End of test 3   
       
+    end_program:
+        j end_program
       
     # Start test 4 
     ############################################################
@@ -891,10 +893,6 @@ main:
     ############################################################
     # End of test 12  
    
-
-    
-   end_program:
-        j end_program
     
     lw      $ra, 0($sp)         # Restore return address
     addi    $sp, $sp, 4         # Restore stack pointer
