@@ -12,7 +12,6 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 34056a48	//				ori	$a1, $zero, 27208 ->				ori	$a1, $zero, 27208
 34069b24	//				ori	$a2, $zero, 39716 ->				ori	$a2, $zero, 39716
 0c000036	//				jal	vbsme ->				jal	vbsme
-0800000e	//	end_program:		j	end_program ->	end_program:		j	end_program
 34049f24	//				ori	$a0, $zero, 40740 ->				ori	$a0, $zero, 40740
 34059f34	//				ori	$a1, $zero, 40756 ->				ori	$a1, $zero, 40756
 3406d010	//				ori	$a2, $zero, 53264 ->				ori	$a2, $zero, 53264
@@ -21,6 +20,7 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 3405d420	//				ori	$a1, $zero, 54304 ->				ori	$a1, $zero, 54304
 340604fc	//				ori	$a2, $zero, 66812 ->				ori	$a2, $zero, 66812
 0c000036	//				jal	vbsme ->				jal	vbsme
+08000016	//	end_program:		j	end_program ->	end_program:		j	end_program
 340408fc	//				ori	$a0, $zero, 67836 ->				ori	$a0, $zero, 67836
 3405090c	//				ori	$a1, $zero, 67852 ->				ori	$a1, $zero, 67852
 340617cc	//				ori	$a2, $zero, 71628 ->				ori	$a2, $zero, 71628
