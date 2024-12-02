@@ -960,7 +960,7 @@ vbsme:
     add   $t8, $zero, $zero     # set direction
 
     slt    $t7, $t0, $t1      
-    beq    $t7, 1, set_center_y  # if frame height < width, go to set_center_y
+    bne    $t7, $zero, set_center_y  # if frame height < width, go to set_center_y
 
 set_center_x:
     sub    $t7, $t1, $t3      
@@ -1107,7 +1107,7 @@ end_left:
     j       increment_up
 end_up:
     addi    $t8, $zero, 0      # direction = Right
-    add     $t4, $t4, 1      # y++ (puts y back into bounds)
+    addi    $t4, $t4, 1      # y++ (puts y back into bounds)
     j       increment_right
 
 end_outer_loop:
