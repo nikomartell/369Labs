@@ -893,39 +893,41 @@ main:
    
 
     
-   
+   end_program:
+        j end_program
+    
     lw      $ra, 0($sp)         # Restore return address
     addi    $sp, $sp, 4         # Restore stack pointer
     jr      $ra                 # Return
 
 ################### Print Result ####################################
-print_result:
+# print_result:
     # Printing $v0
-    add     $a0, $v0, $zero     # Load $v0 for printing
-    li      $v0, 1              # Load the system call numbers
-    syscall
+    # add     $a0, $v0, $zero     # Load $v0 for printing
+    # li      $v0, 1              # Load the system call numbers
+    # syscall
    
     # Print newline.
-    la      $a0, newline          # Load value for printing
-    li      $v0, 4                # Load the system call numbers
-    syscall
+    # la      $a0, newline          # Load value for printing
+    # li      $v0, 4                # Load the system call numbers
+    # syscall
    
     # Printing $v1
-    add     $a0, $v1, $zero      # Load $v1 for printing
-    li      $v0, 1                # Load the system call numbers
-    syscall
+    # add     $a0, $v1, $zero      # Load $v1 for printing
+    # li      $v0, 1                # Load the system call numbers
+    # syscall
 
     # Print newline.
-    la      $a0, newline          # Load value for printing
-    li      $v0, 4                # Load the system call numbers
-    syscall
+    # la      $a0, newline          # Load value for printing
+    # li      $v0, 4                # Load the system call numbers
+    # syscall
    
     # Print newline.
-    la      $a0, newline          # Load value for printing
-    li      $v0, 4                # Load the system call numbers
-    syscall
+    # la      $a0, newline          # Load value for printing
+    # li      $v0, 4                # Load the system call numbers
+    # syscall
    
-    jr      $ra                   #function return
+    # jr      $ra                   #function return
 
 #####################################################################
 ### vbsme
