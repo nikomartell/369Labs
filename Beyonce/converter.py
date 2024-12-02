@@ -1,6 +1,6 @@
 # Define the input and output file paths
-input_file = "vbsmeLab7mem.txt"  # Replace with your input file name
-output_file = "lab7mem.txt"  # Replace with your desired output file name
+input_file = "Beyonce/vbsmeLab7data.txt"  # Replace with your input file name
+output_file = "lab7data.txt"  # Replace with your desired output file name
 
 # Open the input file and read its lines
 with open(input_file, "r") as infile:
