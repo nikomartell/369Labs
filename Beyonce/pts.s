@@ -1104,11 +1104,11 @@ increment_up:
 
 end_right:
     addi    $t8, $t8, 1      # direction++
-    sub     $t5, $t5, 1      # x-- (puts x back into bounds)
+    addi     $t5, $t5, -1      # x-- (puts x back into bounds)
     j       increment_down
 end_down:
     addi    $t8, $t8, 1      # direction++
-    sub     $t4, $t4, 1      # y-- (puts y back into bounds)
+    addi     $t4, $t4, -1      # y-- (puts y back into bounds)
     j       increment_left
 
 end_left:
