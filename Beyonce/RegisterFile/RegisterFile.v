@@ -75,7 +75,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
     end
     
     //synchronous write 
-    always @(posedge Clk) begin
+    always @(negedge Clk or posedge Reset) begin
      if (Reset) begin
      //set each register to 0
             for (i = 0; i < 32; i = i + 1) begin
@@ -98,7 +98,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, Rese
         end
     end
     
-    assign y = RegFile[12];
-    assign x = RegFile[13];
+    assign y = RegFile[3];
+    assign x = RegFile[2];
             
 endmodule
