@@ -816,8 +816,8 @@ set_center_y:
     j      outer_loop
 
 outer_loop:
-    
-    beq     $t8, 4, reset_direction  # if direction >= 4, reset direction
+    slti    $t9, $t8, 4
+    beq     $t9, $zero, reset_direction  # if direction >= 4, reset direction
 
     add    $t9, $zero, $zero       # sad = 0
     j      window_loop_y
@@ -834,7 +834,7 @@ window_loop_y:
 window_loop_x:
 
     slt     $s2, $t9, $t6
-    bne     $s2, 1, increment  # if sad >= min_sad, end SAD calculation (it wont be the minimum anyway, so why keep going?)
+    beq     $s2, $zero, increment  # if sad >= min_sad, end SAD calculation (it wont be the minimum anyway, so why keep going?)
 
     slt     $s2, $s1, $t3
     beq     $s2, $zero, end_window_loop_x  # if x >= l, end window loop x
@@ -875,7 +875,7 @@ end_window_loop_x:
 
 end_window_loop_y:
     slt     $s1, $t9, $t6
-    beq     $s1, 1, update_min    # if sad < min_sad
+    bne     $s1, $zero, update_min    # if sad < min_sad
 
     j       increment
 
@@ -888,17 +888,23 @@ increment:
     slt     $t9, $t7, $s7
     bne     $t9, $zero, end_outer_loop  # if boundary >= centerX/Y, end search (if the boundary is larger than half the circle size)
 
-    beq     $t8, 0, increment_right    # if direction == 0, go add right
-    beq     $t8, 1, increment_down     # if direction == 1, go add down
-    beq     $t8, 2, increment_left     # if direction == 2, go add left
-    beq     $t8, 3, increment_up       # if direction == 3, go add up
+    beq     $t8, $zero, increment_right    # if direction == 0, go add right
+
+    slti    $t9, $t8, 2
+    bne     $t9, $zero, increment_down     # if direction == 1, go add down
+
+    slti    $t9, $t8, 3
+    bne     $t9, $zero, increment_left     # if direction == 2, go add left
+
+    slti    $t9, $t8, 4
+    bne     $t9, $zero, increment_up       # if direction == 3, go add up
     
 increment_right:
     addi    $t5, $t5, 1      # x++
     sub     $t9, $t1, $t3   # frame x - window x (set x limit)
     sub     $t9, $t9, $s7   # limit x - boundary
     slt     $t9, $t9, $t5  # if limit x < x
-    beq     $t9, 1, end_right  # if x >= limit x, end inner loop
+    bne     $t9, $zero, end_right  # if x >= limit x, end inner loop
     
     j       outer_loop
 
@@ -907,39 +913,39 @@ increment_down:
     sub     $t9, $t0, $t2   # frame y - window y (set y limit)
     sub     $t9, $t9, $s7   # limit y - boundary
     slt     $t9, $t9, $t4  # if limit y < y
-    beq     $t9, 1, end_down  # if y >= limit y, end outer loop
+    bne     $t9, $zero, end_down  # if y >= limit y, end outer loop
 
     j       outer_loop
 
 increment_left:
     addi    $t5, $t5, -1      # x--
     slt     $t9, $t5, $s7  # if x < boundary
-    beq     $t9, 1, end_left  # if x < boundary, end inner loop
+    bne     $t9, $zero, end_left  # if x < boundary, end inner loop
 
     j       outer_loop
 
 increment_up:
     addi    $t4, $t4, -1      # y--
     slt     $t9, $t4, $s7  # if y < boundary + 1
-    beq     $t9, 1, end_up  # if y < boundary + 1, end outer loop
+    bne     $t9, $zero, end_up  # if y < boundary + 1, end outer loop
     
     j       outer_loop
 
 end_right:
     addi    $t8, $t8, 1      # direction++
-    sub     $t5, $t5, 1      # x-- (puts x back into bounds)
+    addi     $t5, $t5, -1      # x-- (puts x back into bounds)
     j       increment_down
 end_down:
     addi    $t8, $t8, 1      # direction++
-    sub     $t4, $t4, 1      # y-- (puts y back into bounds)
+    addi     $t4, $t4, -1      # y-- (puts y back into bounds)
     j       increment_left
 
 end_left:
     addi    $t8, $t8, 1      # direction++
-    add     $t5, $t5, 1      # x++ (puts x back into bounds)
+    addi     $t5, $t5, 1      # x++ (puts x back into bounds)
     addi    $s7, $s7, 1      # boundary++
     slt     $t9, $t7, $s7
-    beq     $t9, 1, end_outer_loop  # if boundary > centerX/Y, end search (if the boundary is larger than half the circle size)
+    bne     $t9, $zero, end_outer_loop  # if boundary > centerX/Y, end search (if the boundary is larger than half the circle size)
 
     j       increment_up
 end_up:
