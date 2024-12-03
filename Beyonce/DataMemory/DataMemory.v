@@ -55,7 +55,7 @@ module DataMemory(
     always @(*) begin
         // Read operation
         if (MemRead) begin
-            ReadData = Memory[Address[11:2]]; // Read data if MemRead is asserted
+            ReadData = Memory[Address[15:2]]; // Read data if MemRead is asserted
         end else begin
             ReadData = 32'b0; // Return 0 if MemRead is not asserted
         end
