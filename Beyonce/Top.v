@@ -37,7 +37,7 @@ module Top(
 );
     
     //wires out of clock divider
-    wire Clk_out;
+    // wire Clk_out;
 
     //wires out of Fetch stage
     wire [31:0] PCADDResult_out;
@@ -133,7 +133,7 @@ module Top(
     //assign PCResult_sim = PCADDResult_out;
     
     //WB phase
-    assign Clk_out = Clk;
+    //assign Clk_out = Clk;
     
     //ClkDiv clock(Clk,0,Clk_out);
     //Two4DigitDisplay display(Clk, y, x, out7, en_out);
@@ -141,7 +141,7 @@ module Top(
 
     InstructionFetchPhase Fetch(
     //inputs
-        .Clk(Clk_out),
+        .Clk(Clk),
         .Reset(rst),
         .pc_in(Branch_out),
         .Jump(Jump_out),
@@ -158,7 +158,7 @@ module Top(
     
     if_id IFID(
     //inputs
-        .clk(Clk_out),
+        .clk(Clk),
         .reset(rst), 
         .pc_in(PCADDResult_out), 
         .instr_in(Instruction_out),
@@ -174,7 +174,7 @@ module Top(
     
     InstructionDecodePhase Decode(
     //inputs
-        .Clk(Clk_out), 
+        .Clk(Clk), 
         .Reset(rst), 
         .pc_in(pc_out_ifid), 
         .instr_in(instruction_out_ifid),
@@ -224,7 +224,7 @@ module Top(
     
     id_ex IDEX(
     //input
-        .clk(Clk_out), 
+        .clk(Clk), 
         .reset(rst), 
         .Stall(Stall),
         .pc_in(pc_out_decode), 
@@ -298,7 +298,7 @@ module Top(
     
     ex_mem EXMEM(
     //inputs
-        .clk(Clk_out), 
+        .clk(Clk), 
         .reset(rst),
         .alu_result(ALU_result), 
         .read_data2(ReadData2_mux_out), 
@@ -327,7 +327,7 @@ module Top(
     );
     MemoryPhase MemoryAcess(
     //inputs
-        .clk(Clk_out), 
+        .clk(Clk), 
         .alu_result(alu_result_out_exmem), 
         .reg_data2_in(read_data2_out_exmem), 
         .opcode(opcode_out_exmem),
@@ -340,7 +340,7 @@ module Top(
     
     mem_wb MEMWB(
     //input
-        .clk(Clk_out), 
+        .clk(Clk), 
         .reset(rst), 
         .ALUResult(alu_result_out_exmem), 
         .mem_read(read_mem_data_out), 
