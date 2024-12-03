@@ -32,8 +32,8 @@ module Top(
     //output [31:0] WriteData_sim,
     //output [31:0] PCResult_sim
     
-    output [31:0] x,
-    output [31:0] y
+    output wire [31:0] x,
+    output wire [31:0] y
 );
     
     //wires out of clock divider
